@@ -66,6 +66,7 @@ export async function KudosSection() {
         {/* CTA */}
         <Link
           href="/sun-kudos"
+          aria-label="Xem chi tiết Sun* Kudos"
           style={{
             display: 'inline-flex',
             alignItems: 'center',

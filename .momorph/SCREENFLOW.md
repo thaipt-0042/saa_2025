@@ -30,7 +30,7 @@
 |---|-------------|----------|-------|-------------|-----------|----------------|--------------|
 | 1 | Login | `GzbNeVGJHz` | `/login` | Spec Created (Reviewed v2) | `.momorph/contexts/specs/GzbNeVGJHz-Login/spec.md` | `supabase.auth.signInWithOAuth`, `GET /auth/callback` | `/` (post-login), `/login?error=auth_failed` |
 | 2 | Homepage SAA | `i87tDx10uM` | `/` | Spec Created | _(pending)_ | `GET /api/awards`, `GET /api/countdown`, `GET /api/kudos/feed` | `/awards-information`, `/awards-information#{slug}`, `/sun-kudos`, `/auth/callback` (logout redirect) |
-| 3 | Hệ thống giải (Awards Information) | `zFYDgyj_pD` | `/awards-information` | Spec Created | _(pending)_ | `GET /api/awards` | `/`, `/awards-information#{slug}` |
+| 3 | Hệ thống giải (Awards Information) | `zFYDgyj_pD` | `/awards-information` | Spec Reviewed | `.momorph/contexts/specs/zFYDgyj_pD-HeThongGiai/spec.md` | `supabase.auth.getUser()` (SSR guard); data is static config | `/sun-kudos` |
 | 4 | Sun* Kudos — Live Board | `MaZUn5xHXZ` | `/sun-kudos` | Spec Created | _(pending)_ | `GET /api/kudos`, `POST /api/kudos` | `/`, `/sun-kudos/write` |
 | 5 | Viết Kudo (Write Kudo) | `ihQ26W78P2` | `/sun-kudos/write` | Spec Created | _(pending)_ | `POST /api/kudos`, `GET /api/users/search` | `/sun-kudos` |
 | 6 | Open Secret Box | `J3-4YFIpMM` | `/secret-box` | Spec Created | _(pending)_ | `GET /api/secret-box`, `POST /api/secret-box/open` | `/` |
@@ -228,8 +228,8 @@ Entry: / (admin role, authenticated)
 | `/login` | allowed | redirect → `/` | redirect → `/` | Middleware server-redirect if session valid |
 | `/auth/callback` | allowed | allowed | allowed | GET handler, not a UI route |
 | `/` | allowed | allowed | allowed | Public page; some CTAs guarded client-side |
-| `/awards-information` | allowed | allowed | allowed | Fully public |
-| `/awards-information#{slug}` | allowed | allowed | allowed | Anchor scroll, same page |
+| `/awards-information` | redirect → `/login` | allowed | allowed | Auth required (per test cases ID-0/ID-1) |
+| `/awards-information#{slug}` | redirect → `/login` | allowed | allowed | Anchor scroll, same page; auth guard same as parent |
 | `/sun-kudos` | redirect → `/login` | allowed | allowed | Protected route |
 | `/sun-kudos/write` | redirect → `/login` | allowed | allowed | Protected route |
 | `/secret-box` | redirect → `/login` | allowed | allowed | Protected route |
@@ -304,7 +304,7 @@ Derived from Figma frame `i87tDx10uM` node tree:
 | Top Project Leader | `mms_C2.3_Top Project Leader Award` | `#top-project-leader` |
 | Best Manager | `mms_C2.4_Best Manager Award` | `#best-manager` |
 | Signature 2025 — Creator | `mms_C2.5_Signature 2025 - Creator Award` | `#signature-2025-creator` |
-| MVP | `mms_C2.6_MVP Award` | `#mvp` |
+| MVP | `mms_C2.6_MVP Award` | `#mvp-most-valuable-person` |
 
 > Slugs are provisional. Finalize with the Awards Information spec.
 
