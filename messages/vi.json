@@ -9,5 +9,36 @@
   },
   "language": {
     "selectLabel": "Chọn ngôn ngữ"
+  },
+  "homepage": {
+    "nav": {
+      "aboutSaa": "About SAA 2025",
+      "awardsInfo": "Awards Information",
+      "sunKudos": "Sun* Kudos",
+      "commonStandards": "Tiêu chuẩn chung"
+    },
+    "hero": {
+      "commingSoon": "Comming soon",
+      "days": "DAYS",
+      "hours": "HOURS",
+      "minutes": "MINUTES",
+      "eventTime": "18h30",
+      "eventVenue": "Nhà hát nghệ thuật quân đội",
+      "eventFacebook": "Livestream trên Facebook Sun*",
+      "aboutAwards": "ABOUT AWARDS",
+      "aboutKudos": "ABOUT KUDOS",
+      "rootFurtherP1": "\"ROOT FURTHER\" là hành trình không ngừng nghỉ của những con người Sun* — những người không chỉ làm tốt công việc hôm nay, mà còn đặt nền móng cho tương lai vững chắc hơn.",
+      "rootFurtherP2": "Chúng ta không chỉ phát triển — chúng ta bám rễ sâu hơn, vươn xa hơn, và cùng nhau kiến tạo những giá trị trường tồn.",
+      "rootFurtherQuote": "\"Root further, grow together.\""
+    },
+    "awards": {
+      "sectionCaption": "Sun* annual awards 2025",
+      "sectionTitle": "Hệ thống giải thưởng",
+      "chiTiet": "Chi tiết"
+    },
+    "kudos": {
+      "description": "Sun* Kudos là nền tảng ghi nhận những đóng góp tích cực của thành viên Sun* — nơi mọi người trao gửi lời cảm ơn, trân trọng lẫn nhau và cùng lan tỏa năng lượng tích cực.",
+      "chiTiet": "Chi tiết"
+    }
   }
 }

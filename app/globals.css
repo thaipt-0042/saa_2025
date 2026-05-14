@@ -1,11 +1,25 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Digital Numbers';
+  src: url('/fonts/digital-numbers.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --color-bg-base: #00101a;
   --color-header-bg: rgba(11, 15, 18, 0.8);
   --color-cta-primary: #ffea9e;
   --color-cta-text: #00101a;
   --color-divider: #2e3940;
+  /* Homepage SAA additions */
+  --color-badge: #d4271d;
+  --color-account-border: #998c5f;
+  --color-card-glow: #fae287;
+  --color-nav-glow: #fae287;
+  --font-digital: 'Digital Numbers', monospace;
 }
 
 body {

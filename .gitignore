@@ -40,6 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# claude hooks logs
+.claude/hooks/.logs/
+
 # Added by MoMorph
 .mcp.json
 mcp.json

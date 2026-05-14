@@ -1,5 +1,27 @@
 import type { SupabaseClient, User } from '@supabase/supabase-js'
 
+export interface Profile {
+  id: string
+  email: string
+  full_name: string | null
+  avatar_url: string | null
+  role: 'admin' | 'user'
+}
+
+export async function getProfile(
+  userId: string,
+  supabase: SupabaseClient,
+): Promise<Profile | null> {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('id, email, full_name, avatar_url, role')
+    .eq('id', userId)
+    .single()
+
+  if (error || !data) return null
+  return data as Profile
+}
+
 export async function upsertProfile(
   user: User,
   supabase: SupabaseClient,

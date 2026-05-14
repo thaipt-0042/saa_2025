@@ -9,5 +9,36 @@
   },
   "language": {
     "selectLabel": "Select language"
+  },
+  "homepage": {
+    "nav": {
+      "aboutSaa": "About SAA 2025",
+      "awardsInfo": "Awards Information",
+      "sunKudos": "Sun* Kudos",
+      "commonStandards": "Common Standards"
+    },
+    "hero": {
+      "commingSoon": "Comming soon",
+      "days": "DAYS",
+      "hours": "HOURS",
+      "minutes": "MINUTES",
+      "eventTime": "18h30",
+      "eventVenue": "Military Art Theater",
+      "eventFacebook": "Livestream on Sun* Facebook",
+      "aboutAwards": "ABOUT AWARDS",
+      "aboutKudos": "ABOUT KUDOS",
+      "rootFurtherP1": "\"ROOT FURTHER\" is the relentless journey of Sun* people — those who not only excel at today's work but also lay the foundation for a stronger tomorrow.",
+      "rootFurtherP2": "We don't just grow — we root deeper, reach further, and together build values that stand the test of time.",
+      "rootFurtherQuote": "\"Root further, grow together.\""
+    },
+    "awards": {
+      "sectionCaption": "Sun* annual awards 2025",
+      "sectionTitle": "Awards System",
+      "chiTiet": "Details"
+    },
+    "kudos": {
+      "description": "Sun* Kudos is a platform for recognizing the positive contributions of Sun* members — a place to send thanks, appreciate each other, and spread positive energy together.",
+      "chiTiet": "Details"
+    }
   }
 }
