@@ -1,0 +1,13 @@
+{
+  "login": {
+    "tagline": "Begin your journey with SAA 2025.\nSign in to explore!",
+    "button": "LOGIN With Google",
+    "errorMessage": "Login failed. Please try again."
+  },
+  "footer": {
+    "copyright": "Copyright belongs to Sun* © 2025"
+  },
+  "language": {
+    "selectLabel": "Select language"
+  }
+}

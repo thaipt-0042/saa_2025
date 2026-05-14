@@ -1,0 +1,13 @@
+{
+  "login": {
+    "tagline": "Bắt đầu hành trình của bạn cùng SAA 2025.\nĐăng nhập để khám phá!",
+    "button": "LOGIN With Google",
+    "errorMessage": "Đăng nhập thất bại. Vui lòng thử lại."
+  },
+  "footer": {
+    "copyright": "Bản quyền thuộc về Sun* © 2025"
+  },
+  "language": {
+    "selectLabel": "Chọn ngôn ngữ"
+  }
+}

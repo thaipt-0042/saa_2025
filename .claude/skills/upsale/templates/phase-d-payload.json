@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "track": "technical",
+  "use_context": "internal",
+  "item_index": 1,
+  "item_slug": "kebab-slug-from-item-title",
+  "output_path": "plans/upsale/validation/item-01-kebab-slug-from-item-title.md",
+  "stack_context": "<concatenated first 20 lines of the track's two stack-relevant discovery files; technical: 01-repository-identity.md + 02-tech-stack.md; business: 01-product-identity.md + 02-target-users.md>",
+  "item_markdown": "## <title>\n\n- **Value:** <high|medium|low>\n- **Need:** <one sentence with path:line evidence>\n- **Benefits:** <one or more concrete outcomes>\n- **Proposed solution:** <implementable description tied to detected stack>\n- **Effort hint:** <low|medium|high>\n",
+  "item_evidence": "<entire body of <NN>-<aspect-id>.md from the track's deduped improvement directory, AFTER stripping the H1 heading and the `**Use context:** …` line on row 2. Empty string when aspect-id is unresolvable; validator falls back to direct repo grep.>"
+}
