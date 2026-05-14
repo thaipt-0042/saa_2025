@@ -34,7 +34,7 @@
 | 4 | Sun* Kudos — Live Board | `MaZUn5xHXZ` | `/sun-kudos` | Spec Created | _(pending)_ | `GET /api/kudos`, `POST /api/kudos` | `/`, `/sun-kudos/write` |
 | 5 | Viết Kudo (Write Kudo) | `ihQ26W78P2` | `/sun-kudos/write` | Spec Created | _(pending)_ | `POST /api/kudos`, `GET /api/users/search` | `/sun-kudos` |
 | 6 | Open Secret Box | `J3-4YFIpMM` | `/secret-box` | Spec Created | _(pending)_ | `GET /api/secret-box`, `POST /api/secret-box/open` | `/` |
-| 7 | Countdown / Pre-launch | `8PJQswPZmU` | `/` _(pre-launch state)_ | Design only | _(pending)_ | `GET /api/countdown` | _(holds until launch)_ |
+| 7 | Countdown / Pre-launch | `8PJQswPZmU` | `/countdown` | Spec Reviewed | `.momorph/contexts/specs/8PJQswPZmU-CountdownPrelaunch/spec.md` | _(none — static env var `NEXT_PUBLIC_EVENT_DATE` for MVP)_ | `/login` (if not auth); `/` (if event open) |
 | — | Auth Callback | _(non-UI)_ | `/auth/callback` | _(route handler)_ | See Login spec | `exchangeCodeForSession`, `profiles.upsert` | `/` (success), `/login` (error/cancel) |
 | — | Dropdown Profile | `z4sCl3_Qtk` | _(overlay on `/`)_ | Spec Created | _(pending)_ | `supabase.auth.signOut` | `/` (close), `/login` (sign out) |
 | — | Dropdown Profile Admin | `54rekaCHG1` | _(overlay on `/`)_ | Spec Created | _(pending)_ | `supabase.auth.signOut` | `/` (close), `/admin`, `/login` (sign out) |
@@ -56,7 +56,6 @@ flowchart TD
         Homepage["Homepage SAA\n/"]
         Awards["Awards Information\n/awards-information"]
         AwardDetail["Award Detail\n/awards-information#{slug}"]
-        Countdown["Pre-launch Countdown\n/ (pre-launch state)"]
     end
 
     subgraph Auth["Auth Flow (non-UI)"]
@@ -65,6 +64,7 @@ flowchart TD
     end
 
     subgraph Authenticated["Authenticated Users"]
+        Countdown["Pre-launch Countdown\n/countdown"]
         Kudos["Sun* Kudos Live Board\n/sun-kudos"]
         WriteKudo["Viết Kudo\n/sun-kudos/write"]
         SecretBox["Open Secret Box\n/secret-box"]
@@ -94,6 +94,11 @@ flowchart TD
 
     %% Already-authenticated guard
     Login -->|"middleware: session valid"| Homepage
+
+    %% Root router: isPrelaunch logic
+    Homepage -->|"isPrelaunch=true (server-side)"| Countdown
+    Countdown -->|"not authenticated"| Login
+    Countdown -->|"isPrelaunch=false (event open)"| Homepage
 
     %% Homepage outbound navigation
     Homepage -->|"Logo / About SAA 2025"| Homepage
@@ -341,3 +346,4 @@ Derived from Figma frame `i87tDx10uM` node tree:
 | Date | Action | Screens | Notes |
 |------|--------|---------|-------|
 | 2026-05-14 | Initial creation | Login, Homepage SAA, Awards Info, Sun* Kudos, Viết Kudo, Secret Box, Admin group | Derived from MoMorph frame list + Homepage node tree + Login spec (v2) |
+| 2026-05-15 | Spec Created | Countdown / Pre-launch (`8PJQswPZmU`) | Public page, 3 countdown units (DAYS/HOURS/MINUTES), client-side interval, static event datetime config |

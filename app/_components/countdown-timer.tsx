@@ -18,7 +18,7 @@ function computeRemaining(targetIso: string): TimeRemaining {
     const minutes = totalMinutes % 60
     const totalHours = Math.floor(totalMinutes / 60)
     const hours = totalHours % 24
-    const days = Math.floor(totalHours / 24)
+    const days = Math.min(Math.floor(totalHours / 24), 99)
 
     return { days, hours, minutes }
   } catch {
@@ -76,6 +76,7 @@ function CountdownUnit({ value, label }: { value: number; label: string }) {
 
   return (
     <div
+      aria-label={`${value} ${label.toLowerCase()}`}
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -118,7 +119,7 @@ export function CountdownTimer() {
   }, [targetIso])
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+    <div role="timer" aria-live="polite" style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       {!eventStarted && (
         <p
           style={{

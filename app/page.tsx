@@ -1,6 +1,8 @@
+import { redirect } from 'next/navigation'
 import { getLocale } from 'next-intl/server'
 import { createClient } from '../lib/supabase/server'
 import { getProfile } from '../lib/auth/profile-service'
+import { isPrelaunchMode } from '../lib/config/event'
 import { Header } from './components/header'
 import { Footer } from './components/footer'
 import { HeroSection } from './_components/hero-section'
@@ -12,11 +14,11 @@ export default async function HomePage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  let role: 'admin' | 'user' | null = null
-  if (user) {
-    const profile = await getProfile(user.id, supabase)
-    role = profile?.role ?? 'user'
-  }
+  if (!user) redirect('/login')
+  if (isPrelaunchMode()) redirect('/countdown')
+
+  const profile = await getProfile(user.id, supabase)
+  const role = profile?.role ?? 'user'
 
   const locale = await getLocale()
 

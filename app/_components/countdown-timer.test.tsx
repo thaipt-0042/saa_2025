@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen, act } from '@testing-library/react'
+import { render, screen, act, cleanup } from '@testing-library/react'
 import { CountdownTimer } from './countdown-timer'
 
 describe('CountdownTimer', () => {
@@ -9,6 +9,7 @@ describe('CountdownTimer', () => {
   })
 
   afterEach(() => {
+    cleanup()
     vi.useRealTimers()
     vi.unstubAllEnvs()
   })
@@ -100,5 +101,45 @@ describe('CountdownTimer', () => {
     unmount()
 
     expect(clearIntervalSpy).toHaveBeenCalled()
+  })
+
+  // Patch 1 — accessibility
+  it('has role="timer" on the countdown container', () => {
+    vi.stubEnv('NEXT_PUBLIC_EVENT_DATETIME', new Date(Date.now() + 3600000).toISOString())
+    render(<CountdownTimer />)
+
+    expect(screen.getByRole('timer')).toBeDefined()
+  })
+
+  it('has aria-live="polite" on the countdown container', () => {
+    vi.stubEnv('NEXT_PUBLIC_EVENT_DATETIME', new Date(Date.now() + 3600000).toISOString())
+    const { container } = render(<CountdownTimer />)
+
+    const timer = container.querySelector('[aria-live="polite"]')
+    expect(timer).not.toBeNull()
+  })
+
+  it('has aria-label on each countdown unit reflecting current value', () => {
+    // 1 day, 2 hours, 3 minutes from now
+    const target = new Date(Date.now() + (1 * 86400 + 2 * 3600 + 3 * 60) * 1000)
+    vi.stubEnv('NEXT_PUBLIC_EVENT_DATETIME', target.toISOString())
+    render(<CountdownTimer />)
+
+    expect(screen.getByLabelText('1 days')).toBeDefined()
+    expect(screen.getByLabelText('2 hours')).toBeDefined()
+    expect(screen.getByLabelText('3 minutes')).toBeDefined()
+  })
+
+  // Patch 2 — DAYS cap at 99
+  it('caps DAYS display at 99 when computed value >= 100', () => {
+    // 100 days + 1 hour from now
+    const target = new Date(Date.now() + (100 * 86400 + 3600) * 1000)
+    vi.stubEnv('NEXT_PUBLIC_EVENT_DATETIME', target.toISOString())
+    render(<CountdownTimer />)
+
+    const tiles = screen.getAllByTestId('digit-tile')
+    // DAYS tiles are [0] and [1]: should show "9" and "9" (capped at 99)
+    expect(tiles[0].textContent).toBe('9')
+    expect(tiles[1].textContent).toBe('9')
   })
 })
