@@ -36,6 +36,7 @@
 | 6 | Open Secret Box | `J3-4YFIpMM` | `/secret-box` | Spec Created | _(pending)_ | `GET /api/secret-box`, `POST /api/secret-box/open` | `/` |
 | 7 | Countdown / Pre-launch | `8PJQswPZmU` | `/countdown` | Spec Reviewed | `.momorph/contexts/specs/8PJQswPZmU-CountdownPrelaunch/spec.md` | _(none — static env var `NEXT_PUBLIC_EVENT_DATE` for MVP)_ | `/login` (if not auth); `/` (if event open) |
 | — | Auth Callback | _(non-UI)_ | `/auth/callback` | _(route handler)_ | See Login spec | `exchangeCodeForSession`, `profiles.upsert` | `/` (success), `/login` (error/cancel) |
+| — | Dropdown-ngôn ngữ (Language Dropdown) | `hUyaaugye2` | N/A _(overlay on all screens)_ | Spec Reviewed | `.momorph/contexts/specs/hUyaaugye2-LanguageDropdown/spec.md` | _(none — client-side locale switch)_ | _(stays on current page; locale persisted to `lang` cookie)_ |
 | — | Dropdown Profile | `z4sCl3_Qtk` | _(overlay on `/`)_ | Spec Created | _(pending)_ | `supabase.auth.signOut` | `/` (close), `/login` (sign out) |
 | — | Dropdown Profile Admin | `54rekaCHG1` | _(overlay on `/`)_ | Spec Created | _(pending)_ | `supabase.auth.signOut` | `/` (close), `/admin`, `/login` (sign out) |
 | — | Error 403 | `T3e_iS9PCL` | `/403` | Design only | _(pending)_ | — | `/` |
@@ -56,6 +57,10 @@ flowchart TD
         Homepage["Homepage SAA\n/"]
         Awards["Awards Information\n/awards-information"]
         AwardDetail["Award Detail\n/awards-information#{slug}"]
+    end
+
+    subgraph Overlays["Global UI Overlays (all screens)"]
+        LangDropdown["Dropdown-ngôn ngữ\n(Language Switcher overlay)"]
     end
 
     subgraph Auth["Auth Flow (non-UI)"]
@@ -83,6 +88,14 @@ flowchart TD
         E403["403 Access Denied\n/403"]
         E404["404 Not Found\n/404"]
     end
+
+    %% Language switcher — available from header on all screens
+    Homepage -->|"Language icon (mms_A1.7)"| LangDropdown
+    Awards -->|"Language icon"| LangDropdown
+    Kudos -->|"Language icon"| LangDropdown
+    WriteKudo -->|"Language icon"| LangDropdown
+    SecretBox -->|"Language icon"| LangDropdown
+    LangDropdown -->|"Select locale / close"| Homepage
 
     %% Auth flow
     Login -->|"Click LOGIN With Google"| Google
@@ -260,6 +273,7 @@ Entry: / (admin role, authenticated)
 | **Sun* Kudos** `/sun-kudos` | Nav link from `/`, B3.2 CTA button, direct URL (auth required) | `/`, `/sun-kudos/write` |
 | **Viết Kudo** `/sun-kudos/write` | CTA from `/sun-kudos`, Widget Button on `/` | `/sun-kudos` (submit success or cancel) |
 | **Secret Box** `/secret-box` | Widget on `/` | `/` |
+| **Dropdown-ngôn ngữ** _(overlay, all screens)_ | Language icon click (`mms_A1.7`) in header, available on all authenticated and public screens | Select locale → closes, stays on current page (locale persisted); Dismiss/close → current page unchanged |
 | **Dropdown Profile** _(overlay `/`)_ | Account icon click (user role) | Close → `/`, Sign Out → `/login` |
 | **Dropdown Profile Admin** _(overlay `/`)_ | Account icon click (admin role) | Close → `/`, Sign Out → `/login`, Admin Panel → `/admin` |
 | **Auth Callback** `/auth/callback` | Google OAuth redirect | `/` (success), `/login` (all error/cancel cases) |
@@ -347,3 +361,4 @@ Derived from Figma frame `i87tDx10uM` node tree:
 |------|--------|---------|-------|
 | 2026-05-14 | Initial creation | Login, Homepage SAA, Awards Info, Sun* Kudos, Viết Kudo, Secret Box, Admin group | Derived from MoMorph frame list + Homepage node tree + Login spec (v2) |
 | 2026-05-15 | Spec Created | Countdown / Pre-launch (`8PJQswPZmU`) | Public page, 3 countdown units (DAYS/HOURS/MINUTES), client-side interval, static event datetime config |
+| 2026-05-15 | Spec In Progress | Dropdown-ngôn ngữ / Language Dropdown (`hUyaaugye2`) | Global header overlay; client-side locale switch; no API calls; available on all screens |
