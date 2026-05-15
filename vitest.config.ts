@@ -23,4 +23,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, '.'),
     },
   },
+  ssr: {
+    noExternal: ['isomorphic-dompurify'],
+  },
 })

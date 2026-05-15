@@ -32,7 +32,7 @@
 | 2 | Homepage SAA | `i87tDx10uM` | `/` | Spec Created | _(pending)_ | `GET /api/awards`, `GET /api/countdown`, `GET /api/kudos/feed` | `/awards-information`, `/awards-information#{slug}`, `/sun-kudos`, `/auth/callback` (logout redirect) |
 | 3 | Hệ thống giải (Awards Information) | `zFYDgyj_pD` | `/awards-information` | Spec Reviewed | `.momorph/contexts/specs/zFYDgyj_pD-HeThongGiai/spec.md` | `supabase.auth.getUser()` (SSR guard); data is static config | `/sun-kudos` |
 | 4 | Sun* Kudos — Live Board | `MaZUn5xHXZ` | `/sun-kudos` | Spec Created | _(pending)_ | `GET /api/kudos`, `POST /api/kudos` | `/`, `/sun-kudos/write` |
-| 5 | Viết Kudo (Write Kudo) | `ihQ26W78P2` | `/sun-kudos/write` | Spec Created | _(pending)_ | `POST /api/kudos`, `GET /api/users/search` | `/sun-kudos` |
+| 5 | Viết Kudo (Write Kudo) | `ihQ26W78P2` | `/sun-kudos` _(modal overlay)_ | Spec Created | `.momorph/contexts/specs/ihQ26W78P2-VietKudo/spec.md` | `POST /api/kudos`, `GET /api/users/search?q=`, `GET /api/hashtags?q=`, Supabase Storage upload | `/sun-kudos` (on success/cancel) |
 | 6 | Open Secret Box | `J3-4YFIpMM` | `/secret-box` | Spec Created | _(pending)_ | `GET /api/secret-box`, `POST /api/secret-box/open` | `/` |
 | 7 | Countdown / Pre-launch | `8PJQswPZmU` | `/countdown` | Spec Reviewed | `.momorph/contexts/specs/8PJQswPZmU-CountdownPrelaunch/spec.md` | _(none — static env var `NEXT_PUBLIC_EVENT_DATE` for MVP)_ | `/login` (if not auth); `/` (if event open) |
 | — | Auth Callback | _(non-UI)_ | `/auth/callback` | _(route handler)_ | See Login spec | `exchangeCodeForSession`, `profiles.upsert` | `/` (success), `/login` (error/cancel) |
