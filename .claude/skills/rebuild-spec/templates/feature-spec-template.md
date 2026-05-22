@@ -110,6 +110,7 @@ None.
 **Rules enforced:**
 
 ### BR-001_{NameSlug}
+**Linked FR:** FR-???
 **Source:** `{file}:{start}-{end}`
 **Applies to:** {endpoint / event / entity}
 **Rule:** {What must hold, when enforced, why it exists.}
@@ -122,6 +123,7 @@ None.
 **State transitions:**
 
 ### SM-001_{EntityLifecycleSlug}
+**Linked FR:** FR-???
 **Source:** `{file}:{start}-{end}`
 **States:** {State1, State2, State3}
 
@@ -140,6 +142,7 @@ stateDiagram-v2
 **Algorithms:**
 
 ### ALG-001_{AlgorithmNameSlug}
+**Linked FR:** FR-???
 **Source:** `{file}:{start}-{end}`
 **Input:** {shape summary}
 **Output:** {shape summary}
@@ -154,6 +157,7 @@ stateDiagram-v2
 **External integrations:**
 
 ### INT-001_{IntegrationNameSlug}
+**Linked FR:** FR-???
 **Source:** `{file}:{start}-{end}`
 **Type:** {api-call | event-publish | webhook-emit | queue-job | notification}
 **Target:** {service / topic / queue / endpoint}

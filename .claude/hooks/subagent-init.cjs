@@ -48,6 +48,12 @@ const PLAN_AWARE_AGENTS = new Set([
   'brainstormer', 'reviewer', 'implementer'
 ]);
 
+// Agent types that benefit from a paths-only `docs/` index at spawn time.
+// Tester/git-manager/debugger/etc. do mechanical work — docs index is noise.
+const DOCS_AWARE_AGENTS = new Set([
+  'planner', 'reviewer', 'doc-writer', 'implementer'
+]);
+
 /**
  * Build ck plan CLI reference for plan-aware agents (~50 tokens)
  * Provides deterministic plan status commands instead of manual markdown editing
@@ -60,6 +66,135 @@ function buildPlanCliSection(agentType) {
     `\`ck plan check <id>\` = completed | \`ck plan check <id> --start\` = in-progress | \`ck plan uncheck <id>\` = revert`,
     `Fallback: if \`ck\` unavailable, edit plan.md Status column directly.`
   ];
+}
+
+// Detect rebuild-spec feature pattern at depth 3: subdirs containing `spec.md`.
+// Returns a one-line summary like "docs/specs/features/ — 40 feature specs (F###_*/spec.md)",
+// or null if the directory doesn't match the pattern.
+function summarizeSpecDir(dirPath, relPrefix) {
+  try {
+    const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+    let specCount = 0;
+    for (const e of entries) {
+      if (!e.isDirectory()) continue;
+      if (fs.existsSync(path.join(dirPath, e.name, 'spec.md'))) {
+        specCount++;
+      }
+    }
+    if (specCount > 0) {
+      return `${relPrefix}/ — ${specCount} feature specs (F###_*/spec.md). Start with feature-list.md`;
+    }
+    return null;
+  } catch (_err) {
+    return null;
+  }
+}
+
+/**
+ * Format the docs index block. Caps: ≤15 file bullets, ≤5 subdir summaries.
+ */
+function formatDocsIndexBlock({ topLevelMd, depth2Md, subdirSummaries }) {
+  const FILE_CAP = 15;
+  const SUBDIR_CAP = 5;
+  const lines = [
+    ``,
+    `## Project Docs Index (./docs/) — agent decides what to read`,
+    ``
+  ];
+  const allFiles = [...topLevelMd, ...depth2Md];
+  if (allFiles.length > 0) {
+    lines.push(`Files:`);
+    const shown = allFiles.slice(0, FILE_CAP);
+    shown.forEach(p => lines.push(`- ${p}`));
+    const overflow = allFiles.length - shown.length;
+    if (overflow > 0) lines.push(`- (${overflow} more)`);
+  }
+  if (subdirSummaries.length > 0) {
+    if (allFiles.length > 0) lines.push(``);
+    lines.push(`Subdirs:`);
+    const shownSubs = subdirSummaries.slice(0, SUBDIR_CAP);
+    shownSubs.forEach(s => lines.push(`- ${s}`));
+    const overflow = subdirSummaries.length - shownSubs.length;
+    if (overflow > 0) lines.push(`- (${overflow} more)`);
+  }
+  lines.push(``, `Read what's relevant to the task. Don't read everything.`);
+  return lines;
+}
+
+// Build a paths-only `docs/` catalog for docs-aware agents.
+// Rules:
+//   - Always list depth-1 .md files.
+//   - For each depth-1 subdir D, classify by descendants:
+//     * If D contains depth-3 spec.md (rebuild-spec features) → list D's .md files
+//       individually AND emit the feature-spec summary line. D is a "spec system".
+//     * Else if D contains .md files only → emit one summary line
+//       "docs/D/ — N .md files". Keeps non-architectural dirs (journals, archives)
+//       from flooding the index.
+//     * Else skip.
+// Fail-safe: any error → empty array. Token budget: ≤200 worst case.
+function buildProjectDocsIndex(cwd, agentType) {
+  if (!DOCS_AWARE_AGENTS.has(agentType)) return [];
+  try {
+    const docsDir = path.join(cwd, 'docs');
+    if (!fs.existsSync(docsDir)) return [];
+    const stat = fs.statSync(docsDir);
+    if (!stat.isDirectory()) return [];
+
+    const topLevelMd = [];
+    const depth2Md = [];
+    const subdirSummaries = [];
+
+    const lvl1 = fs.readdirSync(docsDir, { withFileTypes: true });
+    for (const ent of lvl1) {
+      if (ent.isFile() && ent.name.endsWith('.md')) {
+        topLevelMd.push(`docs/${ent.name}`);
+        continue;
+      }
+      if (!ent.isDirectory()) continue;
+
+      const lvl1Path = path.join(docsDir, ent.name);
+      const relPrefix = `docs/${ent.name}`;
+      let lvl2;
+      try {
+        lvl2 = fs.readdirSync(lvl1Path, { withFileTypes: true });
+      } catch (_err) {
+        continue;
+      }
+
+      const lvl2Files = [];
+      const lvl2SpecSummaries = [];
+      for (const sub of lvl2) {
+        if (sub.isFile() && sub.name.endsWith('.md')) {
+          lvl2Files.push(`${relPrefix}/${sub.name}`);
+          continue;
+        }
+        if (sub.isDirectory()) {
+          const summary = summarizeSpecDir(path.join(lvl1Path, sub.name), `${relPrefix}/${sub.name}`);
+          if (summary) lvl2SpecSummaries.push(summary);
+        }
+      }
+
+      if (lvl2SpecSummaries.length > 0) {
+        // Spec system: list md files individually + emit spec summaries
+        depth2Md.push(...lvl2Files);
+        subdirSummaries.push(...lvl2SpecSummaries);
+      } else if (lvl2Files.length > 0) {
+        // Non-architectural collection: collapse to count summary
+        subdirSummaries.push(`${relPrefix}/ — ${lvl2Files.length} .md files`);
+      }
+    }
+
+    topLevelMd.sort();
+    depth2Md.sort();
+    subdirSummaries.sort();
+
+    if (topLevelMd.length === 0 && depth2Md.length === 0 && subdirSummaries.length === 0) {
+      return [];
+    }
+    return formatDocsIndexBlock({ topLevelMd, depth2Md, subdirSummaries });
+  } catch (_err) {
+    return [];
+  }
 }
 
 /**
@@ -189,6 +324,9 @@ async function main() {
 
     // Plan CLI commands for plan-aware agents (Issue #540)
     lines.push(...buildPlanCliSection(agentType));
+
+    // Dynamic docs index for docs-aware agents (plan 260513-1134, phase 02)
+    lines.push(...buildProjectDocsIndex(effectiveCwd, agentType));
 
     // Trust verification (if enabled)
     lines.push(...buildTrustVerification(config));

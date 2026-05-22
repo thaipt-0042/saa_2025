@@ -628,6 +628,187 @@ describe('subagent-init.cjs', () => {
 
   });
 
+  describe('Plan 260513-1134: Project Docs Index injection', () => {
+
+    const DOCS_HEADER = '## Project Docs Index';
+
+    function makeTempProject() {
+      const dir = path.join(os.tmpdir(), 'docs-idx-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8));
+      fs.mkdirSync(dir, { recursive: true });
+      execSync('git init -q', { cwd: dir });
+      return dir;
+    }
+
+    function cleanup(dir) {
+      try { fs.rmSync(dir, { recursive: true, force: true }); } catch (_) {}
+    }
+
+    it('injects index for planner with rebuild-spec docs (specs + features)', async () => {
+      const dir = makeTempProject();
+      try {
+        const specsDir = path.join(dir, 'docs', 'specs');
+        const featuresDir = path.join(specsDir, 'features');
+        fs.mkdirSync(featuresDir, { recursive: true });
+        fs.writeFileSync(path.join(specsDir, 'feature-list.md'), '#');
+        fs.writeFileSync(path.join(specsDir, 'system-overview.md'), '#');
+        fs.mkdirSync(path.join(featuresDir, 'F001_Auth'), { recursive: true });
+        fs.writeFileSync(path.join(featuresDir, 'F001_Auth', 'spec.md'), '#');
+        fs.mkdirSync(path.join(featuresDir, 'F002_Profile'), { recursive: true });
+        fs.writeFileSync(path.join(featuresDir, 'F002_Profile', 'spec.md'), '#');
+
+        const result = await runHook({ agent_type: 'planner', agent_id: 't1', cwd: dir }, { cwd: dir });
+        const ctx = result.output?.hookSpecificOutput?.additionalContext || '';
+
+        assert.ok(ctx.includes(DOCS_HEADER), 'Index header should be present');
+        assert.ok(ctx.includes('docs/specs/feature-list.md'), 'Should list top-of-spec md files');
+        assert.ok(ctx.includes('docs/specs/system-overview.md'), 'Should list system-overview');
+        assert.ok(/docs\/specs\/features\/ — 2 feature specs/.test(ctx), 'Should summarize features dir');
+      } finally { cleanup(dir); }
+    });
+
+    it('injects index for planner with flat docs only', async () => {
+      const dir = makeTempProject();
+      try {
+        fs.mkdirSync(path.join(dir, 'docs'), { recursive: true });
+        fs.writeFileSync(path.join(dir, 'docs', 'README.md'), '#');
+        fs.writeFileSync(path.join(dir, 'docs', 'INSTALL.md'), '#');
+
+        const result = await runHook({ agent_type: 'planner', agent_id: 't2', cwd: dir }, { cwd: dir });
+        const ctx = result.output?.hookSpecificOutput?.additionalContext || '';
+
+        assert.ok(ctx.includes(DOCS_HEADER), 'Index header should be present');
+        assert.ok(ctx.includes('docs/README.md'), 'Should list flat docs');
+        assert.ok(ctx.includes('docs/INSTALL.md'), 'Should list flat docs');
+      } finally { cleanup(dir); }
+    });
+
+    it('emits NO index when docs/ is missing', async () => {
+      const dir = makeTempProject();
+      try {
+        const result = await runHook({ agent_type: 'planner', agent_id: 't3', cwd: dir }, { cwd: dir });
+        const ctx = result.output?.hookSpecificOutput?.additionalContext || '';
+        assert.ok(!ctx.includes(DOCS_HEADER), 'No index without docs/');
+      } finally { cleanup(dir); }
+    });
+
+    it('skips index for non-docs-aware agent (tester)', async () => {
+      const dir = makeTempProject();
+      try {
+        fs.mkdirSync(path.join(dir, 'docs'), { recursive: true });
+        fs.writeFileSync(path.join(dir, 'docs', 'README.md'), '#');
+
+        const result = await runHook({ agent_type: 'tester', agent_id: 't4', cwd: dir }, { cwd: dir });
+        const ctx = result.output?.hookSpecificOutput?.additionalContext || '';
+        assert.ok(!ctx.includes(DOCS_HEADER), 'Tester should not receive docs index');
+      } finally { cleanup(dir); }
+    });
+
+    it('skips index for git-manager and debugger (gating)', async () => {
+      const dir = makeTempProject();
+      try {
+        fs.mkdirSync(path.join(dir, 'docs'), { recursive: true });
+        fs.writeFileSync(path.join(dir, 'docs', 'README.md'), '#');
+
+        for (const agent of ['git-manager', 'debugger', 'code-simplifier']) {
+          const result = await runHook({ agent_type: agent, agent_id: 't5', cwd: dir }, { cwd: dir });
+          const ctx = result.output?.hookSpecificOutput?.additionalContext || '';
+          assert.ok(!ctx.includes(DOCS_HEADER), `Agent ${agent} should not receive docs index`);
+        }
+      } finally { cleanup(dir); }
+    });
+
+    it('injects index for all four docs-aware agents (planner, reviewer, doc-writer, implementer)', async () => {
+      const dir = makeTempProject();
+      try {
+        fs.mkdirSync(path.join(dir, 'docs'), { recursive: true });
+        fs.writeFileSync(path.join(dir, 'docs', 'README.md'), '#');
+
+        for (const agent of ['planner', 'reviewer', 'doc-writer', 'implementer']) {
+          const result = await runHook({ agent_type: agent, agent_id: 't6', cwd: dir }, { cwd: dir });
+          const ctx = result.output?.hookSpecificOutput?.additionalContext || '';
+          assert.ok(ctx.includes(DOCS_HEADER), `Agent ${agent} should receive docs index`);
+        }
+      } finally { cleanup(dir); }
+    });
+
+    it('collapses non-architectural subdir (e.g., journals) to a count summary', async () => {
+      const dir = makeTempProject();
+      try {
+        const journals = path.join(dir, 'docs', 'journals');
+        fs.mkdirSync(journals, { recursive: true });
+        for (let i = 0; i < 6; i++) {
+          fs.writeFileSync(path.join(journals, `2026-05-${10 + i}-entry.md`), '#');
+        }
+
+        const result = await runHook({ agent_type: 'planner', agent_id: 't7', cwd: dir }, { cwd: dir });
+        const ctx = result.output?.hookSpecificOutput?.additionalContext || '';
+        assert.ok(/docs\/journals\/ — 6 \.md files/.test(ctx), 'Should collapse to count summary');
+        assert.ok(!ctx.includes('2026-05-10-entry.md'), 'Should not list individual journal entries');
+      } finally { cleanup(dir); }
+    });
+
+    it('truncates with "(N more)" when files exceed cap', async () => {
+      const dir = makeTempProject();
+      try {
+        fs.mkdirSync(path.join(dir, 'docs'), { recursive: true });
+        for (let i = 0; i < 20; i++) {
+          fs.writeFileSync(path.join(dir, 'docs', `topic-${i.toString().padStart(2, '0')}.md`), '#');
+        }
+
+        const result = await runHook({ agent_type: 'planner', agent_id: 't8', cwd: dir }, { cwd: dir });
+        const ctx = result.output?.hookSpecificOutput?.additionalContext || '';
+        assert.ok(/\(5 more\)/.test(ctx), 'Should append overflow summary');
+      } finally { cleanup(dir); }
+    });
+
+    it('token budget: rebuild-spec output stays under ~200 tokens', async () => {
+      const dir = makeTempProject();
+      try {
+        const specsDir = path.join(dir, 'docs', 'specs');
+        const featuresDir = path.join(specsDir, 'features');
+        fs.mkdirSync(featuresDir, { recursive: true });
+        for (const name of ['feature-list', 'system-overview', 'data-model', 'screen-list', 'screen-flow', 'route-list', 'user-stories', 'permissions', 'background-logic']) {
+          fs.writeFileSync(path.join(specsDir, `${name}.md`), '#');
+        }
+        for (let i = 1; i <= 40; i++) {
+          const f = path.join(featuresDir, `F${i.toString().padStart(3, '0')}_Feat`);
+          fs.mkdirSync(f, { recursive: true });
+          fs.writeFileSync(path.join(f, 'spec.md'), '#');
+        }
+
+        const result = await runHook({ agent_type: 'planner', agent_id: 't9', cwd: dir }, { cwd: dir });
+        const ctx = result.output?.hookSpecificOutput?.additionalContext || '';
+        const block = ctx.split(DOCS_HEADER)[1] || '';
+        const approxTokens = Math.ceil(block.length / 3.5);
+        assert.ok(approxTokens <= 220, `Expected ≤220 tokens (some buffer), got ~${approxTokens}`);
+      } finally { cleanup(dir); }
+    });
+
+    it('fail-safe: does not crash when docs is a file, not a directory', async () => {
+      const dir = makeTempProject();
+      try {
+        fs.writeFileSync(path.join(dir, 'docs'), 'this is a file, not a directory');
+
+        const result = await runHook({ agent_type: 'planner', agent_id: 't10', cwd: dir }, { cwd: dir });
+        assert.strictEqual(result.exitCode, 0, 'Hook should not crash');
+        const ctx = result.output?.hookSpecificOutput?.additionalContext || '';
+        assert.ok(!ctx.includes(DOCS_HEADER), 'No index when docs is not a directory');
+      } finally { cleanup(dir); }
+    });
+
+    it('emits no index when docs/ exists but is empty', async () => {
+      const dir = makeTempProject();
+      try {
+        fs.mkdirSync(path.join(dir, 'docs'), { recursive: true });
+
+        const result = await runHook({ agent_type: 'planner', agent_id: 't11', cwd: dir }, { cwd: dir });
+        const ctx = result.output?.hookSpecificOutput?.additionalContext || '';
+        assert.ok(!ctx.includes(DOCS_HEADER), 'Empty docs/ → no index emitted');
+      } finally { cleanup(dir); }
+    });
+
+  });
+
   describe('Error Handling', () => {
 
     it('exits 0 on JSON parse error (fail-open)', async () => {

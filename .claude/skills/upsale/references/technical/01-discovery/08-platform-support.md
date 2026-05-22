@@ -3,7 +3,7 @@
 **Track:** technical · **Discovery item:** 8
 **Inputs:**
 - `plans/upsale/use-context.json` (MUST exist)
-- `plans/upsale/scout-report.md` (MUST exist; `[manifest]`/`[ci]`/`[config]` bullets supply client / deployment / OS-matrix paths)
+- `plans/upsale/scout-report.md` (MUST exist; `[manifest]`/`[ci]`/`[config]` bullets supply client / deployment / OS-matrix paths). **Do NOT Read the full file.** Use `grep -E '\[(manifest|ci|config)\]' plans/upsale/scout-report.md` to extract only relevant bullets.
 - Repository files (paths from scout)
 
 **Output artifact:** `plans/upsale/technical/01-discovery/08-platform-support.md`

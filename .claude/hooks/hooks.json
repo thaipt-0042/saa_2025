@@ -6,17 +6,17 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"${CLAUDE_PLUGIN_ROOT:-$PWD}/hooks/session-start.sh\"",
+            "command": "bash \".claude/hooks/session-start.sh\"",
             "async": false
           },
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT:-$PWD}/hooks/session-state.cjs\"",
+            "command": "node \".claude/hooks/session-state.cjs\"",
             "async": false
           },
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT:-$PWD}/hooks/telemetry.cjs\"",
+            "command": "node \".claude/hooks/telemetry.cjs\"",
             "async": true
           }
         ]
@@ -28,7 +28,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT:-$PWD}/hooks/telemetry.cjs\"",
+            "command": "node \".claude/hooks/telemetry.cjs\"",
             "async": true
           }
         ]
@@ -40,7 +40,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT:-$PWD}/hooks/telemetry.cjs\"",
+            "command": "node \".claude/hooks/telemetry.cjs\"",
             "async": true
           }
         ]
@@ -52,7 +52,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT:-$PWD}/hooks/session-state.cjs\"",
+            "command": "node \".claude/hooks/session-state.cjs\"",
             "async": true
           }
         ]
@@ -64,7 +64,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT:-$PWD}/hooks/safety-guard.cjs\"",
+            "command": "node \".claude/hooks/safety-guard.cjs\"",
             "async": false
           }
         ]
@@ -76,12 +76,12 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT:-$PWD}/hooks/iron-laws-guard.cjs\"",
+            "command": "node \".claude/hooks/iron-laws-guard.cjs\"",
             "async": true
           },
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT:-$PWD}/hooks/telemetry.cjs\"",
+            "command": "node \".claude/hooks/telemetry.cjs\"",
             "async": true
           }
         ]

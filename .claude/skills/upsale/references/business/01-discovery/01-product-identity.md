@@ -3,7 +3,7 @@
 **Track:** business · **Discovery item:** 1
 **Inputs:**
 - `plans/upsale/use-context.json` (Phase A Step 2 — MUST exist; marker echoed verbatim into output)
-- `plans/upsale/scout-report.md` (Phase A Step S — MUST exist; `## Relevant Files` bullets supply spec/doc/manifest paths via inline `[type]` tags)
+- `plans/upsale/scout-report.md` (Phase A Step S — MUST exist; `## Relevant Files` bullets supply spec/doc/manifest paths via inline `[type]` tags). **Do NOT Read the full file.** Use `grep -E '\[(spec|doc|manifest)\]' plans/upsale/scout-report.md` to extract only relevant bullets.
 - Repository files + `specsRoot` (paths sourced ONLY from the scout `## Relevant Files` bullets — do NOT re-glob)
 
 **Output artifact:** `plans/upsale/business/01-discovery/01-product-identity.md`

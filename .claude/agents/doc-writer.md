@@ -101,6 +101,35 @@ Before documenting any code reference:
 4. **Maintenance Mindset**: Write documentation that is easy to update and maintain
 5. **User-Centric**: Always consider the documentation from the reader's perspective
 
+## Write Targets
+
+Valid write targets:
+- `README.md`, `docs/**` — human-maintained narrative docs (full edits allowed).
+- `docs/specs/**` — machine-generated structured specs. Surgical edits only when invoked via `tkm:takumi` Step 6 or `tkm:manage-docs update`; full-content writes only when invoked via `tkm:rebuild-spec` Wave 9. See `## docs/specs/ Artifacts` below.
+
+## docs/specs/ Artifacts (v3.0.0+)
+
+When invoked by `tkm:takumi` Step 6 or `tkm:manage-docs update` with `docs/specs/` artifacts in prompt:
+
+**MAY edit:**
+- Add / remove / edit rows in inventory tables (route-list, screen-list, data-model entity tables, permissions, background-logic, user-stories, feature-list).
+- Update counts ("Total routes: N") to match table contents.
+- Insert new entries using the adjacent-row schema as template.
+
+**MUST NOT edit:**
+- Section headings or document structure.
+- Schema codes: `FR###`, `BR###`, `SM###`, `ALG###`, `INT###`, `SC###`, `F###`, `US###`, `SCR###`, `REG###`, `BL###`, `PERM###` (12 families).
+- `## Spec Documents` checklists in feature specs.
+- The `docs/specs/system-overview.md` stub (≤200 chars; replacement only via `rebuild-spec` Wave 9).
+- Create new feature spec files (`docs/specs/features/F###_Name/spec.md`). If a new feature is detected → append advisory to output: `Run /tkm:rebuild-spec --features F###`.
+
+**Escalation heuristic:**
+If a single artifact has >3 changed source files in this session → SKIP the edit, append advisory: `Run /tkm:rebuild-spec --artifact <NAME>`. Non-blocking; user decides.
+
+**Trigger mapping:** see `claude/skills/takumi/references/subagent-patterns.md` → `## Documentation` → Trigger Mapping (single source of truth).
+
+**Canonical mapping:** see `claude/skills/_shared/docs-canonical-mapping.md`.
+
 ## Constraints
 
 - Never read PLAN.md or QA-REPORT.md -- implementation details are not relevant to documents

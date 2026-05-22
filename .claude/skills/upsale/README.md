@@ -91,23 +91,12 @@ authoritative spec and `references/` for per-step procedures.
 ║                                                 ▼                    ║
 ║                                      technical/02-improvement/…      ║
 ╠══════════════════════════════════════════════════════════════════════╣
-║ PHASE B-improvement-dedup — Per-aspect dedup (parallel · ≤10)        ║
-╠══════════════════════════════════════════════════════════════════════╣
-║   3.3-dedup.NN biz aspect dedup      4.2-dedup.NN tech aspect dedup  ║
-║   ┌────────────────────────┐         ┌────────────────────────┐      ║
-║   │ for each source aspect │         │ for each source aspect │      ║
-║   │ file: merge intra-file │         │ file: merge intra-file │      ║
-║   │ duplicates only        │         │ duplicates only        │      ║
-║   └──────────┬─────────────┘         └──────────┬─────────────┘      ║
-║              ▼                                   ▼                   ║
-║   business/031-deduped-improvement/  technical/021-deduped-improv./  ║
-╠══════════════════════════════════════════════════════════════════════╣
 ║ PHASE B-track-proposal — Track proposal (parallel tracks · ≤2)       ║
 ╠══════════════════════════════════════════════════════════════════════╣
 ║   3.4 Biz proposal [T3.4]            4.3 Tech proposal [T4.3]        ║
 ║   ┌────────────────────────┐         ┌────────────────────────┐      ║
 ║   │ select + aspect group  │         │ select + aspect group  │      ║
-║   │ from 031-deduped-impr/ │         │ from 021-deduped-impr/ │      ║
+║   │ from 03-improvement/   │         │ from 02-improvement/   │      ║
 ║   └──────────┬─────────────┘         └──────────┬─────────────┘      ║
 ║              ▼                                  ▼                    ║
 ║   business/04-business-proposal.md   technical/03-technical-prop.md  ║
@@ -119,7 +108,7 @@ authoritative spec and `references/` for per-step procedures.
 ║ PHASE C — Combine (sequential)                                       ║
 ╠══════════════════════════════════════════════════════════════════════╣
 ║   ┌────────────────────────┐                                         ║
-║   │ 5a  Combine proposals  │  researcher                       [T5a] ║
+║   │ 5a  Combine proposals  │  script (combine_proposals.py)    [T5a] ║
 ║   │     (merge biz + tech) │                                         ║
 ║   └───────────┬────────────┘                                         ║
 ║               ▼                                                      ║
@@ -127,9 +116,11 @@ authoritative spec and `references/` for per-step procedures.
 ║               │                                                      ║
 ║               ▼                                                      ║
 ║   ┌────────────────────────┐                                         ║
-║   │ 5b  Cross-track dedup  │  reviewer                          [T5b] ║
-║   │     + reclassify       │  (always runs — near no-op single-track  ║
-║   │                        │   but still flips marker to `applied`)  ║
+║   │ 5b  Dedup + reclassify │  reviewer                          [T5b] ║
+║   │     (full-scope: intra-│  (always runs — flips marker to        ║
+║   │      aspect + cross-   │   `applied (n=N)`)                      ║
+║   │      aspect intra-track│                                          ║
+║   │      + cross-track)    │                                          ║
 ║   └────────┬───────────────┘                                         ║
 ║            ▼                                                         ║
 ║    combined-initial.md (rewritten · marker `dedup: applied (n=N)`)   ║
@@ -137,11 +128,9 @@ authoritative spec and `references/` for per-step procedures.
 ║ PHASE C-prep — Phase D pre-extraction dispatcher (sequential)        ║
 ╠══════════════════════════════════════════════════════════════════════╣
 ║   ┌────────────────────────┐                                         ║
-║   │ 5c  Phase-D-prep       │  researcher                        [T5c] ║
-║   │     dispatcher         │  reads combined + 0X1-deduped-impr/      ║
-║   │                        │  + discovery files                       ║
-║   │                        │  on BLOCKED → orchestrator falls back    ║
-║   │                        │  to inline pre-extraction (same output)  ║
+║   │ 5c  Phase-D-prep       │  script (phase_d_prep.py)          [T5c] ║
+║   │     dispatcher         │  reads combined + each track's           ║
+║   │                        │  improvement dir + discovery files       ║
 ║   └────────┬───────────────┘                                         ║
 ║            ▼                                                         ║
 ║   validation/_payloads/item-NN-<slug>.json  (per-item payload × N)   ║
@@ -199,10 +188,8 @@ Step-input:    each step reads ONLY prev step's artifact (same track)
                + use-context.json + scout-report.md (discovery 3.1.NN/4.1.NN)
                + 01-discovery/ DIR union (research 3.2.NN, tech improvement 4.2.NN)
                + 02-research/ DIR union (biz improvement 3.3.NN)
-               + 03-improvement/<NN>-<slug>.md (biz aspect dedup 3.3-dedup.NN)
-               + 02-improvement/<NN>-<slug>.md (tech aspect dedup 4.2-dedup.NN)
-               + 031-deduped-improvement/ DIR union (biz proposal 3.4)
-               + 021-deduped-improvement/ DIR union (tech proposal 4.3)
+               + 03-improvement/ DIR union (biz proposal 3.4)
+               + 02-improvement/ DIR union (tech proposal 4.3)
                + 04-business-proposal.md + 03-technical-proposal.md (combine 5a)
 Force regen:   delete artifact at desired step
                (delete combined-initial.md ⇒ ALSO delete validation/
@@ -220,9 +207,7 @@ in the orchestrator dep graph. Dependencies (addBlockedBy) follow phase arrows
 in the diagram: T3.1.NN ⇐ T1+T2+TS, T4.1.NN ⇐ T2+TS,
 T3.2.01..05 ⇐ all T3.1.*, T3.2.06 ⇐ T3.2.01..05,
 T3.3.NN ⇐ all T3.2.*, T4.2.NN ⇐ all T4.1.*,
-T3.3-dedup.NN ⇐ T3.3.NN (single corresponding upstream),
-T4.2-dedup.NN ⇐ T4.2.NN (single corresponding upstream),
-T3.4 ⇐ all T3.3-dedup.*, T4.3 ⇐ all T4.2-dedup.*,
+T3.4 ⇐ all T3.3.*, T4.3 ⇐ all T4.2.*,
 T5a ⇐ T3.4+T4.3, T5b ⇐ T5a, T5c ⇐ T5b (single dispatcher),
 T6.<NN> ⇐ T5c (one per item, ≤10 concurrent), T7 ⇐ all T6.<NN>.
 
@@ -254,6 +239,5 @@ Both empty      → 5c writes empty manifest → skip Phase D
                   same payload + manifest files) → Phase D proceeds normally,
                   status DONE_WITH_CONCERNS
 Validator BLK   → missing verdicts → KEEP + ⚠ banner
-Aspect-dedup BLK → that aspect's deduped sibling missing; track proposal pool degraded
-Dedup 5b BLK    → keep un-cross-track-deduped + warn (per-aspect dedup still applied)
+Dedup 5b BLK    → marker stays `pending` → Step 5c BLOCKED (cannot proceed)
 ```

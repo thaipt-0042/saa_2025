@@ -1,8 +1,10 @@
 # Phase D Pre-Extraction Dispatcher
 
-**Phase:** C-prep · **Step:** 5c (subagent) — externalises the Phase-D pre-extraction work that previously ran inside the orchestrator. Reads `combined-initial.md` + each track's deduped improvement directory + the discovery files needed for `stack_context`, writes one payload JSON per surviving item, and writes a manifest LAST as the atomic completion marker.
+> **Implementation note (2026-05-20):** Step 5c is implemented by `scripts/phase_d_prep.py`. This document remains the **procedural spec** consumed by the script (and by humans reading the contract). The script is the sole execution path — on BLOCKED, Phase D does not run. Orchestrator dispatch contract: `references/orchestrator-protocol.md` → Phase C-prep.
 
-**Invoked by:** the upsale orchestrator via the `Agent` tool (one researcher, one call) AFTER Step 5b finalises `<!-- dedup: applied (n=…) -->` in `combined-initial.md` and BEFORE Phase D fan-out.
+**Phase:** C-prep · **Step:** 5c (script) — externalises the Phase-D pre-extraction work that previously ran inside the orchestrator. Reads `combined-initial.md` + each track's improvement directory + the discovery files needed for `stack_context`, writes one payload JSON per surviving item, and writes a manifest LAST as the atomic completion marker.
+
+**Invoked by:** the upsale orchestrator via Bash (one script call) AFTER Step 5b finalises `<!-- dedup: applied (n=…) -->` in `combined-initial.md` and BEFORE Phase D fan-out.
 
 **Output artifact:** `plans/upsale/validation/_payloads/_manifest.json` (atomic Bash tempfile + rename) — manifest presence == dispatcher complete.
 
@@ -12,15 +14,15 @@
 
 - `combined_path` — `plans/upsale/combined-initial.md`. REQUIRED, must end with `<!-- dedup: applied (n=…) -->`.
 - `use_context_json_path` — `plans/upsale/use-context.json`.
-- `business_dedup_dir` — `plans/upsale/business/031-deduped-improvement/`. OMIT when business track inactive.
-- `technical_dedup_dir` — `plans/upsale/technical/021-deduped-improvement/`. OMIT when technical track inactive.
+- `business_improvement_dir` — `plans/upsale/business/03-improvement/`. OMIT when business track inactive.
+- `technical_improvement_dir` — `plans/upsale/technical/02-improvement/`. OMIT when technical track inactive.
 - `business_discovery_dir` — `plans/upsale/business/01-discovery/`. OMIT when business track inactive.
 - `technical_discovery_dir` — `plans/upsale/technical/01-discovery/`. OMIT when technical track inactive.
 - `payloads_dir` — `plans/upsale/validation/_payloads/` (output dir).
 - `manifest_path` — `plans/upsale/validation/_payloads/_manifest.json`.
 - `validation_dir` — `plans/upsale/validation/` (used to derive each item's `output_path`).
 
-At least one of the two `*_dedup_dir` keys MUST be present (the active track set is gated by `--technical-only` / `--business-only` / SDD detection upstream).
+At least one of the two `*_improvement_dir` keys MUST be present (the active track set is gated by `--technical-only` / `--business-only` / SDD detection upstream).
 
 ## Idempotency
 
@@ -46,7 +48,7 @@ Compute `current_combined_sha256 = sha256(combined-initial.md content)` first.
 5. **Resolve aspect-id per item.** Walk backwards (fence-aware) to the nearest preceding `^ {0,3}### ` heading. Within the next 3 non-blank lines after that heading, look for `<!-- aspect-id: <slug> -->` (regex `<!--\s*aspect-id:\s*([a-z0-9-]+)\s*-->`). Validate the captured slug against `^[a-z0-9-]+$` before use (path-traversal defence).
    - **Fallback A — comment absent:** derive aspect-id from the rollup heading title text (everything before the first ` · ` separator) using the standard slug regex. Push warn `warn: pre-ext aspect-id-comment-missing for item-<NN> "<title>" — fell back to slug-from-rollup-heading` to the manifest's `evidence_degraded_warns` array.
    - **Fallback B — aspect-id unresolvable:** ship `item_evidence: ""` and push warn `warn: item-<NN> "<title>" evidence-degraded — aspect-id unresolvable in combined-initial.md`.
-6. **Load evidence per item.** Glob the track's deduped improvement directory (`business_dedup_dir` for business, `technical_dedup_dir` for technical) for the file matching `^[0-9]+-<aspect-id>\.md$`. Load its ENTIRE BODY *after* the H1 heading + the line-2 `**Use context:** …` marker + any leading HTML-comment lines. Strip exactly those header lines; preserve everything else verbatim.
+6. **Load evidence per item.** Glob the track's improvement directory (`business_improvement_dir` for business, `technical_improvement_dir` for technical) for the file matching `^[0-9]+-<aspect-id>\.md$`. Load its ENTIRE BODY *after* the H1 heading + the line-2 `**Use context:** …` marker + any leading HTML-comment lines. Strip exactly those header lines; preserve everything else verbatim.
    - No matching file → `item_evidence: ""` AND push warn `warn: item-<NN> "<title>" evidence-degraded — aspect-id=<slug> has no matching ^[0-9]+-<slug>\.md$ in <track> improvement directory` to the manifest's `evidence_degraded_warns` array.
 7. **Build `stack_context` per track** (computed ONCE per active track, then replicated into every per-item payload for that track).
    - Technical: concatenate the first 20 lines of `<technical_discovery_dir>01-repository-identity.md` + `<technical_discovery_dir>02-tech-stack.md`.
@@ -103,7 +105,7 @@ Compute `current_combined_sha256 = sha256(combined-initial.md content)` first.
 
 - **Zero items in `combined-initial.md`** — write manifest with `"items": []` and `"evidence_degraded_warns": []`. Return `done: step-5c (no items)`. Orchestrator's Phase D dispatcher will skip the fan-out as before.
 - **Both tracks missing in combined** — already a Step 5a `BLOCKED` (combined file would have no `## Technical` or `## Business` heading). Step 5c never spawned in that case.
-- **Single-track run** — only one of `business_dedup_dir` / `technical_dedup_dir` is provided. The dispatcher writes payloads only for that track's items; the absent track contributes zero items.
+- **Single-track run** — only one of `business_improvement_dir` / `technical_improvement_dir` is provided. The dispatcher writes payloads only for that track's items; the absent track contributes zero items.
 - **Stack_context source missing** — degraded warn (above), continue.
 - **Aspect-id unresolvable** — degraded warn (above), continue.
 - **`combined-initial.md` SHA changed mid-run** — re-read the file once at start (step 1) and use that snapshot consistently. SHA captured at start goes into the manifest.
@@ -122,16 +124,3 @@ Emit, in order:
 - Never quote secrets. Cite `path:line` only — but in this dispatcher, `item_evidence` is copied VERBATIM from upstream improvement files, which themselves never quote secrets per their own reference contracts. No additional sanitisation needed.
 - Reject computed paths containing `..` or `\x00`, or absolute paths outside `plans/`. Validate every aspect-id against `^[a-z0-9-]+$` before using it as a path component.
 - File names: `item-<NN>-<slug>.json` where `<NN>` is zero-padded integer and `<slug>` matches `^[a-z0-9][a-z0-9\-]*$` (apply step 6's regex). Reject any computed file name failing this match.
-
-## Inline-fallback mode
-
-When the upsale orchestrator's `step-5c` Task spawn returns `BLOCKED` (subagent failure, tool unavailability, model error, etc.), the orchestrator runs the **exact same procedure** above directly in its own context — no separate "inline mode" branch. Output is byte-identical: the same per-item payload JSONs are written under `<payloads_dir>` and the same `_manifest.json` is written LAST as the atomic completion marker. Phase D then proceeds normally, reading the manifest just as it would from a successful dispatcher run.
-
-Procedure for the orchestrator:
-
-1. Execute steps 1–10 of `## Procedure` above in orchestrator context (the orchestrator already has every input value passed to the dispatcher; nothing is opaque).
-2. Use the same Bash tempfile + rename recipe for atomicity. Do NOT use the Write tool for payload or manifest files — half-written payloads can pass JSON parse but carry truncated evidence.
-3. Collect `warn:` lines as you go and persist them into the manifest's `evidence_degraded_warns` array AND echo them to the orchestrator's log buffer.
-4. After manifest is on disk, emit `warn: phase-d-prep blocked — degraded to inline pre-extraction` and propagate `DONE_WITH_CONCERNS — phase-d-prep blocked, ran inline pre-extraction`.
-
-The orchestrator's `## Phase D` then reads the manifest as usual — there is no parallel "inline-mode" validator dispatch path.

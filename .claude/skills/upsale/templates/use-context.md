@@ -5,7 +5,7 @@
      - every business/01-discovery/<NN>-<slug>.md per-item subagent → emits `**Use context:** X` marker on line 2.
      - every technical/01-discovery/<NN>-<slug>.md per-item subagent → emits `**Use context:** X` marker on line 2.
      - validation.md → gates monetization / consumer-funnel filters.
-     - the Step 5a combine subagent → cross-track use-context divergence check. -->
+     - the Step 5a combine script (`scripts/combine_proposals.py`) → cross-track use-context divergence check. -->
 
 ## File location
 

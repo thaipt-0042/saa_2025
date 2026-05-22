@@ -5,7 +5,7 @@ model: sonnet
 memory: project
 phases: [implement]
 tools: TaskCreate, TaskGet, TaskUpdate, TaskList, SendMessage, Task(Explore), Read, Write, Edit, Bash, Glob, Grep, Skill
-mcpServers: [momorph]
+mcpServers: [momorph, playwright]
 context:
   required: [PLAN.md, DESIGN.md]
   optional: [SPECS.md]

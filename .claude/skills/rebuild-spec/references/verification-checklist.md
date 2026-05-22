@@ -8,6 +8,19 @@ Load this file + target artifact + cross-ref artifacts listed per section.
 Output: per-issue list with severity (`critical`/`warning`) and `location.file:line`.
 `passed` iff `failed === 0`.
 
+## Validator Pre-Check Protocol
+
+Before applying this checklist to feature specs (W7b), the reviewer MUST read `plans/<active-plan>/artifacts/validation/validation-summary.json`. The orchestrator injects per-fcode validator state into each W7b TaskCreate prompt. The reviewer behaves differently per state:
+
+| Validator status (per fcode) | Reviewer behavior |
+|------------------------------|-------------------|
+| PASS (no validator issues) | Skip all `rule_id`s listed in `## Deterministic Validator Coverage`; mark them `[deterministic-pass]` in the review report. Focus on semantic depth (BR depth, FR/SC coverage, fabricated citations, cross-ref accuracy, edge case sufficiency). |
+| WARN (warnings only) | Same as PASS, but cite warning `rule_id`s under "Validator notes" in the review report. Do not re-check those rules. |
+| FAIL (critical present) | This should not occur at review time — orchestrator runs implementer fix cycle BEFORE dispatching W7b. If FAIL slips through, treat as critical and surface immediately. |
+| no summary JSON (legacy plan) | Apply the full checklist (legacy mode). Note `[validator-summary-absent]` in the review report. |
+
+`.pending` marker present in `artifacts/features/{slug}/` → reviewer emits `MISSING` for that fcode (see § Pending Marker Rule below). `MISSING` counts toward the review report's `failed` total.
+
 ## Universal rules
 
 Applies to every artifact — do not repeat in per-artifact sections.
@@ -26,7 +39,20 @@ Applies to every artifact — do not repeat in per-artifact sections.
 | Cross-ref tokenizer: split refs on `,` then on `/`. Left token = SCR### (must exist in ScreenList main index). Right token (if present) = REG### (must exist in the parent screen's Regions subsection). | critical |
 | Content-completeness: every documented entity (route, model, screen, background-logic entry, permission) must be traceable to actual source code via scout-report.md inventory. Documented item with no verifiable source → critical. If scout-report.md absent → mark N/A, emit [WARN]. | critical |
 
-Counting: `critical` → `failed`; `warning` → `warnings`.
+Counting: `critical` → `failed`; `warning` → `warnings`; `MISSING` (see § Pending Marker Rule) → `missing` (counts toward `failed` for Wave 9 gate).
+
+### Pending Marker Rule
+
+`.pending` is a zero-byte sentinel written by Wave 5 and removed by Wave 6 researcher on successful `spec.md` write (see `references/canonical-fcode-schema.md § Folder Lifecycle`). When the W7b reviewer encounters `.pending` in `artifacts/features/{slug}/`:
+
+| Marker state | spec.md state | Reviewer verdict | Frontmatter slot |
+|--------------|---------------|------------------|------------------|
+| `.pending` present | absent | `MISSING` | `missing += 1` |
+| `.pending` present | present (W6 wrote but failed to remove marker) | `MISSING` | `missing += 1` (partial-write signal — researcher must verify or remove marker manually) |
+| `.pending` absent | present | normal review | n/a |
+| `.pending` absent | absent | critical (folder skeleton without content nor marker — orchestrator bug) | `failed += 1` |
+
+`MISSING` blocks Wave 9 (review report frontmatter `missing > 0` → doc-writer HALT). Recovery: rerun Wave 6 for the affected fcode OR (after manual verification that `spec.md` is complete) remove `.pending` and rerun Wave 7b.
 
 ## Artifacts
 
@@ -265,7 +291,7 @@ Multi-stack example: "Laravel gap 2%, NestJS gap 67% (CRITICAL); max=67% → CRI
 - US### / SCR### / REG### formats valid (reference code-formats.md).
 - BR / SM / ALG / INT codes use `{PREFIX}-###_NameSlug`; per-spec unique; code appears with full `**Source:**` block exactly once.
 - Each BR/SM/ALG/INT full block has `**Source:** path:start-end` citation (line range mandatory).
-- Each BR/SM/ALG/INT full block has ≥1 `**Linked FR:** FR-###` referencing an FR in the same spec.
+- Each BR/SM/ALG/INT full block has ≥1 `**Linked FR:** FR-###` referencing an FR in the same spec. (Mechanical insertion handled by `scripts/structural_fixer.py` at Wave 7.5; reviewer flags only when placeholder `FR-???` remains.)
 - SM full block MUST contain a Mermaid `stateDiagram-v2` fenced block.
 - Pseudocode blocks ≤20 lines; no literal `{lang}` in fence; no secrets/credentials.
 - Each FR-### appears in exactly one of: a US's `**Requirements fulfilled:**` list OR Cross-Cutting `### Requirements` table.
@@ -368,6 +394,39 @@ Rules fire unconditionally on every pipeline invocation. No opt-in flag.
 - [ ] **W1 no-REG rule (M5):** W1 artifacts (SystemOverview, RouteList, DataModel) MUST NOT contain REG### codes. REG### first appears in W2 ScreenList. Orphan REG### in W1 artifact → critical.
 - [ ] **Partial-screen ownership (CE3):** each SCR### must have ≥1 F### owning the screen shell (bare SCR### ref in FeatureList Related Screens); each REG### must have ≥1 F### owning it (SCR###/REG### ref). An F### with only SCR###/REG### refs does NOT own the parent SCR.
 - [ ] **SIGNAL_INFERRED cap and justification:** `[SIGNAL_INFERRED]` tag in ScreenList Notes signals researcher used `composite-screen-detection.md § Signal Inference Fallback`. Tag MUST cite an H-rule in H2–H6 (H1 has no signal table — inference invalid for H1). Each occurrence MUST carry a 3-part justification (Intent matched / No-row reason / Observed pattern). Missing any part → critical. Count `[SIGNAL_INFERRED]` occurrences across the entire ScreenList document; threshold = `max(5, ceil(0.10 × SCR_count))` — exceeding triggers warning (over-reliance on inference; per-stack tables likely outdated or stack uncovered).
+
+## Deterministic Validator Coverage
+
+These `rule_id`s are pre-checked by `scripts/validate_*.py` BEFORE the W7b reviewer runs. When `validation-summary.json` reports a rule as `PASS`, the reviewer marks that rule `[deterministic-pass]` and focuses on semantic depth instead. When a rule is `FAIL`, the orchestrator dispatches an `implementer` fix cycle before W7b runs (see `pipeline.md § Wave 6.5`).
+
+| rule_id | validator script | severity |
+|---------|------------------|----------|
+| existence.folder_missing | validate_feature_existence.py | critical |
+| existence.folder_incomplete | validate_feature_existence.py | critical |
+| existence.slug_format | validate_feature_existence.py | critical/warning |
+| existence.orphan_folder | validate_feature_existence.py | warning |
+| existence.canonical_missing | validate_feature_existence.py | warning |
+| FeatureSpec.required_sections | validate_feature_spec.py | critical |
+| FeatureSpec.ccl_subsections | validate_feature_spec.py | critical |
+| FeatureSpec.ccl_blank | validate_feature_spec.py | critical |
+| FeatureSpec.screen_flow_crossref | validate_feature_spec.py | critical |
+| FeatureSpec.bw_steps | validate_feature_spec.py | critical |
+| FeatureSpec.deprecated_headings | validate_feature_spec.py | critical |
+| FeatureSpec.no_appendix | validate_feature_spec.py | critical |
+| FeatureSpec.edge_cases | validate_feature_spec.py | critical |
+| FeatureSpec.f_code_format | validate_feature_spec.py | critical |
+| FeatureSpec.sm_mermaid | validate_feature_spec.py | critical |
+| FeatureSpec.pseudocode_length | validate_feature_spec.py | warning |
+| FeatureSpec.pseudocode_fence | validate_feature_spec.py | warning |
+| Universal.no_placeholder | validate_feature_spec.py | critical |
+| citation.file_missing | validate_source_citations.py | critical |
+| citation.range_invalid | validate_source_citations.py | critical |
+| citation.range_inverted | validate_source_citations.py | critical |
+| citation.path_traversal | validate_source_citations.py | critical |
+| citation.unreadable | validate_source_citations.py | warning |
+| FeatureSpec.br_linked_fr_present | structural_fixer.py | critical |
+
+Rules NOT in this table remain reviewer-only (e.g., FR/SC coverage cross-refs, BR depth heuristics, cardinality cross-check, composite detection — these need semantic judgement).
 
 ## Failure Trap Assertions
 

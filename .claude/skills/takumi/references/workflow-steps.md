@@ -144,10 +144,49 @@ See `.claude/rules/momorph/momorph-development.md` → "Parallel Execution Strat
 
 ## Stage 6: Deliver the Work
 
-**All disciplines — MANDATORY subagents (NON-NEGOTIABLE):**
+**Hard ordering rule (Stage 6 trap):** Both subagents in step 6.1 (`project-manager` AND `doc-writer`) must be spawned BEFORE any commit-related `AskUserQuestion`. The commit prompt is NOT the seal — the Delivery Manifest is. If you find yourself about to ask "Ready to commit?" and have not yet spawned both, STOP and spawn them first. No exceptions for "tests passed and review approved" — that is precisely when the trap fires. Full anti-rationalization table: SKILL.md → "Delivery Anti-Rationalization".
+
+### Step 6.a — Artifact detection (orchestrator, before doc-writer spawn)
+
+Run this detection BEFORE spawning `doc-writer`. The orchestrator resolves the conditional and renders the prompt with the artifact branch already inlined or omitted — `doc-writer` does NOT see literal `[IF SPECS_PRESENT > 0:]` markers.
+
+```bash
+SPECS_PRESENT=$(ls docs/specs/*.md 2>/dev/null | wc -l | tr -d ' ')
+# Step 6 runs BEFORE git-manager commits, so capture uncommitted working tree + index vs HEAD.
+# Includes both staged and unstaged changes from this session.
+CHANGED_FILES=$(git diff --name-only HEAD 2>/dev/null)
+
+# Advisory: signal absent doc layer when session changed substantial feature surface.
+# Source for trigger patterns: claude/skills/takumi/references/subagent-patterns.md
+#                              → ## Documentation → Trigger Mapping
+TRIGGER_HITS=0
+if [ -n "$CHANGED_FILES" ]; then
+  TRIGGER_HITS=$(echo "$CHANGED_FILES" \
+    | grep -vE '/(tests?|__tests__|spec|mocks?|fixtures?)/|\.(test|spec)\.' \
+    | grep -cE '/(routes?|controllers?|api|endpoints?|models?|schema|migrations?|prisma|pages?|screens?|views?|router|navigation|auth|rbac|policy|guard|middleware|jobs?|queues?|workers?|cron|listeners?|webhooks?|observers?)/')
+fi
+
+if [ ! -d docs ] && [ "$TRIGGER_HITS" -ge 2 ]; then
+  echo "ℹ  ./docs/ not found — ${TRIGGER_HITS} feature-surface files changed this session." 1>&2
+  echo "ℹ  Consider /tkm:manage-docs init to scaffold project docs." 1>&2
+elif [ -d docs ] && [ "$SPECS_PRESENT" = "0" ] && [ "$TRIGGER_HITS" -ge 2 ]; then
+  echo "ℹ  docs/specs/ absent — ${TRIGGER_HITS} feature-surface files changed this session." 1>&2
+  echo "ℹ  Consider /tkm:rebuild-spec to generate spec layer for richer planning context." 1>&2
+fi
+```
+
+- If `SPECS_PRESENT == 0` → omit the artifact branch from the `doc-writer` prompt. No warning, no extra prompt bloat.
+- If `SPECS_PRESENT > 0` → build `IMPACT_MAP` from `CHANGED_FILES` using the trigger table in `subagent-patterns.md` → `## Documentation` → Trigger Mapping (single source — do NOT duplicate the table here).
+- If `CHANGED_FILES` is empty (e.g. user already committed before invoking finalize) → fall back to the active phase's "Related code files" list, or to `git diff --name-only HEAD~..HEAD` for the last commit. Log which source was used.
+
+Detection is idempotent: `docs/specs/` absence exits cleanly with no error. `tr -d ' '` normalizes BSD-`wc` whitespace padding so `[ "$SPECS_PRESENT" = "0" ]` comparisons work.
+
+**Absent-layer advisory:** the `if/elif` block above is stderr-only and **never** enters the `doc-writer` prompt — `doc-writer` still sees the same artifact branch (omitted when `SPECS_PRESENT == 0`). The two layers are mutually exclusive by control flow: `docs/` missing suppresses the specs advisory because `docs/specs/` cannot exist without its parent. Threshold is `≥ 2` feature-surface hits **after** stripping test/mock/fixture paths, so single-file or pure-test sessions stay silent. Contract details: [`_shared/docs-canonical-mapping.md` § Absent-Layer Advisory](../../_shared/docs-canonical-mapping.md#absent-layer-advisory).
+
+**All modes - MANDATORY subagents (NON-NEGOTIABLE):**
 1. **MUST** spawn these subagents in parallel:
-   - `Task(subagent_type="project-manager", prompt="Run full sync-back for [plan-path]: reconcile all completed Claude Tasks with all phase files, backfill stale completed checkboxes across every phase, then update plan.md frontmatter/table progress. Do NOT only mark current phase.", description="Sync plan")`
-   - `Task(subagent_type="doc-writer", prompt="Update docs for changes.", description="Update docs")`
+   - `Task(subagent_type="project-manager", prompt="Run full sync-back for [plan-path]: reconcile all completed Claude Tasks with all phase files, backfill stale completed checkboxes across every phase, then update plan.md frontmatter/table progress. Do NOT only mark current phase.", description="Update plan")`
+   - `doc-writer` — use the canonical prompt template in `subagent-patterns.md` → `## Documentation`. Substitute `[plan-name]` with the active plan name, inline `CHANGED_FILES`, and (when `SPECS_PRESENT > 0`) inline the resolved `IMPACT_MAP` from 6.a. DO NOT duplicate the template body here (DRY).
 2. Project-manager sync-back MUST include:
 
 ### Status Sync (Deliver)
@@ -173,9 +212,17 @@ only change the Status column cell, preserve table structure.
    - Return unresolved mappings if any completed task cannot be matched to a phase file.
 3. Use `TaskUpdate` to mark Claude Tasks complete after sync-back confirmation.
 4. Onboarding check (API keys, env vars)
-5. **MUST** spawn git subagent: `Task(subagent_type="git-manager", prompt="Stage and commit changes", description="Commit work")`
+5. **Emit the Delivery Manifest** to the user (see SKILL.md → "Delivery Manifest"). This is a printed emission, not a private check. Boxes 1–3 must read `[x]` from real subagent verdicts. If any reads `[ ]`, complete that subagent NOW. The commit prompt is forbidden until the Manifest passes.
+6. **MUST** spawn git subagent (only after the Manifest is emitted with boxes 1–3 checked): `Task(subagent_type="git-manager", prompt="Stage and commit changes", description="Commit work")`
+7. Run `/tkm:write-journal` to record the session.
 
-**CRITICAL:** Stage 6 is INCOMPLETE without spawning all 3 subagents. DO NOT skip subagent delegation.
+**CRITICAL:** Stage 6 is INCOMPLETE without ALL of the following:
+- (a) artifact detection (6.a) run,
+- (b) all 3 subagents spawned (`project-manager`, `doc-writer`, `git-manager`) — `doc-writer` is spawned regardless of perceived doc impact; its verdict is what determines whether files change,
+- (c) Delivery Manifest emitted verbatim to the user with boxes 1–3 = `[x]`,
+- (d) `/tkm:write-journal` run.
+
+A passing inspection (Stage 5) does NOT absolve any of these. DO NOT pass literal `[IF SPECS_PRESENT > 0:]` to `doc-writer` — orchestrator resolves the conditional first.
 
 **Auto discipline:** Continue to next phase automatically, return to **Stage 3**.
 **Others:** Ask user before next phase

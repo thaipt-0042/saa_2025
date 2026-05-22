@@ -1,7 +1,7 @@
-# Cross-Track Dedup + Reclassify Prompt
+# Dedup + Reclassify Prompt
 
-**Phase:** C · **Runs:** once (single agent), AFTER the Step 5a combine subagent (`references/combine-proposals.md`). Runs whenever `<!-- dedup: pending -->` marker is present — covers single-track and dual-track runs.
-**Input:** `plans/upsale/combined-initial.md` (the combiner already preserved every item's `**Value:**` and `**Effort hint:**` bullets and parent `### <Aspect>` rollup headings with `<!-- aspect-id: <slug> -->` comments verbatim — no other file is needed). Source items entering combine are already per-aspect-deduped (Steps 3.3-dedup / 4.2-dedup), so intra-aspect duplicates have been merged before they reach this step. Cross-aspect intra-track duplicates are NOT merged here — they survive by design (per-aspect classification is treated as intentional and preserved within a track).
+**Phase:** C · **Runs:** once (single agent), AFTER the Step 5a combine script (`scripts/combine_proposals.py`, spec at `references/combine-proposals.md`). Runs whenever `<!-- dedup: pending -->` marker is present — covers single-track and dual-track runs.
+**Input:** `plans/upsale/combined-initial.md` (the combine script already preserved every item's `**Value:**` and `**Effort hint:**` bullets and parent `### <Aspect>` rollup headings with `<!-- aspect-id: <slug> -->` comments verbatim — no other file is needed). No upstream dedup step runs; this is the sole dedup point. Pair-detection scope spans every `####` pair in the file — intra-aspect intra-track, cross-aspect intra-track, and cross-track pairs are all eligible.
 **Output:** `plans/upsale/combined-initial.md` (overwritten atomically).
 **Template:** `templates/combined-initial.md` (output MUST follow this structure)
 
@@ -11,13 +11,13 @@ The combiner emits one trailing marker line: `<!-- dedup: pending -->`.
 - Marker absent → already deduped → SKIP and log `skip: step-5b (already deduped)`.
 - Marker present → process and replace with `<!-- dedup: applied (n=<count>) -->`.
 
-`n` = total items consumed by merges across BOTH passes (Pass 1 cross-track + Reclassify) — for a merge that absorbs `k` inputs into one output, the count contribution is `k - 1`. Reclassifications are NOT counted in `n`. Under a single-track run (`--business-only` or `--technical-only`), Pass 1 always yields n=0 (no other track to merge against); the marker still flips to `applied`.
+`n` = total items consumed by merges across BOTH passes (Pass 1 dedup + Reclassify) — for a merge that absorbs `k` inputs into one output, the count contribution is `k - 1`. Reclassifications are NOT counted in `n`. Under a single-track run (`--business-only` or `--technical-only`), Pass 1 only finds intra-track pairs (no other track to merge against); the marker still flips to `applied`.
 
 ## Goal
 
 Two passes, in order, single agent run:
 
-1. **Pass 1 — Cross-track dedup** — merge duplicates where the same concern or theme appears in both `## Technical` and `## Business`.
+1. **Pass 1 — Dedup** — merge duplicates anywhere in the file (intra-aspect intra-track, cross-aspect intra-track, or cross-track).
 2. **Reclassify** — move any surviving `#### ` item that sits under the wrong section (move-only, preserve content verbatim).
 
 A well-processed proposal is one a customer reads without thinking "didn't they just tell me this from another angle?" AND every item lives under the right header. Merged items consolidate adjacent work (same theme, different targets) into ONE generalized item — nothing is silently lost.
@@ -29,7 +29,7 @@ Items are duplicates when EITHER condition holds:
 1. **Same concern** — `Need:` / `Proposed solution:` describe the same target work. Strong evidence: shared `path:line`, spec ID, vendor, version, or ≥3 content-word overlap in titles.
 2. **Adjacent (same theme, different targets)** — items share an activity / category / lever but operate on different artifacts or scopes. Examples: "Write unit tests for A" + "Unit tests for B" (theme: unit testing); "Decompose A file" + "Decompose B extension" (theme: decomposition); "Add SSO for Google" + "Add SSO for Okta" (theme: SSO integration). All such items merge into ONE generalized item covering every target.
 
-As a strong signal: if both items share the same aspect-id (from their respective parent `### <Aspect>` rollup heading or its `<!-- aspect-id: <slug> -->` comment — slug regex `<!--\s*aspect-id:\s*([a-z0-9-]+)\s*-->`, validated against `^[a-z0-9-]+$` before use) → treat as duplicates unless the activity / lever clearly diverges. Same aspect-id + same activity verb in titles ≈ guaranteed merge.
+As a strong signal: if both items share the same aspect-id (from their respective parent `### <Aspect>` rollup heading or its `<!-- aspect-id: <slug> -->` comment — slug regex `<!--\s*aspect-id:\s*([a-z0-9-]+)\s*-->`, validated against `^[a-z0-9-]+$` before use) → treat as duplicates unless the activity / lever clearly diverges. Same aspect-id + same activity verb in titles ≈ guaranteed merge. This signal fires for both intra-track (same track) and cross-track (different tracks) pairs.
 
 **Not duplicate** when items address fundamentally different concerns or aspects (e.g. tech "upgrade Node 16→20" under `security-and-dependencies` vs tech "increase test coverage" under `code-quality` — different aspects, different levers; or tech "upgrade Node 16→20" vs business "faster time-to-market via CI" — different domains entirely). Such items stand as separate.
 
@@ -37,16 +37,14 @@ As a strong signal: if both items share the same aspect-id (from their respectiv
 
 1. Read `plans/upsale/combined-initial.md` only. Do NOT reread source proposals or rescan the repo.
 
-### Pass 1 — Cross-track dedup
+### Pass 1 — Dedup
 
-2. Form duplicate groups across both tracks: for each `#### <title>` under any `### <Aspect>` in `## Business`, scan every `#### <title>` under any `### <Aspect>` in `## Technical`. Apply duplicate detection rules above. Build groups via transitive closure across both tracks.
+2. Form duplicate groups across the entire file: enumerate every `#### <title>` under any `### <Aspect>` in `## Business` AND every `#### <title>` under any `### <Aspect>` in `## Technical`. For each unordered pair (including pairs where both members live in the same track and pairs where both members live in the same aspect), apply duplicate detection rules above. Build groups via transitive closure over the full set of items.
 
-   **Important — intra-track scope:** Pass 1 considers ONLY pairs that span `## Business` and `## Technical`. Two items both in `## Business` (or both in `## Technical`) are NEVER grouped here, regardless of similarity. Cross-aspect intra-track duplicates are intentionally preserved at this stage (they were already per-aspect-deduped upstream in Steps 3.3-dedup / 4.2-dedup).
+3. For each duplicate group, merge the members into ONE consolidated item using `### Merge mechanics` below. The merged item lives in the **host track** = section of the highest-value member; on tie, the merged item lives in `## Technical` (Technical wins). For intra-track groups, all members already share the host track. Source-aspect / host-aspect placement follows the merge mechanics' aspect-host rule applied within the destination track.
+   - Emit: `dedup: merged [<track-1>:<title-1>, <track-2>:<title-2>, …] → <host-track> "<merged title>" (value=<max-tier>) (host-aspect=<host-aspect-id>)`
 
-3. For each cross-track duplicate group, merge the members into ONE consolidated item using `### Merge mechanics` below. The merged item lives in the **host track** = section of the highest-value member; on tie, the merged item lives in `## Technical` (Technical wins). Source-aspect / host-aspect placement follows the merge mechanics' aspect-host rule applied within the destination track.
-   - Emit: `dedup: merged [<track-1>:<title-1>, <track-2>:<title-2>, …] → <host-track> "<merged title>" (value=<max-tier>) (cross-track, host-aspect=<host-aspect-id>)`
-
-   After all cross-track merges: recompute affected rollup headings (see `### Rollup recompute` below).
+   After all merges in this pass: recompute affected rollup headings (see `### Rollup recompute` below).
 
 ### Merge mechanics
 
@@ -72,7 +70,7 @@ For a duplicate group of `k` items (k ≥ 2), produce ONE merged `#### <title>` 
 
 ### Rollup recompute
 
-Recompute is triggered ONCE per pass after ALL merge groups within that pass are resolved — NOT after each individual merge. Trigger points: end of Pass 1 (cross-track), end of Reclassify. Recomputing mid-pass risks counting errors when an item survives one merge but is then merged-out in a later group within the same pass.
+Recompute is triggered ONCE per pass after ALL merge groups within that pass are resolved — NOT after each individual merge. Trigger points: end of Pass 1 (dedup), end of Reclassify. Recomputing mid-pass risks counting errors when an item survives one merge but is then merged-out in a later group within the same pass.
 
 At each trigger point, recompute affected `### <Aspect>` rollup headings using only surviving `#### ` items in each aspect:
    - `<N> items` = count of surviving `#### ` blocks under this rollup.
@@ -84,8 +82,8 @@ At each trigger point, recompute affected `### <Aspect>` rollup headings using o
 
 6. Preserve the H1 title, generation-date subtitle, use-context badge, section headers (`## Technical`, `## Business`), and every surviving item's 5-bullet schema (Value, Need, Benefits, Proposed solution, Effort hint) and parent `### <Aspect>` rollup heading + aspect-id comment verbatim (modulo rollup recompute above).
 7. If a section ends up with zero items, emit a single placeholder line in its place. Wording depends on which pass emptied the section:
-   - **Pass 1 emptied `## Technical`** (merged cross-track into Business): `_All technical items were merged into the Business section via cross-track dedup._`
-   - **Pass 1 emptied `## Business`** (merged cross-track into Technical): `_All business items were merged into the Technical section via cross-track dedup._`
+   - **Pass 1 emptied `## Technical`** (cross-track merges absorbed every technical item into Business): `_All technical items were merged into the Business section via dedup._`
+   - **Pass 1 emptied `## Business`** (cross-track merges absorbed every business item into Technical): `_All business items were merged into the Technical section via dedup._`
    - **Section was already absent** (single-track flow — `--business-only` or `--technical-only` did not produce that track): emit no placeholder; the section header is absent from the combined file too.
    - **Reclassify emptied a section** (rare — every item moved to the other track): `_All <track> items were reclassified to the <other-track> section._`
 
@@ -128,9 +126,9 @@ At each trigger point, recompute affected `### <Aspect>` rollup headings using o
 
 After writing the artifact, emit:
 
-1. One `dedup: merged [<track-1>:<title-1>, <track-2>:<title-2>, …] → <host-track> "<merged title>" (value=<max-tier>) (cross-track, host-aspect=<host-aspect-id>)` line per cross-track merge group (zero or more).
+1. One `dedup: merged [<track-1>:<title-1>, <track-2>:<title-2>, …] → <host-track> "<merged title>" (value=<max-tier>) (host-aspect=<host-aspect-id>)` line per merge group (zero or more).
 2. One `reclassify: moved "<title>" from <source-track> to <target-track>` line per moved item.
 3. One `done: step-5b → <absolute path>` line.
 4. Exactly one trailer: `Status: DONE` | `Status: DONE_WITH_CONCERNS — <reason>` | `Status: BLOCKED — <reason>`.
 
-If zero merge groups AND zero reclassifications (single-track run, or no cross-track adjacency), still rewrite the file (to flip the marker to `applied (n=0)`) and emit only the `done:` line plus the trailer.
+If zero merge groups AND zero reclassifications, still rewrite the file (to flip the marker to `applied (n=0)`) and emit only the `done:` line plus the trailer.

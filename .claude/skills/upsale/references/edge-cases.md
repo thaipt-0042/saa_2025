@@ -15,15 +15,13 @@ Write fallback `{"useContext": "hybrid", "confidence": "low", "signals": [], "re
 1. Orchestrator falls back to direct repo walk via Bash `find` (skip rules per `references/scout-discovery.md`). Write `scout-report.md` with `[SCOUT_FALLBACK]` in `## Notes`. Status: `DONE_WITH_CONCERNS — tkm:scan-codebase fallback`.
 2. If the fallback walk ALSO fails → write placeholder (`Detected Language: unknown`, empty `## Relevant Files`, `[SCOUT_BLOCKED]` in `## Notes`). Both tracks degrade to direct repo grep. Status: `DONE_WITH_CONCERNS — scout fallback`.
 
-## Discovery / research / improvement / aspect-dedup — single item BLOCKED
+## Discovery / research / improvement — single item BLOCKED
 
 Continue with the rest of the batch. Downstream phase logs `(item <NN>-<slug> missing — track degraded)` and proceeds with the partial directory union.
 
-## Discovery / improvement / aspect-dedup — all items in a track BLOCKED
+## Discovery / improvement — all items in a track BLOCKED
 
 `BLOCKED — all <step-name> outputs missing for <track>`. That track's proposal is not produced.
-
-**Per-aspect-dedup specific:** the source aspect file under `*-improvement/` is preserved verbatim, but the deduped sibling under `0X1-deduped-improvement/` is missing. Track proposal does NOT fall back to the upstream source on per-item basis (mixing source + deduped would break Phase D aspect-id evidence pre-extraction) — it proceeds only with the surviving deduped union.
 
 ## Wave-1 research partial BLOCKED
 
@@ -63,9 +61,9 @@ Per-item validator BLOCKs hard with `BLOCKED — payload schema_version=<X> unsu
 
 Apply (Step 7) defaults missing verdicts to `KEEP`, emits in-file ⚠️ banner counting unvalidated items.
 
-## Step 5b cross-track dedup BLOCKED
+## Step 5b dedup BLOCKED
 
-Proceed with the un-cross-track-deduped file (per-aspect dedup outputs are still in place). Emit `warn: dedup agent blocked — skipped cross-track dedup`.
+Proceed with the un-deduped `combined-initial.md` (marker stays `<!-- dedup: pending -->`). Step 5c's pre-check requires `<!-- dedup: applied`, so a Step 5b BLOCK propagates to Step 5c as BLOCKED. Emit `warn: dedup agent blocked — skipped dedup`.
 
 ## Apply (Step 7) — verdict edge cases
 

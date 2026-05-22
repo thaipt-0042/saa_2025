@@ -3,7 +3,7 @@
 **Track:** business · **Discovery item:** 8
 **Inputs:**
 - `plans/upsale/use-context.json` (MUST exist)
-- `plans/upsale/scout-report.md` (MUST exist; `[spec]`/`[doc]` bullets supply compliance + privacy doc paths)
+- `plans/upsale/scout-report.md` (MUST exist; `[spec]`/`[doc]` bullets supply compliance + privacy doc paths). **Do NOT Read the full file.** Use `grep -E '\[(spec|doc|integration:[a-z]+)\]' plans/upsale/scout-report.md` to extract only relevant bullets.
 - Repository files + `specsRoot` (paths from scout)
 
 **Output artifact:** `plans/upsale/business/01-discovery/08-compliance-constraints.md`

@@ -4,7 +4,7 @@ description: "Keep the blueprint in sync with what was built — analyze codebas
 argument-hint: "init|update|summarize"
 metadata:
   author: takumi-agent-kit
-  version: "1.0.0"
+  version: "2.0.1"
 ---
 
 # Keeping the Ledger
@@ -61,3 +61,11 @@ Documentation lives in `./docs` directory:
 Use `docs/` directory as the source of truth for documentation.
 
 **IMPORTANT**: **Do not** start implementing code.
+
+## References
+
+- `references/init-workflow.md` — Initial documentation creation flow
+- `references/update-workflow.md` — Documentation update flow (Phase 2 detects `docs/specs/`)
+- `references/summarize-workflow.md` — Quick codebase summary flow
+- Canonical docs mapping: `claude/skills/_shared/docs-canonical-mapping.md` — layered model (`docs/` vs `docs/specs/`) and surgical-edit policy
+- Shared `doc-writer` prompt template: `claude/skills/takumi/references/subagent-patterns.md` → `## Documentation`

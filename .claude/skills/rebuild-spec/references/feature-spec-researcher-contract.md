@@ -1,5 +1,9 @@
 # Researcher Contract (Wave 6 — rebuild-spec)
 
+## Session Context
+
+Read `plans/<active-plan>/artifacts/_session-context.md` FIRST before any other artifact read. This file contains the detected stack, pointer paths to all shared artifacts, templates, and contracts, plus reminders that avoid common token-wasting patterns. Do NOT re-derive information already present in the session context file.
+
 ## Mandatory Source-Code Reading
 
 - You MUST read the actual source code files (controllers, models, jobs, services,
@@ -96,3 +100,15 @@
 - The `## Appendix — Worked Example` at the bottom of the template is HTML-commented so it does NOT render in specs.
   DELETE the entire HTML-comment block before submitting a real spec.
   A spec with `## Appendix` in its heading tree is CRITICAL.
+
+## Task Closure
+
+On successful spec.md write (and after `rm .pending` succeeds), call `TaskUpdate(status=completed)` on this task id BEFORE returning. Belt-and-suspenders with reconcile preflight — reduces orphan tasks visible in TaskList between waves.
+
+## Folder Lifecycle (Wave 5 / Wave 6 contract)
+
+- Wave 5 pre-creates `plans/<active-plan>/artifacts/features/{slug}/` and writes a `.pending` marker (zero-byte file) per feature.
+- On SUCCESSFUL `spec.md` write, the W6 researcher MUST run: `rm plans/<active-plan>/artifacts/features/{slug}/.pending`.
+- Failure to remove `.pending` causes Wave 7b reviewer to mark this feature as `MISSING` (counts toward the review report's `failed` total and blocks Wave 9).
+- If the spec write itself fails, leave `.pending` intact — the marker signals a partial write to downstream stages.
+- See `references/canonical-fcode-schema.md` § Folder Lifecycle and `references/verification-checklist.md` § Pending Marker Rule.

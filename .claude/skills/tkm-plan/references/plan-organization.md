@@ -130,7 +130,7 @@ Brief description of what this plan accomplishes.
 - Key dependencies
 
 ### Phase Files (phase-XX-name.md)
-Fully respect the `./docs/development-rules.md` file.
+Fully respect the `./claude/rules/development-rules.md` file.
 Each phase file should contain:
 
 **Context Links**

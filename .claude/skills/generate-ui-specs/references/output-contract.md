@@ -43,9 +43,39 @@ Examples:
 ## File Paths
 
 - `momorph`: `.momorph/specs/{screenId}-{screen-name}.csv`
-- `image`: `.momorph/specs/{source-token}-{screen-name}.csv`
+- `image` CSV: `.momorph/specs/{source-token}-{screen-name}.csv`
+- `image` bbox JSON: `.momorph/specs/{source-token}-{screen-name}-item-bboxes.json`
+- `image` annotated preview: `.momorph/specs/{source-token}-{screen-name}-item-bboxes-annotated.png`
 
 Use raw CSV content only. Do not wrap the file content in markdown code fences.
+
+## Image-Only BBox JSON
+
+For `image` mode, write the bbox sidecar as a JSON array in visual order. Each entry must use this exact shape:
+
+```json
+{
+   "itemNo": "1",
+   "position": {
+      "startX": 0,
+      "startY": 0,
+      "endX": 1200,
+      "endY": 56
+   }
+}
+```
+
+- `itemNo` must exactly match the CSV `No` value for the same item.
+- `position` uses original-image pixel space with `startX <= endX` and `startY <= endY`.
+- Maximum `itemNo` depth is 3.
+
+## Image-Only Annotated Preview
+
+For `image` mode, draw one rectangle and one visible `itemNo` label per bbox entry.
+
+- Use the original source image dimensions with no rescaling or cropping.
+- Save the annotated preview as `.momorph/specs/{source-token}-{screen-name}-item-bboxes-annotated.png`.
+- Keep the bbox JSON and annotated preview additive; they must not change the 22-column CSV contract.
 
 ## Output Discipline
 

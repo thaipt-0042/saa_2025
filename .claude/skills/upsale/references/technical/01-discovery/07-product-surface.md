@@ -3,7 +3,7 @@
 **Track:** technical · **Discovery item:** 7
 **Inputs:**
 - `plans/upsale/use-context.json` (MUST exist)
-- `plans/upsale/scout-report.md` (MUST exist; `[route]`/`[manifest]`/`[integration:*]`/`[config]` bullets supply entrypoint + vendor + host-platform paths)
+- `plans/upsale/scout-report.md` (MUST exist; `[route]`/`[manifest]`/`[integration:*]`/`[config]` bullets supply entrypoint + vendor + host-platform paths). **Do NOT Read the full file.** Use `grep -E '\[(route|manifest|integration:[a-z]+|config|source)\]' plans/upsale/scout-report.md` to extract only relevant bullets.
 - Repository files (paths from scout)
 
 **Output artifact:** `plans/upsale/technical/01-discovery/07-product-surface.md`

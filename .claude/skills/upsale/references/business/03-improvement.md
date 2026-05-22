@@ -2,6 +2,7 @@
 
 **Track:** business · **Sub-step:** 3 of 4 (fan-out)
 **Output directory:** `plans/upsale/business/03-improvement/`
+**Per-item references:** `references/business/03-improvement/*.md` (one per aspect)
 **Per-item templates:** `templates/business/03-improvement/*.md`
 
 This sub-step runs only when Step 1 reported `isSDD == true`. The orchestrator fans out
@@ -9,31 +10,34 @@ This sub-step runs only when Step 1 reported `isSDD == true`. The orchestrator f
 across the active fan-out phase (combined with technical 4.2.* — see
 `references/orchestrator-protocol.md` → `## Phase B-improvement`).
 
-This file is the **complete contract** — shared rules, ownership map, and per-aspect specs
-(Goal + use-context overrides) all live here. There are NO per-aspect reference files.
+This file holds the **shared contract** — Items table, Shared rules, Ownership map. Each
+aspect's specific Goal + use-context overrides + intake gate live in the per-aspect file
+under `references/business/03-improvement/<NN>-<slug>.md`. A per-aspect subagent loads its
+own aspect file AND this file (for the Shared rules + Ownership map below).
 
 ## Items (12 total — one per aspect)
 
-| # | Slug | Output file | Template |
-|---|------|-------------|----------|
-| 01 | spec-goal-alignment        | `plans/upsale/business/03-improvement/01-spec-goal-alignment.md`        | `templates/business/03-improvement/01-spec-goal-alignment.md`        |
-| 02 | feature-coverage           | `plans/upsale/business/03-improvement/02-feature-coverage.md`           | `templates/business/03-improvement/02-feature-coverage.md`           |
-| 03 | ux-gaps                    | `plans/upsale/business/03-improvement/03-ux-gaps.md`                    | `templates/business/03-improvement/03-ux-gaps.md`                    |
-| 04 | conversion-retention       | `plans/upsale/business/03-improvement/04-conversion-retention.md`       | `templates/business/03-improvement/04-conversion-retention.md`       |
-| 05 | time-to-market             | `plans/upsale/business/03-improvement/05-time-to-market.md`             | `templates/business/03-improvement/05-time-to-market.md`             |
-| 06 | competitive-positioning    | `plans/upsale/business/03-improvement/06-competitive-positioning.md`    | `templates/business/03-improvement/06-competitive-positioning.md`    |
-| 07 | compliance                 | `plans/upsale/business/03-improvement/07-compliance.md`                 | `templates/business/03-improvement/07-compliance.md`                 |
-| 08 | growth-and-distribution    | `plans/upsale/business/03-improvement/08-growth-and-distribution.md`    | `templates/business/03-improvement/08-growth-and-distribution.md`    |
-| 09 | pricing-monetization       | `plans/upsale/business/03-improvement/09-pricing-monetization.md`       | `templates/business/03-improvement/09-pricing-monetization.md`       |
-| 10 | analytics-instrumentation  | `plans/upsale/business/03-improvement/10-analytics-instrumentation.md`  | `templates/business/03-improvement/10-analytics-instrumentation.md`  |
-| 11 | customer-support-readiness | `plans/upsale/business/03-improvement/11-customer-support-readiness.md` | `templates/business/03-improvement/11-customer-support-readiness.md` |
-| 12 | new-features               | `plans/upsale/business/03-improvement/12-new-features.md`               | `templates/business/03-improvement/12-new-features.md`               |
+| # | Slug | Reference (subagent prompt) | Output file | Template |
+|---|------|------------------------------|-------------|----------|
+| 01 | spec-goal-alignment        | `references/business/03-improvement/01-spec-goal-alignment.md`        | `plans/upsale/business/03-improvement/01-spec-goal-alignment.md`        | `templates/business/03-improvement/01-spec-goal-alignment.md`        |
+| 02 | feature-coverage           | `references/business/03-improvement/02-feature-coverage.md`           | `plans/upsale/business/03-improvement/02-feature-coverage.md`           | `templates/business/03-improvement/02-feature-coverage.md`           |
+| 03 | ux-gaps                    | `references/business/03-improvement/03-ux-gaps.md`                    | `plans/upsale/business/03-improvement/03-ux-gaps.md`                    | `templates/business/03-improvement/03-ux-gaps.md`                    |
+| 04 | conversion-retention       | `references/business/03-improvement/04-conversion-retention.md`       | `plans/upsale/business/03-improvement/04-conversion-retention.md`       | `templates/business/03-improvement/04-conversion-retention.md`       |
+| 05 | time-to-market             | `references/business/03-improvement/05-time-to-market.md`             | `plans/upsale/business/03-improvement/05-time-to-market.md`             | `templates/business/03-improvement/05-time-to-market.md`             |
+| 06 | competitive-positioning    | `references/business/03-improvement/06-competitive-positioning.md`    | `plans/upsale/business/03-improvement/06-competitive-positioning.md`    | `templates/business/03-improvement/06-competitive-positioning.md`    |
+| 07 | compliance                 | `references/business/03-improvement/07-compliance.md`                 | `plans/upsale/business/03-improvement/07-compliance.md`                 | `templates/business/03-improvement/07-compliance.md`                 |
+| 08 | growth-and-distribution    | `references/business/03-improvement/08-growth-and-distribution.md`    | `plans/upsale/business/03-improvement/08-growth-and-distribution.md`    | `templates/business/03-improvement/08-growth-and-distribution.md`    |
+| 09 | pricing-monetization       | `references/business/03-improvement/09-pricing-monetization.md`       | `plans/upsale/business/03-improvement/09-pricing-monetization.md`       | `templates/business/03-improvement/09-pricing-monetization.md`       |
+| 10 | analytics-instrumentation  | `references/business/03-improvement/10-analytics-instrumentation.md`  | `plans/upsale/business/03-improvement/10-analytics-instrumentation.md`  | `templates/business/03-improvement/10-analytics-instrumentation.md`  |
+| 11 | customer-support-readiness | `references/business/03-improvement/11-customer-support-readiness.md` | `plans/upsale/business/03-improvement/11-customer-support-readiness.md` | `templates/business/03-improvement/11-customer-support-readiness.md` |
+| 12 | new-features               | `references/business/03-improvement/12-new-features.md`               | `plans/upsale/business/03-improvement/12-new-features.md`               | `templates/business/03-improvement/12-new-features.md`               |
 
 ## Shared rules (apply to every aspect)
 
 ### Inputs every aspect subagent receives
 - `plans/upsale/business/02-research/` (DIRECTORY — MUST be non-empty). Primary source of candidates: `06-gap-summary.md`. Sections `01..05-*.md` supply supporting context but do NOT introduce new evidence.
-- This file (shared rules + the aspect's section below, identified by slug).
+- The aspect's per-item reference file (Goal + use-context overrides + intake gate, if any).
+- This file (Shared rules + Ownership map).
 
 ### Idempotency
 Each per-aspect subagent skips when its declared output is non-empty (logs `skip: step-3.3.<NN> (artifact exists)`).
@@ -49,7 +53,7 @@ Each subagent fills exactly one aspect heading and its entries. No prioritizatio
 If the research artifact explicitly notes that the spec declares a feature domain out of scope (e.g., "spec excludes billing", "monetization is explicitly excluded"), the corresponding aspect output emits a single `Status: clean — spec-excluded` entry and stops. A spec exclusion overrides any market signal or competitor gap.
 
 ### Use-context-conditional rules (universal)
-In every aspect: drop sub-bullets whose primary remedy is a pricing/tier/billing change when `internal`; drop sub-bullets whose primary lever is consumer funnel when `hybrid`. When `internal`: any sub-item whose fix is a monetization or consumer-facing change MUST be discarded. When `hybrid`: any sub-item whose fix is a consumer-funnel change MUST be discarded. When `customer-facing`: full scope, no omissions. Additional per-aspect overrides are documented in each aspect's section below.
+In every aspect: drop sub-bullets whose primary remedy is a pricing/tier/billing change when `internal`; drop sub-bullets whose primary lever is consumer funnel when `hybrid`. When `internal`: any sub-item whose fix is a monetization or consumer-facing change MUST be discarded. When `hybrid`: any sub-item whose fix is a consumer-funnel change MUST be discarded. When `customer-facing`: full scope, no omissions. Additional per-aspect overrides are documented in each aspect's reference file.
 
 ### Customer-value signal vocabulary (gated by use-context)
 - `customer-facing` → `reliability | speed | cost | compliance | retention | revenue | unblocked roadmap | differentiation`
@@ -110,142 +114,3 @@ Emit an item ONLY when: (a) it falls within YOUR Goal AND (b) the ownership map 
 | Event tracking, funnel instrumentation, cohort/north-star metrics | 10-analytics-instrumentation | Infra plumbing (log/metric pipelines) → tech 07-observability |
 | In-app help, error message copy, status page, diagnostics, self-serve support | 11-customer-support-readiness | Regulatory artifacts (DSAR APIs, audit logs) → 07-compliance |
 | Net-new product features (not mentioned in spec) | 12-new-features | Spec-declared-but-missing → 02-feature-coverage |
-
----
-
-## Aspect 01 — spec-goal-alignment
-
-### Goal
-Identify gaps between the product's stated high-level goals (vision, mission, OKRs, success criteria declared in the spec) and the reality of what is actually implemented or scoped. Surface misalignments where delivered features drift from or contradict declared objectives, or where stated goals lack any implementation path.
-
----
-
-## Aspect 02 — feature-coverage
-
-### Goal
-Identify spec-declared features that are absent or only partially implemented, and table-stakes features that competitors ship but this product does not. Coverage gaps that could cause a prospect to disqualify the product during evaluation belong here.
-
----
-
-## Aspect 03 — ux-gaps
-
-### Goal
-Surface missing or weak states in critical user flows: signup, activation, onboarding, upgrade, error recovery, and empty states. Gaps here directly impair the user's ability to realize value and correlate with churn and low activation rates.
-
----
-
-## Aspect 04 — conversion-retention
-
-### Goal
-Identify activation and retention levers: time-to-value reduction, upgrade prompts, lifecycle moments, onboarding completeness, and re-engagement hooks. Surface gaps that cause users to fail to activate or churn before realising value.
-
-### Use-context overrides
-**When `hybrid`:** Drop ALL consumer-funnel levers (mass-market free-to-paid prompts, consumer churn-reduction, individual self-serve upgrade flows). Every entry MUST name the external enterprise/partner/self-host audience it targets.
-
----
-
-## Aspect 05 — time-to-market
-
-### Goal
-Identify gaps in release cadence, staging/production parity, feature flag infrastructure, and rollback capability that slow delivery or increase the risk of shipping. Slow TTM allows competitors to capture demand while fixes and features queue up.
-
-### Intake gate
-Emit `Status: opportunity` ONLY when ALL of:
-- The repo or research artifact names a SPECIFIC released-feature deadline (date, milestone name, or contract clause).
-- The blocked work is a process gate (CI duration, release-train cadence, environment promotion delay) — not a feature ask.
-- Removing the gate has a quantifiable WAITED-FOR-WHO that closes a deal / prevents missed revenue.
-
-If any of these is missing → emit a single `Status: clean — no concrete TTM gate evidenced` entry and stop.
-
----
-
-## Aspect 06 — competitive-positioning
-
-### Goal
-Evaluate both the product's competitive parity (feature/capability gaps vs named competitors) and the alignment between its messaging and the persona pains surfaced in research. Identify where the product is at parity (no differentiation), falling behind (competitor advantage), where an existing differentiator is underexploited or at risk of erosion, and where the declared value proposition fails to speak to primary buyer pain points.
-
-### Intake gate
-Emit `Status: opportunity` ONLY when AT LEAST ONE of the following is evidenced in research:
-- A SPECIFIC PARITY GAP with a named competitor that blocks or delays deals.
-- A SPECIFIC MESSAGING GAP that BLOCKS deals (lost-deal post-mortem cite, analyst-report mis-categorization, repeated buyer-confusion signal) AND the proposed positioning move is a CONCRETE artifact (homepage hero rewrite, pricing-page comparison table, security one-pager) — not "improve the brand".
-
-Soft framing without a deal-loss hook → emit `Status: clean — no deal-blocking gap evidenced` and stop.
-
----
-
-## Aspect 07 — compliance
-
-### Goal
-Identify gaps in compliance posture: emerging regulations the product is not meeting, certification expectations from enterprise buyers, consent management, audit trail, and data-residency gaps. Compliance gaps are often deal-blockers for enterprise or regulated-industry buyers.
-
----
-
-## Aspect 08 — growth-and-distribution
-
-### Goal
-Identify gaps in the product's ability to scale into new segments or geographies (multi-tenancy, internationalisation, pricing tier infrastructure, usage metering, admin tooling, capacity planning) AND gaps in differentiating distribution channels (marketplaces, OEM, reseller, host-platform peer coverage).
-
-### Intake gate
-Pure third-party integrations (Slack, Notion, Jira, GitHub, etc.) are NOT in scope here — they belong under `12-new-features`. This aspect covers growth-readiness gaps and DIFFERENTIATING distribution channels only (marketplace listings that change CAC, OEM/white-label/co-sell, reseller/agency enablement, missing integration category peers under the single-vendor rule, missing host-platform peers under the host-platform rule).
-
-Emit `Status: opportunity` ONLY when a growth-readiness gap OR one of these distribution moves is evidenced + named in research. Otherwise emit `Status: clean — no growth or distribution gap evidenced` and stop.
-
-### Use-context overrides
-**When `internal`:** Drop pricing-tier / usage-metering / billing / entitlement-ladder sub-items entirely. Drop consumer-market distribution, public marketplace listings, and consumer-facing referral programs.
-
-**When `hybrid`:** Drop consumer onboarding funnels and mass-market upgrade prompts. Every entry MUST name the enterprise/partner/self-host audience it targets.
-
-**Single-vendor integration rule:** For any single-vendor integration surfaced by research §6, include missing category peers as distinct deal-expansion items.
-
-**Host-platform product rule:** For any host-platform product identified in discovery §1, enumerate dominant peer host platforms that ≥2 competitors support (per research §2) but this product does NOT.
-
----
-
-## Aspect 09 — pricing-monetization
-
-### Goal
-Evaluate plan structure vs. category norms, upgrade trigger design, trial mechanics, and monetization levers. Identify gaps that leave revenue on the table or make it hard for buyers to justify budget.
-
-### Use-context overrides
-**When `internal`:** EMIT a single entry `Status: omitted — internal use-context (monetization out of scope)` and STOP. Do not produce any additional entries.
-
-**When `hybrid`:** Consumer-plan pricing (mass-market freemium, self-serve credit-card subscriptions for individuals, churn-reduction funnels for consumer tiers) is out of scope. Every entry MUST name the external enterprise/partner/self-host audience it targets.
-
----
-
-## Aspect 10 — analytics-instrumentation
-
-### Goal
-Identify gaps in event tracking, funnel instrumentation, cohort analysis capability, and north-star metric tracking. Without adequate instrumentation the team cannot measure what matters, prioritise correctly, or demonstrate ROI to stakeholders.
-
-### Intake gate
-Structured logging pipelines, metrics emission, distributed tracing, alerting plumbing, and operational dashboards are NOT in scope here — they belong under technical `07-observability`. This aspect is reserved for product analytics: funnel events, conversion attribution, retention cohorts, north-star metric tracking, and feedback loops that fuel growth and retention decisions.
-
----
-
-## Aspect 11 — customer-support-readiness
-
-### Goal
-Identify gaps in in-app help, error messages, status page, diagnostics, and self-service support tooling. Poor support readiness increases support costs, delays time-to-resolution, and erodes trust — especially during incidents or onboarding.
-
-### Intake gate
-Emit `Status: opportunity` ONLY when:
-- The proposed runbook / SOP / playbook ENABLES a specific customer outcome (e.g., self-serve onboarding, first 500ms of a P1 incident, dunning recovery, GDPR DSAR turnaround within SLA).
-- The artifact MUST cite the customer-side metric the readiness piece moves (CSAT, time-to-resolution, escalation rate, churn deflection).
-- Pure internal process docs / engineering onboarding docs are NOT in scope here — they belong to technical `08-docs-and-dx`.
-
-If unmet → emit `Status: clean — no customer-outcome runbook evidenced` and stop.
-
----
-
-## Aspect 12 — new-features
-
-### Goal
-Propose entirely new product features not present in the current spec that would unlock value consistent with the use-context. Strictly for net-new capabilities — do NOT restate features already declared in the spec. Each proposed feature MUST be tied to a persona pain or competitor-parity gap from research §6. Propose 3–8 distinct features when the gap list supports them; otherwise emit a single `Status: clean — no current gap` entry.
-
-### Use-context overrides
-**When `customer-facing`:** `Customer-value signal:` MUST be one of: `revenue impact | retention | conversion | differentiation | compliance | deal-size unlock`.
-
-**When `hybrid`:** `Customer-value signal:` MUST be one of: `enterprise deal-size | partner-adoption | self-host packaging | differentiation | compliance | operational efficiency | platform capability`. Do NOT use mass-market retention or consumer conversion signals.
-
-**When `internal`:** `Customer-value signal:` MUST be one of: `operational efficiency | risk reduction | compliance | employee productivity | platform capability | time-to-market for dependent teams | deal-size unlock (indirect, for owning org's customer-facing product)`. Do NOT use revenue impact, consumer retention, or conversion signals.

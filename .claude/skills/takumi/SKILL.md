@@ -4,7 +4,7 @@ description: "Invoke before every implementation — end-to-end pipeline from pl
 argument-hint: "[task|plan-path] [--interactive|--fast|--parallel|--auto|--no-test]"
 metadata:
   author: takumi-agent-kit
-  version: "2.1.1"
+  version: "3.0.1"
 ---
 
 # Takumi (匠) — The Craftsman's Implementation
@@ -70,7 +70,7 @@ User override: if the user explicitly says "just code it" or "skip planning", ho
 The craftsman reads intent from what is brought to the workshop:
 
 | Presented Material | Detected Discipline | Working Pattern |
-|-------------------|--------------------|-----------------| 
+|-------------------|--------------------|-----------------|
 | Path to `plan.md` or `phase-*.md` | code | Execute the existing blueprint |
 | Contains "fast", "quick" | fast | Scout → draft → forge |
 | Contains "trust me", "auto" | auto | Continuous, no rest points |
@@ -145,12 +145,37 @@ The craftsman pauses here for your eye before advancing (skipped with `--auto`):
 **Always enforced across all disciplines:**
 - **Tempering:** 100% pass required (unless no-test discipline)
 - **Master's Inspection:** Approval OR auto-approve (score≥9.5, 0 critical)
-- **Delivery (MANDATORY — never skip):**
+- **Delivery (MANDATORY — never skip, never reorder):**
+  The commit question is not the seal of the work — the Delivery Manifest is. Steps 1–3 run BEFORE the commit prompt, always.
   1. `project-manager` subagent → sync all completed stages back to `phase-XX-*.md` and `plan.md`
-  2. `doc-writer` subagent → update `./docs` if changes warrant
+  2. `doc-writer` subagent → review `./docs` AND (when present) `docs/specs/` for impact. **ALWAYS spawn this subagent.** "No update needed" is `doc-writer`'s verdict to return, not Takumi's verdict to assume. Detection + impact map built in `workflow-steps.md` Stage 6.
   3. `TaskUpdate` → mark Claude Tasks complete after sync-back
-  4. Ask if the work should be committed via `git-manager`
+  4. **Emit the Delivery Manifest (below)**, then ask if the work should be committed via `git-manager`
   5. Run `/tkm:write-journal` to record the session
+
+  **Delivery Manifest — emit verbatim to the user before the commit prompt:**
+  ```
+  ⚒ Delivery Manifest
+  - [x] project-manager — plan.md & phases reconciled
+  - [x] doc-writer — docs/ and docs/specs/ reviewed (verdict: <updated N files | no changes needed>)
+  - [x] TaskUpdate — all tasks closed (or N/A in VSCode)
+  - [ ] git-manager — awaiting your seal
+  - [ ] /tkm:write-journal — pending
+  ```
+  - Boxes 1–3 must read `[x]` before any commit prompt. If any is `[ ]`, complete that subagent NOW.
+  - A Manifest that was not printed to the user did not happen. Silent self-checks do not pass this gate.
+
+## Delivery Anti-Rationalization (Stage 6 Specific)
+
+The forge is hot. The inspection passed. The temptation is to seal the work with one final question. Resist — that is where the discipline most often fails.
+
+| The Whisper | The Master's Answer |
+|-------------|---------------------|
+| "Tests pass, review approved — just commit." | The commit is not the seal. The Manifest is. The Manifest comes first. |
+| "This change touches no docs — skip `doc-writer`." | You are not the docs authority. `doc-writer` is. Spawn it. It returns its verdict in seconds. |
+| "The plan is already in sync — skip `project-manager`." | Stale checkboxes from earlier stages are the most common drift. Spawn it. |
+| "The user said 'commit' — they want the commit." | A commit instruction is not a license to skip Delivery. Deliver first, then commit. |
+| "I'll record the docs/journal in a follow-up session." | There is no follow-up session for this piece. It is sealed now or it is not sealed. |
 
 ## Workshop Delegation (Mandatory Subagents)
 
@@ -177,3 +202,4 @@ The craftsman pauses here for your eye before advancing (skipped with `--auto`):
 - `references/workflow-steps.md` — Detailed stage definitions for all disciplines
 - `references/review-cycle.md` — Interactive and auto inspection processes
 - `references/subagent-patterns.md` — Workshop delegation patterns
+- Canonical docs mapping: `claude/skills/_shared/docs-canonical-mapping.md` — surgical-edit rule, escalation heuristic, version policy

@@ -1,7 +1,7 @@
 # Business Proposal Prompt (SDD-only)
 
 **Track:** business · **Sub-step:** 4 of 6
-**Input artifact:** `plans/upsale/business/031-deduped-improvement/` (DIRECTORY of per-aspect .md files — MUST be non-empty; one file per aspect produced by Phase B-improvement-dedup, sourcing the upstream `03-improvement/` files). The original `03-improvement/` files are preserved verbatim as audit trail; this step never reads them.
+**Input artifact:** `plans/upsale/business/03-improvement/` (DIRECTORY of per-aspect .md files — MUST be non-empty; one file per aspect produced by Phase B-improvement Step 3.3.NN).
 **Output artifact:** `plans/upsale/business/04-business-proposal.md`
 **Template:** `templates/business-04-business-proposal.md` (output MUST follow this structure)
 
@@ -9,7 +9,7 @@
 
 Before running this step:
 - If `plans/upsale/business/04-business-proposal.md` exists and is non-empty → SKIP and log `skip: step-3.4 (artifact exists)`.
-- If the input directory is missing OR empty → ABORT: `BLOCKED: step-3.3-dedup directory missing or empty`.
+- If the input directory is missing OR empty → ABORT: `BLOCKED: step-3.3 directory missing or empty`.
 
 ## Goal
 
@@ -17,7 +17,7 @@ Every high-or-medium-value improvement reaches the customer; aspect grouping pre
 
 ## Input rule
 
-Read EVERY `*.md` in `plans/upsale/business/031-deduped-improvement/` once at the start; treat the union of entries across all deduped aspect files as the candidate pool. Aspect files (`01-spec-goal-alignment.md`, `02-feature-coverage.md`, …, `12-new-features.md`) each carry their own `**Use context:** …` marker on line 2 (all must agree) and contribute their entries via the standard Entry format. Do NOT re-read the upstream `03-improvement/` source, research, or discovery — the deduped directory is the authoritative input for this step.
+Read EVERY `*.md` in `plans/upsale/business/03-improvement/` once at the start; treat the union of entries across all aspect files as the candidate pool. Aspect files (`01-spec-goal-alignment.md`, `02-feature-coverage.md`, …, `12-new-features.md`) each carry their own `**Use context:** …` marker on line 2 (all must agree) and contribute their entries via the standard Entry format. Do NOT re-read research or discovery — the improvement directory is the authoritative input for this step.
 
 **First read the `**Use context:** internal|hybrid|customer-facing` marker** from line 2 of any one aspect file. It gates selection rule 1b below and changes the vocabulary of acceptable value outcomes.
 
@@ -29,8 +29,8 @@ Read EVERY `*.md` in `plans/upsale/business/031-deduped-improvement/` once at th
    - **`Use context: hybrid`** — discard entries whose primary lever is **consumer-tier** monetization (mass-market freemium, individual-plan credit-card conversion, consumer-churn funnel). KEEP entries whose lever is enterprise packaging, self-host licensing, partner / OEM adoption, or internal ops efficiency. Acceptable value outcomes: enterprise deal-size unlock, partner-adoption expansion, self-host packaging wins, differentiation, compliance, operational efficiency, platform capability. Reject entries that only work on a consumer funnel.
    - **`Use context: customer-facing`** — no additional discard. Full checklist applies.
 2. **Value filter:** keep ALL items with `Value: high`. Also keep items with `Value: medium`. Discard every `Value: low` item.
-3. **Per-track cap (≤30 items):** let `total` = count of all surviving high+medium items across every aspect. If `total ≤ 30`, skip this rule. Otherwise, globally sort the surviving items by (a) `**Value:**` desc (`high` before `medium`), (b) `**Effort hint:**` asc (`low` < `medium` < `high`), (c) source aspect order (ascending `NN-` prefix of `031-deduped-improvement/<NN>-<aspect-id>.md`), (d) within-file source order (stable). Drop the bottom `(total - 30)` items. Emit one log line: `cap: business <total>→30 (dropped <N>: <slug1>, <slug2>, …)` where slugs are the dropped items' kebab-slugged titles in drop order. This rule reuses the same sort Step 7 (`apply-validations.md`) applies within-aspect, so item selection stays consistent end-to-end.
-4. **Aspect grouping:** group surviving entries by `Category:` value. Each group becomes one `## <Aspect Title>` section. Section order = ascending NN- numeric prefix of source aspect filename in `031-deduped-improvement/`. Aspect Title = the H1 of the matching `031-deduped-improvement/<NN>-<aspect-id>.md` source file, verbatim. Aspect-id slug MUST match `^[a-z0-9-]+$` — sanitise before emit. Within each aspect group, emit entries in source document order — the final within-aspect sort by Value/Effort runs at Step 7 (`references/apply-validations.md`) after dedup/reclassify/DROP, so sorting here would be clobbered by 5b's append-to-end placement and is intentionally omitted.
+3. **Per-track cap (≤30 items):** let `total` = count of all surviving high+medium items across every aspect. If `total ≤ 30`, skip this rule. Otherwise, globally sort the surviving items by (a) `**Value:**` desc (`high` before `medium`), (b) `**Effort hint:**` asc (`low` < `medium` < `high`), (c) source aspect order (ascending `NN-` prefix of `03-improvement/<NN>-<aspect-id>.md`), (d) within-file source order (stable). Drop the bottom `(total - 30)` items. Emit one log line: `cap: business <total>→30 (dropped <N>: <slug1>, <slug2>, …)` where slugs are the dropped items' kebab-slugged titles in drop order. This rule reuses the same sort Step 7 (`apply-validations.md`) applies within-aspect, so item selection stays consistent end-to-end.
+4. **Aspect grouping:** group surviving entries by `Category:` value. Each group becomes one `## <Aspect Title>` section. Section order = ascending NN- numeric prefix of source aspect filename in `03-improvement/`. Aspect Title = the H1 of the matching `03-improvement/<NN>-<aspect-id>.md` source file, verbatim. Aspect-id slug MUST match `^[a-z0-9-]+$` — sanitise before emit. Within each aspect group, emit entries in source document order — the final within-aspect sort by Value/Effort runs at Step 7 (`references/apply-validations.md`) after dedup/reclassify/DROP, so sorting here would be clobbered by 5b's append-to-end placement and is intentionally omitted.
 
 ## Output schema
 

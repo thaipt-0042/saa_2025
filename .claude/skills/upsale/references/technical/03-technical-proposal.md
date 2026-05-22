@@ -1,7 +1,7 @@
 # Technical Proposal Prompt
 
 **Track:** technical · **Sub-step:** 3 of 5
-**Input artifact:** `plans/upsale/technical/021-deduped-improvement/` (DIRECTORY of per-aspect .md files — MUST be non-empty; one file per aspect produced by Phase B-improvement-dedup, sourcing the upstream `02-improvement/` files). The original `02-improvement/` files are preserved verbatim as audit trail; this step never reads them.
+**Input artifact:** `plans/upsale/technical/02-improvement/` (DIRECTORY of per-aspect .md files — MUST be non-empty; one file per aspect produced by Phase B-improvement Step 4.2.NN).
 **Output artifact:** `plans/upsale/technical/03-technical-proposal.md`
 **Template:** `templates/technical-03-technical-proposal.md` (output MUST follow this structure)
 
@@ -9,7 +9,7 @@
 
 Before running this step:
 - If `plans/upsale/technical/03-technical-proposal.md` exists and is non-empty → SKIP and log `skip: step-4.3 (artifact exists)`.
-- If the input directory is missing OR empty → ABORT: report `BLOCKED: step-4.2-dedup directory missing or empty`.
+- If the input directory is missing OR empty → ABORT: report `BLOCKED: step-4.2 directory missing or empty`.
 
 ## Goal
 
@@ -17,7 +17,7 @@ Every high-or-medium-value improvement reaches the customer; aspect grouping pre
 
 ## Input loading rule
 
-- Read EVERY `*.md` in `plans/upsale/technical/021-deduped-improvement/` once at the start; treat the union of entries across all deduped aspect files as the candidate pool. Aspect files (`01-architecture.md`, `02-code-quality.md`, …, `14-platform-parity.md`) each carry their own `**Use context:** …` marker on line 2 (all must agree) and contribute their entries via the standard Entry format. Do NOT re-read the upstream `02-improvement/` source, the repository, or the discovery snapshot — the deduped directory is the authoritative input for this step.
+- Read EVERY `*.md` in `plans/upsale/technical/02-improvement/` once at the start; treat the union of entries across all aspect files as the candidate pool. Aspect files (`01-architecture.md`, `02-code-quality.md`, …, `14-platform-parity.md`) each carry their own `**Use context:** …` marker on line 2 (all must agree) and contribute their entries via the standard Entry format. Do NOT re-read the repository or the discovery snapshot — the improvement directory is the authoritative input for this step.
 - **First capture the `**Use context:** internal|hybrid|customer-facing` marker** from line 2 of any one aspect file. It MUST be echoed verbatim in this proposal's output (see Output format) and gates selection rule 1b below.
 
 ## Selection rules (apply in order)
@@ -29,8 +29,8 @@ Every high-or-medium-value improvement reaches the customer; aspect grouping pre
    - **`Use context: customer-facing`** — no additional discard. Full improvement list is eligible.
 2. Discard entries with generic evidence ("code quality is low", "tests are sparse") — evidence must cite a concrete artifact in the improvement file.
 3. **Value filter:** keep ALL items with `Value: high`. Also keep items with `Value: medium`. Discard every `Value: low` item.
-4. **Per-track cap (≤30 items):** let `total` = count of all surviving high+medium items across every aspect. If `total ≤ 30`, skip this rule. Otherwise, globally sort the surviving items by (a) `**Value:**` desc (`high` before `medium`), (b) `**Effort hint:**` asc (`low` < `medium` < `high`), (c) source aspect order (ascending `NN-` prefix of `021-deduped-improvement/<NN>-<aspect-id>.md`), (d) within-file source order (stable). Drop the bottom `(total - 30)` items. Emit one log line: `cap: technical <total>→30 (dropped <N>: <slug1>, <slug2>, …)` where slugs are the dropped items' kebab-slugged titles in drop order. This rule reuses the same sort Step 7 (`apply-validations.md`) applies within-aspect, so item selection stays consistent end-to-end.
-5. **Aspect grouping:** group surviving entries by `Category:` value. Each group becomes one `## <Aspect Title>` section in the output. Section order = ascending numeric prefix of source aspect file (e.g. `01-architecture.md` before `02-code-quality.md`). Aspect Title = the H1 (`# <Title>` line 1) of the matching `021-deduped-improvement/<NN>-<aspect-id>.md` source file, reused verbatim. Aspect-id slug MUST match `^[a-z0-9-]+$` — sanitise before emit. Within each aspect group, emit entries in source document order — the final within-aspect sort by Value/Effort runs at Step 7 (`references/apply-validations.md`) after dedup/reclassify/DROP, so sorting here would be clobbered by 5b's append-to-end placement and is intentionally omitted.
+4. **Per-track cap (≤30 items):** let `total` = count of all surviving high+medium items across every aspect. If `total ≤ 30`, skip this rule. Otherwise, globally sort the surviving items by (a) `**Value:**` desc (`high` before `medium`), (b) `**Effort hint:**` asc (`low` < `medium` < `high`), (c) source aspect order (ascending `NN-` prefix of `02-improvement/<NN>-<aspect-id>.md`), (d) within-file source order (stable). Drop the bottom `(total - 30)` items. Emit one log line: `cap: technical <total>→30 (dropped <N>: <slug1>, <slug2>, …)` where slugs are the dropped items' kebab-slugged titles in drop order. This rule reuses the same sort Step 7 (`apply-validations.md`) applies within-aspect, so item selection stays consistent end-to-end.
+5. **Aspect grouping:** group surviving entries by `Category:` value. Each group becomes one `## <Aspect Title>` section in the output. Section order = ascending numeric prefix of source aspect file (e.g. `01-architecture.md` before `02-code-quality.md`). Aspect Title = the H1 (`# <Title>` line 1) of the matching `02-improvement/<NN>-<aspect-id>.md` source file, reused verbatim. Aspect-id slug MUST match `^[a-z0-9-]+$` — sanitise before emit. Within each aspect group, emit entries in source document order — the final within-aspect sort by Value/Effort runs at Step 7 (`references/apply-validations.md`) after dedup/reclassify/DROP, so sorting here would be clobbered by 5b's append-to-end placement and is intentionally omitted.
 
 ## Output schema
 

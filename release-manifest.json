@@ -1,6 +1,6 @@
 {
-  "version": "2.0.0",
-  "generatedAt": "2026-05-13T02:52:30.142Z",
+  "version": "2.3.0",
+  "generatedAt": "2026-05-21T07:37:53.349Z",
   "files": [
     {
       "path": "agents/brainstormer.md",
@@ -34,9 +34,9 @@
     },
     {
       "path": "agents/doc-writer.md",
-      "checksum": "21e0f049f24398fb5969c7c35862f22f9b77c4100da7294d4703c5d79a9862b6",
-      "size": 5266,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "0affd17ce262cc08692350f0cbf58e05e9e3ffcbbce6c54070957863d5405ffe",
+      "size": 7043,
+      "lastModified": "2026-05-13T10:38:18+07:00"
     },
     {
       "path": "agents/git-manager.md",
@@ -46,9 +46,9 @@
     },
     {
       "path": "agents/implementer.md",
-      "checksum": "982aaa2c538024bbf98175898cb9c5b3c358baf283c1f998af371c7f5c9166e3",
-      "size": 4952,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "502b645c3be9ca4b2a6a614f4b39af25793be61f948c879db988c1baed4cbcd2",
+      "size": 4964,
+      "lastModified": "2026-05-13T11:04:53+07:00"
     },
     {
       "path": "agents/journal-writer.md",
@@ -88,9 +88,9 @@
     },
     {
       "path": "agents/tester.md",
-      "checksum": "4fc561d272a57dd0e70f425863818c715b270705e6a90e416f93a6d5ad445020",
-      "size": 10041,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "8690d1d142b64e90743dbd5e586ba4e11c385f5edc25cf563d392fb6a3c56b46",
+      "size": 10053,
+      "lastModified": "2026-05-13T11:04:53+07:00"
     },
     {
       "path": "agents/ui-ux-designer.md",
@@ -352,9 +352,9 @@
     },
     {
       "path": "hooks/__tests__/subagent-init.test.cjs",
-      "checksum": "4aa7e91c98a6f8b98ccd7b84b939f7a26e61053da07aa752f6b2704884f37f58",
-      "size": 22395,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "32594297b2e0464402387063a5cb3bdd87dea58f0f55ad1838095dd7721bb3ad",
+      "size": 31276,
+      "lastModified": "2026-05-13T13:10:54+07:00"
     },
     {
       "path": "hooks/__tests__/task-completed-handler.test.cjs",
@@ -418,9 +418,9 @@
     },
     {
       "path": "hooks/hooks.json",
-      "checksum": "a716ba1b09886ac9277a9f4b22a425f5731d81359d823b4c8ee8aabe51383d3e",
-      "size": 2118,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "a2bea7f393f20cda35332b513cd5ced2f70b33dbaa455abe985fdfe730a047a6",
+      "size": 1938,
+      "lastModified": "2026-05-15T17:28:51+07:00"
     },
     {
       "path": "hooks/iron-laws-guard.cjs",
@@ -802,9 +802,9 @@
     },
     {
       "path": "hooks/subagent-init.cjs",
-      "checksum": "df3b626443f484718aedef245341c27e1d5ff2f0115b7605a7d29c3bcdd8246b",
-      "size": 8240,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "0660dc5a9de1345726deb2d317096154ee89bcfd2e817c9eead65defeaa584bf",
+      "size": 13103,
+      "lastModified": "2026-05-13T13:10:54+07:00"
     },
     {
       "path": "hooks/takumi-after-plan-reminder.cjs",
@@ -922,9 +922,9 @@
     },
     {
       "path": "metadata.json",
-      "checksum": "e19c0fb903f551b78980f7672fe9d396329d0f39a306480ea1521c93b509db87",
-      "size": 4312,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "95aa2d65c34167446a9af56213a09c63e447186fa50be3af77548214eff092cd",
+      "size": 6374,
+      "lastModified": "2026-05-21T07:37:04Z"
     },
     {
       "path": "output-styles/coding-level-0-eli5.md",
@@ -1018,9 +1018,9 @@
     },
     {
       "path": "settings.json",
-      "checksum": "09c5ce6072bae992833f729eb9803dc5a4a1ef76fff5917e476846d45ed71fcb",
-      "size": 5366,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "cd8feed563ea593ead1702e23032570b6cc3a42c73bd9c8230f5a16cb3e8b6cb",
+      "size": 4846,
+      "lastModified": "2026-05-15T17:28:51+07:00"
     },
     {
       "path": "skills/INSTALLATION.md",
@@ -1039,6 +1039,12 @@
       "checksum": "a8ff7a84dee9dfb42ab448de281784387ceafdf63881b7c070ee2de7f6ed865c",
       "size": 46162,
       "lastModified": "2026-05-13T09:44:56+07:00"
+    },
+    {
+      "path": "skills/_shared/docs-canonical-mapping.md",
+      "checksum": "3d5b3bbb8614d51338563e9e77d92eadba1549e3d6f6a38ba13b4b64d7a983d6",
+      "size": 6085,
+      "lastModified": "2026-05-13T14:05:13+07:00"
     },
     {
       "path": "skills/_shared/lib/plan-table-parser.cjs",
@@ -1087,6 +1093,36 @@
       "checksum": "c05b8a9c739e79a969a76ebdc494d4931954b981fa729ac1862b0373f796074a",
       "size": 3728,
       "lastModified": "2026-05-13T09:44:56+07:00"
+    },
+    {
+      "path": "skills/audio-transcribe/SKILL.md",
+      "checksum": "3fa45814b9fd11a97c27c522937f3f20e17dcbadc9ca3823ea340298dba5f028",
+      "size": 4363,
+      "lastModified": "2026-05-21T13:25:29+07:00"
+    },
+    {
+      "path": "skills/audio-transcribe/references/full-pipeline.md",
+      "checksum": "6149e1671554cc77a2cd4b0ffbfcbb46c85c76e9abb970a8bab11d8af6c09de4",
+      "size": 6311,
+      "lastModified": "2026-05-21T13:25:29+07:00"
+    },
+    {
+      "path": "skills/audio-transcribe/references/revision-only.md",
+      "checksum": "a7eff4ab9204dc7b646270311caefb9b8cfd0f63fbebcf5ae7bb2c57cf41013b",
+      "size": 2232,
+      "lastModified": "2026-05-21T13:25:29+07:00"
+    },
+    {
+      "path": "skills/audio-transcribe/references/templates/soniox-context.json",
+      "checksum": "968344dc6d785b7995acfa8cfbc5509188c225a0f3211fc6457e120273780234",
+      "size": 853,
+      "lastModified": "2026-05-21T13:25:29+07:00"
+    },
+    {
+      "path": "skills/audio-transcribe/scripts/requirements.txt",
+      "checksum": "b3adb5e5b9ebb456e06d48ca6098b98240adbdf8778a51e18e58fddc2d00a047",
+      "size": 553,
+      "lastModified": "2026-05-21T13:25:29+07:00"
     },
     {
       "path": "skills/audit-security/SKILL.md",
@@ -1591,6 +1627,120 @@
       "checksum": "d31252fe5cf3fe7ed89ded47e8f0b76ac945a84cec2c7ae77c964b4e2c7934a1",
       "size": 13231,
       "lastModified": "2026-05-13T09:44:56+07:00"
+    },
+    {
+      "path": "skills/clio-artifact/SKILL.md",
+      "checksum": "75932268b9a7d4b4d756b83ca0f00e43b0f30887ebb0c095e686fb8cb34a9f9b",
+      "size": 7703,
+      "lastModified": "2026-05-18T13:34:11+07:00"
+    },
+    {
+      "path": "skills/clio-artifact/data/mcp-config-snippet.json",
+      "checksum": "f1e3368a87a7fe0c1aebf38eeb67cc32e85c71bd1a9da6453b4239035b10ad29",
+      "size": 183,
+      "lastModified": "2026-05-18T13:34:11+07:00"
+    },
+    {
+      "path": "skills/clio-artifact/references/generate-content-approach.md",
+      "checksum": "ba51d071c88111b63973ed644400c71d7a19b1254a8d0330cfad75bff8cccf4c",
+      "size": 10358,
+      "lastModified": "2026-05-18T13:34:11+07:00"
+    },
+    {
+      "path": "skills/clio-artifact/references/generate-content-benefits.md",
+      "checksum": "7d0ee3a09a929f2b044e8978662c26c30e85fd25b04b4f8c234ac9b6563a1199",
+      "size": 8419,
+      "lastModified": "2026-05-18T13:34:11+07:00"
+    },
+    {
+      "path": "skills/clio-artifact/references/generate-content-flow.md",
+      "checksum": "91af6bd766f2dbc9c3c5e9b615c62e7fcc49f4f03866d0839badf2516bd5b2e4",
+      "size": 15585,
+      "lastModified": "2026-05-18T13:34:11+07:00"
+    },
+    {
+      "path": "skills/clio-artifact/references/generate-content-overview.md",
+      "checksum": "1b9de911a801bc73a075d2f4ba6a2456621bab87278d50b4d07bd5555124d2cb",
+      "size": 19141,
+      "lastModified": "2026-05-20T13:43:14+07:00"
+    },
+    {
+      "path": "skills/clio-artifact/references/generate-content-technical.md",
+      "checksum": "545bdf526fcfbd47c072f9c7fe128ce1f1099037c26c6297b82010f8910309ba",
+      "size": 38723,
+      "lastModified": "2026-05-18T13:34:11+07:00"
+    },
+    {
+      "path": "skills/clio-artifact/references/generate-pptx.md",
+      "checksum": "8cd2fa1b398a564f5a8d30e64485c6795567bb8fbd43dca4824d681cf704bef1",
+      "size": 2509,
+      "lastModified": "2026-05-18T13:34:11+07:00"
+    },
+    {
+      "path": "skills/clio-artifact/scripts/generate_pptx.py",
+      "checksum": "276459e6614d168a008d807c3d7eaedc26059f3c19abf359947ebc05ad4c0088",
+      "size": 6991,
+      "lastModified": "2026-05-18T13:34:11+07:00"
+    },
+    {
+      "path": "skills/clio-artifact/scripts/lib/__init__.py",
+      "checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0,
+      "lastModified": "2026-05-18T13:34:11+07:00"
+    },
+    {
+      "path": "skills/clio-artifact/scripts/lib/generator.py",
+      "checksum": "f903ad4b29b87e73059b58281af86132aaa9f26416210c4419091bfe376ab886",
+      "size": 4141,
+      "lastModified": "2026-05-18T13:34:11+07:00"
+    },
+    {
+      "path": "skills/clio-artifact/scripts/lib/parser.py",
+      "checksum": "77a16a9223bd3d556cbd9e83e3902eb6de4a9a600055c82307599a82f996cc46",
+      "size": 10309,
+      "lastModified": "2026-05-18T13:34:11+07:00"
+    },
+    {
+      "path": "skills/clio-artifact/scripts/lib/renderer.py",
+      "checksum": "7895321df153343846522932f827676dff78df15356d0bf825ee1b3e7c6dfe97",
+      "size": 43557,
+      "lastModified": "2026-05-18T13:34:11+07:00"
+    },
+    {
+      "path": "skills/clio-artifact/scripts/lib/schemas.py",
+      "checksum": "bf44935d28b201f0fc61c8d23f24fe8f831e761a23b552f27798791278a69d18",
+      "size": 1447,
+      "lastModified": "2026-05-18T13:34:11+07:00"
+    },
+    {
+      "path": "skills/clio-artifact/scripts/lib/templates/__init__.py",
+      "checksum": "6c32a6d999d0e081dba3394b2bdb9bf393441a1cf3604f5810f4c9b351f6b1f6",
+      "size": 85,
+      "lastModified": "2026-05-18T13:34:11+07:00"
+    },
+    {
+      "path": "skills/clio-artifact/scripts/lib/templates/base.py",
+      "checksum": "0e3bcc5406b7c1d2e3a582a7bb9f47e997df3465a476c5e130ab2f52979f4176",
+      "size": 3121,
+      "lastModified": "2026-05-18T13:34:11+07:00"
+    },
+    {
+      "path": "skills/clio-artifact/scripts/lib/templates/svn.py",
+      "checksum": "c824a0eabce4ba54190bf0fc6797ede8598931a34e7854180a1d09a15c5daac3",
+      "size": 72078,
+      "lastModified": "2026-05-18T13:34:11+07:00"
+    },
+    {
+      "path": "skills/clio-artifact/scripts/requirements.txt",
+      "checksum": "234aae491813ec88e4be8fca10aa6f53081e918d42f8c4b425d0233788b796aa",
+      "size": 46,
+      "lastModified": "2026-05-18T13:34:11+07:00"
+    },
+    {
+      "path": "skills/clio-artifact/templates/[SVN] Proposal Menu.pptx",
+      "checksum": "1d116a77fe55fc5d84ac6e560cf6e0761a4774900b80fb060cd25d38c2c6cd4e",
+      "size": 11849150,
+      "lastModified": "2026-05-20T09:17:35+07:00"
     },
     {
       "path": "skills/common/README.md",
@@ -3898,27 +4048,33 @@
     },
     {
       "path": "skills/generate-ui-specs/SKILL.md",
-      "checksum": "8196ed1344c6a53b1c49feb6bbf18f0ad841e100540719a6873d42b497ffb0a2",
-      "size": 4309,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "9892c2150bba2cbb7f0bb8401b3ae8b012a624b17e9ee25cb99870d7441a32fc",
+      "size": 5789,
+      "lastModified": "2026-05-20T02:33:47Z"
     },
     {
       "path": "skills/generate-ui-specs/references/common-rules.md",
-      "checksum": "d094e835d529ccac2b5f4071f7702288524b12c41243ce4c7cf16ae54594b99b",
-      "size": 4428,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "13878c3eb068df8212d8ee1a0c4735bc537f65b108e24cc5b15164302c9062cf",
+      "size": 5632,
+      "lastModified": "2026-05-20T02:33:47Z"
     },
     {
       "path": "skills/generate-ui-specs/references/create-mode.md",
-      "checksum": "0120189e30b56a0f3183bdbc29d22abd2c1f612e12d94eadac87c81ef957cd70",
-      "size": 8617,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "ebbcd59f026929a48d90ef384652422aa81a410121f96455e1c0450b7b2c74e8",
+      "size": 10285,
+      "lastModified": "2026-05-20T02:33:47Z"
     },
     {
       "path": "skills/generate-ui-specs/references/output-contract.md",
-      "checksum": "3f52c9109623c21a00e75631b5e6f09316ea909345edaf37ffc4f7a63ce554a2",
-      "size": 1894,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "e5cf06ea0c00a66f8976100296ee4f5a0cadca56042e93d57a9bdafa8fb6cfb1",
+      "size": 2942,
+      "lastModified": "2026-05-20T02:33:47Z"
+    },
+    {
+      "path": "skills/generate-ui-specs/scripts/annotate-image-bboxes.py",
+      "checksum": "f95b8f4923223dd0c73a592dadbea2ffddbf253d665cc59ebacc8f17c73d569e",
+      "size": 6959,
+      "lastModified": "2026-05-20T02:33:47Z"
     },
     {
       "path": "skills/git/SKILL.md",
@@ -4090,15 +4246,15 @@
     },
     {
       "path": "skills/manage-docs/SKILL.md",
-      "checksum": "d7d2f1c35d9af34adce801a99ee3dc25a6e302dbc796c5b94b4ec96d3205b806",
-      "size": 2291,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "28cb0b6090bb6401980bdf0a1454a941bfdb4df65ae41525b090eabcfc36a99e",
+      "size": 2807,
+      "lastModified": "2026-05-13T14:05:13+07:00"
     },
     {
       "path": "skills/manage-docs/references/init-workflow.md",
-      "checksum": "dd99cea7768f2ea8fb896d0634f7e1c35bd7bade4ae4953db2cbb5ca7b622b36",
-      "size": 1677,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "547752a51ba1e31dc58277ff8fa337075e4d5a56f476ce8467a31f4ac497c66e",
+      "size": 2030,
+      "lastModified": "2026-05-13T10:38:18+07:00"
     },
     {
       "path": "skills/manage-docs/references/summarize-workflow.md",
@@ -4108,9 +4264,9 @@
     },
     {
       "path": "skills/manage-docs/references/update-workflow.md",
-      "checksum": "083e91543b08d0a956436655887eac18903b18674ac73da0a9a20b39b10f6440",
-      "size": 2463,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "8e839a5b2c425af057e04ee33693ce6984cf5543aae232807d2f64df50ae1e6c",
+      "size": 5373,
+      "lastModified": "2026-05-13T14:05:13+07:00"
     },
     {
       "path": "skills/manage-mcp/README.md",
@@ -4684,15 +4840,21 @@
     },
     {
       "path": "skills/rebuild-spec/SKILL.md",
-      "checksum": "79822ac6f57e33ca0090b94783af174d6662eb1cb5e008a10e570f20cfecd3db",
-      "size": 11852,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "8ea466512facbe43194fff129272f09da54efa6bd1fa4afa79b2093eccb8196f",
+      "size": 18554,
+      "lastModified": "2026-05-20T12:55:09+07:00"
     },
     {
       "path": "skills/rebuild-spec/references/bl-source-patterns.md",
       "checksum": "b770d71560eb8f864001f22d40e418578230412fef84d092bfe2b783a86a1e3f",
       "size": 8689,
       "lastModified": "2026-05-13T09:44:56+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/references/canonical-fcode-schema.md",
+      "checksum": "8ddb1f7e81c8c43269058e1a2cfe462f3d1accb887d2361dfe5465cbce77b77e",
+      "size": 5987,
+      "lastModified": "2026-05-18T15:16:07+07:00"
     },
     {
       "path": "skills/rebuild-spec/references/code-formats.md",
@@ -4708,15 +4870,21 @@
     },
     {
       "path": "skills/rebuild-spec/references/feature-spec-researcher-contract.md",
-      "checksum": "df3f9e2ec6905b5ec3f7cc1550ef67ed606542c88d2cdca0f1caee12e17096c4",
-      "size": 5722,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "995bdbce334479520963da3fe5106186ba2f2a07345b2d4ff103f1263b9b2a74",
+      "size": 7042,
+      "lastModified": "2026-05-20T11:18:33+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/references/incremental-state-schema.md",
+      "checksum": "d7881ba0739fff2e50ef6de5834cfd3cc93baf4bbd85ff19186ffdb07aac02e3",
+      "size": 4813,
+      "lastModified": "2026-05-20T12:55:09+07:00"
     },
     {
       "path": "skills/rebuild-spec/references/pipeline.md",
-      "checksum": "8c6ec5494250c32e5d0b89d325df4b44ec59f92a23a5a6c6a07d1e77fe04d2b8",
-      "size": 26417,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "02c1582132cf3ce4c4b189b3d1cb367c6e38145a490bb419e82c56ac3dc1b8e0",
+      "size": 54680,
+      "lastModified": "2026-05-20T13:43:03+07:00"
     },
     {
       "path": "skills/rebuild-spec/references/user-stories-ipe-protocol.md",
@@ -4726,9 +4894,447 @@
     },
     {
       "path": "skills/rebuild-spec/references/verification-checklist.md",
-      "checksum": "404a8f05c3cce588184881c2c61f06c12e0154bd5141dbbfb9275b941e8ffd94",
-      "size": 32252,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "98e694d7d0647b45aa9b2ae2e9398532311a8376f715aa67c4431e952056b256",
+      "size": 37257,
+      "lastModified": "2026-05-20T11:18:33+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/__init__.py",
+      "checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/_review_report_lib.py",
+      "checksum": "5fa87907dd2c9009901f305cd734338dfef2c50ac1ad0422b3fa5a4d28c8f629",
+      "size": 3008,
+      "lastModified": "2026-05-20T13:43:03+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/_slug_lib.py",
+      "checksum": "9825a1f34bbe41770c4ce890f03c36ce5b9d061317def67b257e805e0d013562",
+      "size": 3182,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/_spec_block_lib.py",
+      "checksum": "4bef0e4bc6f6de16c0d3797f021a61409b505e86376fa3dbe367d58749ffb5f4",
+      "size": 2153,
+      "lastModified": "2026-05-20T11:18:33+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/_spec_parse.py",
+      "checksum": "ada3e91fe56d4146472b03fbd2e1556951295d37b13ce0b2d17de4897a17bfea",
+      "size": 2046,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/_summary_lib.py",
+      "checksum": "38b2fef71fb77a264fddca66184f23e94f1d416884ae11a191566885bcc3e7ac",
+      "size": 3570,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/build_session_context.py",
+      "checksum": "387d9ab6a3e07ff1220b4d93238d4cb5250c426830d40a146127c5602ca52648",
+      "size": 5786,
+      "lastModified": "2026-05-20T11:18:33+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/build_source_to_fcode.py",
+      "checksum": "125c69de28b65ac0959f447df965b951169179c070f6a9178f5a1ce7d1a5e548",
+      "size": 6141,
+      "lastModified": "2026-05-20T12:55:09+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/count_screen_files.py",
+      "checksum": "6fcf9e1e0c3f58b74a46f5e60c2cc4747ecce75255af97ba42416421ac7d7f08",
+      "size": 1294,
+      "lastModified": "2026-05-20T11:18:33+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/extract_scout_section.py",
+      "checksum": "f1839ec86761cd0d97ad5eadad3478ec5621234d61ce7373f182859ce7d214ef",
+      "size": 3130,
+      "lastModified": "2026-05-20T13:43:03+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/incremental_planner.py",
+      "checksum": "315648083506da7d4d887f3197bbe381cee02d7dd926964ad4105b49479772e6",
+      "size": 23667,
+      "lastModified": "2026-05-20T13:43:03+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/promote_drafts.py",
+      "checksum": "0205daa50e610457b3f2471021b6dc83598dec0d0017683be49e1209dbc325aa",
+      "size": 10451,
+      "lastModified": "2026-05-20T13:43:03+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/structural_fixer.py",
+      "checksum": "be81b90c5847938aa19e09c19c7f63f05ea6a31bbe9d4d22d858b1293332169d",
+      "size": 9037,
+      "lastModified": "2026-05-20T13:43:03+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/__init__.py",
+      "checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/conftest.py",
+      "checksum": "5a724c7a2d7d7f74b40a2753bed3d35f6d2296abebdfc4e0c8cb59f1baf60ff0",
+      "size": 550,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/cited-source.py",
+      "checksum": "a24549260fa4c1834095b848f1c73c560b1f872211b2f410bb0601ca5d6fcb8e",
+      "size": 1126,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/count_screens/scout.0_screens.md",
+      "checksum": "7b27fc6b8f7124aaa897f9916c07a741fd30dd09d9333eb6cfae578f4642564e",
+      "size": 160,
+      "lastModified": "2026-05-20T11:18:33+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/count_screens/scout.10_screens.md",
+      "checksum": "770887c7f5d7e5852c501043b135f349f61dfa2ebd4af0ab0be7fe6f11c31b8c",
+      "size": 465,
+      "lastModified": "2026-05-20T11:18:33+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/extract_scout_section/scout.multi-stack.md",
+      "checksum": "fd2433f3224f97fda2af217e9e95c082e5a3730b0e358b8232c6269c4ba48564",
+      "size": 659,
+      "lastModified": "2026-05-20T11:18:33+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/incremental/synthetic-reverse-index.json",
+      "checksum": "8b08cf5c3845efd5ba96b199ffc12d08da2f4e26bde79a031039acebafdf46a7",
+      "size": 222,
+      "lastModified": "2026-05-20T10:01:15+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/incremental/synthetic-scout-report.md",
+      "checksum": "7583214735d9846b89435e3d59a2ab660c81f8074b7b509cf13d0be136604e41",
+      "size": 528,
+      "lastModified": "2026-05-20T10:01:15+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/incremental/synthetic-specs/F001_Auth/spec.md",
+      "checksum": "01925f4f5dbeb7ca6b62ba61659ff59183ae08146e75281569d84e2e26fae74a",
+      "size": 567,
+      "lastModified": "2026-05-20T10:01:15+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/incremental/synthetic-state.json",
+      "checksum": "559483e855568ac69c58a504b59523f958c7edb56f7db7066e984add1bc46e9b",
+      "size": 511,
+      "lastModified": "2026-05-20T10:01:15+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/plan-good/artifacts/_canonical-fcodes.json",
+      "checksum": "3dae7bf5e4b7cbd63126f60c72f5be0cf9ebbe17e9bc874315db3be7c73a407d",
+      "size": 804,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/plan-good/artifacts/feature-list.md",
+      "checksum": "458d830b0ebfcd381baa1ec9d0ec1e21e04718759cef817413edb5d8bc57f3de",
+      "size": 602,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/plan-good/artifacts/features/F001_Auth/spec.md",
+      "checksum": "8757e93343eae69a4f12b28dc66d8b8129096fbfe0d01518cb2d6f7400f361cb",
+      "size": 4185,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/plan-good/artifacts/features/F002_Search/spec.md",
+      "checksum": "d0c102ad8bf7b57491d1e66c37973ecf75902d3e0efcce540d49314a62239336",
+      "size": 4100,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/plan-legacy-no-canonical/artifacts/feature-list.md",
+      "checksum": "763720e24a9374c766de88588b539346c2d2d4d64513aa33a46657ff8bebacce",
+      "size": 395,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/plan-legacy-no-canonical/artifacts/features/F001_Auth/spec.md",
+      "checksum": "3ec7ab58ac5bd537d95bf7cbd0e681a4e072cc033d974ff20bb53ebd1329777d",
+      "size": 3229,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/plan-missing-folder/artifacts/_canonical-fcodes.json",
+      "checksum": "0dcc3612dca8f3e9149029d4401d961ce0035754740cdaf351aeb582318de3c4",
+      "size": 578,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/plan-missing-folder/artifacts/feature-list.md",
+      "checksum": "d7b1964c557bb02a945478ce0bf210b47cd910f61ad6d9a1f32fc4183adf2644",
+      "size": 506,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/plan-missing-folder/artifacts/features/F001_Auth/spec.md",
+      "checksum": "3ec7ab58ac5bd537d95bf7cbd0e681a4e072cc033d974ff20bb53ebd1329777d",
+      "size": 3229,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/plan-orphan-folder/artifacts/_canonical-fcodes.json",
+      "checksum": "81943ec1ab8a3e7718874344b85c110e76891356aad6df70b837becbfc8d56c2",
+      "size": 340,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/plan-orphan-folder/artifacts/feature-list.md",
+      "checksum": "ca92cc0816e29f9f03657bbcde56d770d7ebb24e309b97ffbe11dfe9e558a490",
+      "size": 389,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/plan-orphan-folder/artifacts/features/F001_Auth/spec.md",
+      "checksum": "3ec7ab58ac5bd537d95bf7cbd0e681a4e072cc033d974ff20bb53ebd1329777d",
+      "size": 3229,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/plan-orphan-folder/artifacts/features/F999_Orphan/spec.md",
+      "checksum": "64da905b984829e0d45a001dc1222fd40d0fee74741214aee746eb309b436ec7",
+      "size": 2903,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/promote_drafts/plan-dir/artifacts/feature-list.md",
+      "checksum": "e2af26b86dd6ba8b32c124782cdf925969c8eb483c0e541cf7f0215176cc2c5e",
+      "size": 170,
+      "lastModified": "2026-05-20T11:18:33+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/promote_drafts/plan-dir/artifacts/features/F001_Auth/spec.md",
+      "checksum": "8edc699e52d337f2ba6caf57a50816ca9ee2e3b845435b94e037aae7849da84a",
+      "size": 1757,
+      "lastModified": "2026-05-20T11:18:33+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/promote_drafts/plan-dir/artifacts/features/F002_Profile/spec.md",
+      "checksum": "49884704a645b99947e34e05da327d8c83a1ae02069029a98c0ff1128bb91e25",
+      "size": 1905,
+      "lastModified": "2026-05-20T11:18:33+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/promote_drafts/plan-dir/artifacts/route-list.md",
+      "checksum": "356884ffc799f3bcbf53bcc214e19d5a17b39445e368ab29ccadbc35b1d9b53c",
+      "size": 282,
+      "lastModified": "2026-05-20T11:18:33+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/session_context/scout-report.minimal.md",
+      "checksum": "7cdf54e0c87ae1643eddaaf94d5d8e6484fa721f7ed316c4241fa4f33b6ae5c3",
+      "size": 113,
+      "lastModified": "2026-05-20T11:18:33+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/specs/spec-bad-citation.md",
+      "checksum": "b6b79567e6c54e21592267c8bc7c283d1758009537a646e18d17a541b2856ba4",
+      "size": 3090,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/specs/spec-deprecated-heading.md",
+      "checksum": "d9ddfff8316c21a93fa9b7d42168dacc140cdd9ec33b25592be876efe632f433",
+      "size": 3230,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/specs/spec-missing-h2.md",
+      "checksum": "f9a21e9e6aa1e9df71477e3a1caf9bca8a0cd37159cc4084acde80d070915071",
+      "size": 2905,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/specs/spec-pass.md",
+      "checksum": "668e3345c208a63b118130ecb62ed45bd6ca0383306dd55e86d12e7bf39d92f3",
+      "size": 3937,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/specs/spec-placeholder-evasion.md",
+      "checksum": "ab30aa0c656b63e033ef8a0feaf372b33629eb8cdacc0a9f3d534ea45cb55793",
+      "size": 1770,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/specs/spec-placeholder.md",
+      "checksum": "1db2cedf4cf5662215097fd7a7e95de0716d0db1fd95e031f9ef9a8d620bd156",
+      "size": 3094,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/specs/spec-sm-fence-far.md",
+      "checksum": "99ef965afe210dbda2ef2920f2b31b0c81f7f6ae1069eee420ce3991914a1ad5",
+      "size": 5738,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/specs/spec-sm-no-fence.md",
+      "checksum": "13511deef1ad778f9a84b1e2febbc218762a7aa27e320dbf66e1523b7d646c09",
+      "size": 1533,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/structural_fixer/review-report.25-linked-fr-critical.md",
+      "checksum": "c4b5d016c709ed5da49c252fbc3c2bea6241c050ee2ee43346bbe440b355d0c4",
+      "size": 1868,
+      "lastModified": "2026-05-20T11:18:33+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/structural_fixer/spec.with-existing-linked-fr.md",
+      "checksum": "c06d77f4a812394a7ad9d0d25a4704f1a1c9c215a90864789414f708a039e376",
+      "size": 1960,
+      "lastModified": "2026-05-20T11:18:33+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/structural_fixer/spec.with-missing-linked-fr.md",
+      "checksum": "3248b17062be842d6683a6fd5a75bd7b97ed32772496352865badb416ebb980f",
+      "size": 2412,
+      "lastModified": "2026-05-20T11:18:33+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/fixtures/structural_fixer/spec.with-three-missing-linked-fr.md",
+      "checksum": "8c21962811610ba51fb496ac8ce273457de233c3461c3393799ffbb363c206d4",
+      "size": 435,
+      "lastModified": "2026-05-20T13:43:03+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/test_bootstrap_flow.py",
+      "checksum": "e685ed8ba9db576d7ff421c71d2101af6f4782ca1f150067cb736e1968e8dc99",
+      "size": 5595,
+      "lastModified": "2026-05-20T12:55:09+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/test_build_session_context.py",
+      "checksum": "ec659d9e5c28dfff8b7786666805b0c1a54c83ec6ed6f65a5a971a038cdf3ae6",
+      "size": 7013,
+      "lastModified": "2026-05-20T11:18:33+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/test_build_source_to_fcode.py",
+      "checksum": "44e93128c432dbf899494530e25faae292d67337112b7789f3eb90bfe03f0783",
+      "size": 3476,
+      "lastModified": "2026-05-20T10:01:15+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/test_count_screen_files.py",
+      "checksum": "7e49e5edf1d2edc1d6aec1c55c660877a5369db97578433f884efd991fe3263a",
+      "size": 2277,
+      "lastModified": "2026-05-20T11:18:33+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/test_extract_scout_section.py",
+      "checksum": "0886388d994d1043cea9729b291818c6a5e8f070d8581c757f5b8df68d7bb69e",
+      "size": 6074,
+      "lastModified": "2026-05-20T13:43:03+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/test_feature_spec_template_linked_fr.py",
+      "checksum": "fb6294dbd448db83e669e86e9861c3413c5fb2bbf679db10590172687a967336",
+      "size": 3182,
+      "lastModified": "2026-05-20T11:18:33+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/test_incremental_planner.py",
+      "checksum": "7d82bfb1960d63aed2857029da860967a7ab5be530410aa8c4c11c457104b471",
+      "size": 18324,
+      "lastModified": "2026-05-20T13:43:03+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/test_promote_drafts.py",
+      "checksum": "80cafde678c9a7031db231d903f695d378540a26b6b7967a4d385450625f60b9",
+      "size": 8829,
+      "lastModified": "2026-05-20T13:43:03+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/test_review_report_template.py",
+      "checksum": "31d4a9449d08cbd2bc17ecbccaf6e409b3c90c094c3b80f5458cfea434d37fdc",
+      "size": 4234,
+      "lastModified": "2026-05-20T13:43:03+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/test_slug_lib.py",
+      "checksum": "b700ce7505bb7c7b1bd3a29c68388792ac6819e07973364a6c83e9038c2964a8",
+      "size": 5691,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/test_spec_block_lib.py",
+      "checksum": "082aeb70fbc237987d11d67719f69f50b270c818cdf6aabf9cbe023b41a7c8f9",
+      "size": 4319,
+      "lastModified": "2026-05-20T11:18:33+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/test_structural_fixer.py",
+      "checksum": "6dcd7852815879314cc2097c3603ecb448514dbc664f3807f295b5938fc94fb6",
+      "size": 11422,
+      "lastModified": "2026-05-20T13:43:03+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/test_summary_lib.py",
+      "checksum": "75b15fb1fcbd439e365496282b05a418e2602114e508dc76ae618bd10b79af68",
+      "size": 10403,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/test_validate_feature_existence.py",
+      "checksum": "f5ac2547a65ee045b1ec3223a53a47771a3f6529cac8e41d49964c4bf4400cec",
+      "size": 6074,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/test_validate_feature_spec.py",
+      "checksum": "aa67b63fde15ab0d79b018aa126b6626aac086c577bf0666f5679fdb58f7c1ad",
+      "size": 8030,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/test_validate_source_citations.py",
+      "checksum": "daaad66b0aa8968ae5d9136f0c186dfbc64fef3f561a5527871b92de4c3982d5",
+      "size": 8128,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/tests/test_wave_minus_1_hydrate.py",
+      "checksum": "be046a4b3afee3f26aa0781b001ea5a17dd7dbd00b905026834466ca40030f3f",
+      "size": 6803,
+      "lastModified": "2026-05-20T10:01:15+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/validate_feature_existence.py",
+      "checksum": "441d46edcc67e31b72e126bbae2e79c4b4270652c8fdd522f2264822293a8287",
+      "size": 6003,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/validate_feature_spec.py",
+      "checksum": "15a4d9605078478ce9841de3aba3eef2e6b99fa779a594b0b787fd269fb5b103",
+      "size": 9022,
+      "lastModified": "2026-05-18T15:16:07+07:00"
+    },
+    {
+      "path": "skills/rebuild-spec/scripts/validate_source_citations.py",
+      "checksum": "b106a0a452593fac3529e178c4dba1e16f8a7928452eefc34e5f2f4e37a6b5da",
+      "size": 5972,
+      "lastModified": "2026-05-18T15:16:07+07:00"
     },
     {
       "path": "skills/rebuild-spec/templates/background-logic-template.md",
@@ -4744,15 +5350,15 @@
     },
     {
       "path": "skills/rebuild-spec/templates/feature-list-template.md",
-      "checksum": "03826c6e6229b550601b9b2072de2140d8dd22829cd98165456def29c1233a6b",
-      "size": 5866,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "4c077072f3a65bac8d384ce4d437ac1e943aaafb09d683c0f4237cab692e617c",
+      "size": 6160,
+      "lastModified": "2026-05-18T15:16:07+07:00"
     },
     {
       "path": "skills/rebuild-spec/templates/feature-spec-template.md",
-      "checksum": "f3efa934abe7c15c37bc7c6e427b64ff539e97f9fa6065778bc58c08aec13864",
-      "size": 8894,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "4f293cdbf4b05a3e9ba759863e70f33cad369a2552bbadb2b439afdcab874255",
+      "size": 8982,
+      "lastModified": "2026-05-20T11:18:33+07:00"
     },
     {
       "path": "skills/rebuild-spec/templates/permissions-template.md",
@@ -4762,9 +5368,9 @@
     },
     {
       "path": "skills/rebuild-spec/templates/review-report-template.md",
-      "checksum": "02ae2446445370c48e0a0cfb8d5d40f2cca1cda73c3ad010549a0bed8c558a5e",
-      "size": 1671,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "83fe7a33f855c7f8375ed05a4cd43cddc8fe901332dc82aaa248444aa3e44771",
+      "size": 2146,
+      "lastModified": "2026-05-20T11:18:33+07:00"
     },
     {
       "path": "skills/rebuild-spec/templates/route-list-template.md",
@@ -4792,9 +5398,9 @@
     },
     {
       "path": "skills/rebuild-spec/templates/system-overview-template.md",
-      "checksum": "54f6c38328aa8e50e60424bb616264876e8d33f6145d6f16f08d47901abb2f68",
-      "size": 1531,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "9af40dfd70001cc14d8e0a049bc321d0a27b766ed5d6861de7638f86d9692f02",
+      "size": 1926,
+      "lastModified": "2026-05-13T10:38:18+07:00"
     },
     {
       "path": "skills/rebuild-spec/templates/user-stories-template.md",
@@ -5152,9 +5758,9 @@
     },
     {
       "path": "skills/takumi/SKILL.md",
-      "checksum": "43d57d9a4193c88b0fa0e42b224a534786aafb914cf52ad98dc81b7c4d287db6",
-      "size": 7680,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "b0f16602e367c5f6cea23f53fdf502e15336e8f19289f09a823cc868683b4738",
+      "size": 9830,
+      "lastModified": "2026-05-14T08:45:38+07:00"
     },
     {
       "path": "skills/takumi/references/intent-detection.md",
@@ -5170,15 +5776,15 @@
     },
     {
       "path": "skills/takumi/references/subagent-patterns.md",
-      "checksum": "d31bc7291d16197093eebd3e2eee222665efd8d3cd487039fd4a4114212bb035",
-      "size": 2705,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "e55b2bd99df16844b8404834ea9286c72328b00f960b5e65ca06b2731a9e38b7",
+      "size": 7349,
+      "lastModified": "2026-05-13T10:38:18+07:00"
     },
     {
       "path": "skills/takumi/references/workflow-steps.md",
-      "checksum": "f9623170dc2c712e87dee46b46ef4a6021750c965b0608d2619b238ca95e5bf8",
-      "size": 10064,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "b855d239824e3e6496809456774fc3933b423423fc1e839e2899bca8f7b180a2",
+      "size": 14824,
+      "lastModified": "2026-05-14T08:45:38+07:00"
     },
     {
       "path": "skills/think-sequential/.env.example",
@@ -5272,9 +5878,9 @@
     },
     {
       "path": "skills/tkm-plan/SKILL.md",
-      "checksum": "7c97e47f77090d6448c265f7572bb9797f34af8ba4552dbb31a73aa1ec4dc460",
-      "size": 9242,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "93496310ae910f6ef26caf26857507ea9c786b099b4746a3f723a17f854f8748",
+      "size": 9250,
+      "lastModified": "2026-05-13T13:10:54+07:00"
     },
     {
       "path": "skills/tkm-plan/references/archive-workflow.md",
@@ -5284,21 +5890,21 @@
     },
     {
       "path": "skills/tkm-plan/references/codebase-understanding.md",
-      "checksum": "192643d8b3e6ed3d4a8b2dc8cf74dff554cfbff2bc50028bfcb092f582305ccb",
-      "size": 1994,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "786c2b0e0529bacc0024180231d1df90d6a6da840cf0e5974e779be179bc749c",
+      "size": 2626,
+      "lastModified": "2026-05-13T13:10:54+07:00"
     },
     {
       "path": "skills/tkm-plan/references/output-standards.md",
-      "checksum": "bcf2206ca70be531d28fafd18daac5bfbf752c41b04b95e92f58b6a03c287876",
-      "size": 4877,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "01f8f5d27e1455f27fffee7883fd049136da17f998bedd6755fddbc16c6b82f4",
+      "size": 4901,
+      "lastModified": "2026-05-13T13:10:54+07:00"
     },
     {
       "path": "skills/tkm-plan/references/plan-organization.md",
-      "checksum": "e8db58e95b069c484be4dd5ee262cb9469c9a345a9b671da8598d7deeaa0ccad",
-      "size": 4932,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "61d48bc12fc3ace256e278d52cba9965f86a6709dc3b011858b8fb44f0ed4434",
+      "size": 4940,
+      "lastModified": "2026-05-13T13:10:54+07:00"
     },
     {
       "path": "skills/tkm-plan/references/red-team-personas.md",
@@ -5356,75 +5962,75 @@
     },
     {
       "path": "skills/upsale/README.md",
-      "checksum": "b522217308851e26d449198cd9140ab83d664344db9bf483f84529e9d9e428df",
-      "size": 23712,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "1ec24e1536658b8444727a28697f2eb1c1686ba62254b20b5ef0a9cb8d66f4d4",
+      "size": 21936,
+      "lastModified": "2026-05-20T14:05:12+07:00"
     },
     {
       "path": "skills/upsale/SKILL.md",
-      "checksum": "95c436718cfef15ac5938721cc3ba22cb18eaa153fe73efb2c7d2b46b2c044c5",
-      "size": 18097,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "ee239f57603397cc4df9a75e7546e0730525b282aaf32f61f6cbec024baf6dca",
+      "size": 17469,
+      "lastModified": "2026-05-20T14:05:12+07:00"
     },
     {
       "path": "skills/upsale/references/apply-validations.md",
-      "checksum": "9777a1195c359ea91f4b3ac6f84a74ce62cc91b50c8b062cc3a96c010192e276",
-      "size": 12778,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "fc90341e16ea6ebcb1926e9434cf4cd792d5bde0a67407cb9aa9b2e7dbe5cb54",
+      "size": 13010,
+      "lastModified": "2026-05-20T12:20:18+07:00"
     },
     {
       "path": "skills/upsale/references/business/01-discovery/01-product-identity.md",
-      "checksum": "afd77966fbb9c4101f58f745d06311e340d7355b0b69da5bb0d9eb4cecc78044",
-      "size": 3206,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "70ff2b895900ae6063d744620b7809c2d16cf4fc65059ada0ad0c53b7745c1a2",
+      "size": 3341,
+      "lastModified": "2026-05-20T11:15:16+07:00"
     },
     {
       "path": "skills/upsale/references/business/01-discovery/02-target-users.md",
-      "checksum": "eba2ddfca770c2d80d27902481272e36302ea4f372f42a23c49a08862e0494b1",
-      "size": 1985,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "af443e0c60b649bc28de0e93c2fc24f65d9588686278b499eb2adab9b8d9a8b8",
+      "size": 2122,
+      "lastModified": "2026-05-20T11:15:16+07:00"
     },
     {
       "path": "skills/upsale/references/business/01-discovery/03-value-proposition.md",
-      "checksum": "b187dbf44c216da481091c4e9dbda194fcf1a0f35879a7b0a2508d6bde9a7c2a",
-      "size": 1936,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "6cd8726ccf35c2938d64ddd62a7efe98120a41c5836f1a4cef25fa1bd99ea40c",
+      "size": 2062,
+      "lastModified": "2026-05-20T11:15:16+07:00"
     },
     {
       "path": "skills/upsale/references/business/01-discovery/04-feature-inventory.md",
-      "checksum": "d25cddb548621f12fa94ad3bde3730ab39475d6e2997e21ad95377ed79196314",
-      "size": 2116,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "6478bec8d9853c2bec231bee634cd1d498c6bef7f9fd93d79fd72a4b7183b73b",
+      "size": 2244,
+      "lastModified": "2026-05-20T11:15:16+07:00"
     },
     {
       "path": "skills/upsale/references/business/01-discovery/05-user-journeys.md",
-      "checksum": "2f3d94d78b836ebd948b2c75e76970efbc369a7b95fd376f966894d67739266b",
-      "size": 1972,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "9b2b0cb717cbfdbdade1e8fe819b59fe63599d092eabefffcdd3f5211a77e027",
+      "size": 2100,
+      "lastModified": "2026-05-20T11:15:16+07:00"
     },
     {
       "path": "skills/upsale/references/business/01-discovery/06-monetization-model.md",
-      "checksum": "c1108d7cd9d3f33df603fc7cd56cf7ecd1e1ed3d049e6ccf0b391f89f358a899",
-      "size": 2446,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "6331a9ac9813836bf215d43db57437b9e738bea6d476ffa89634683ea7d0c992",
+      "size": 2594,
+      "lastModified": "2026-05-20T11:15:16+07:00"
     },
     {
       "path": "skills/upsale/references/business/01-discovery/07-success-metrics.md",
-      "checksum": "bb79bf628729e7775940622ccfc98565b8c3355499821617ad18d6cb715aae29",
-      "size": 1884,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "945dc5f6a3628d97a4e7cf15a910962b3a8ddc515217b0739bdfccf6a4593f7c",
+      "size": 2032,
+      "lastModified": "2026-05-20T11:15:16+07:00"
     },
     {
       "path": "skills/upsale/references/business/01-discovery/08-compliance-constraints.md",
-      "checksum": "0c7943a42a38ad96be63836cc1dbef648192bb92c5decd9431bfa3007cd6a716",
-      "size": 2007,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "9a924fc330d9593f58b8d0d51450fe708a83d4a464786793e55f291522267e95",
+      "size": 2152,
+      "lastModified": "2026-05-20T11:15:16+07:00"
     },
     {
       "path": "skills/upsale/references/business/01-discovery/09-known-gaps.md",
-      "checksum": "bb3c0ca6ea0db3b999db0a965ce13b63cbfddf0628c3fa77ccfbffa72cae8bdf",
-      "size": 2045,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "9a3f37e3a4f1da62a3b60db5a480c96f448d45679508d1cfbb86f34b21a904a3",
+      "size": 2177,
+      "lastModified": "2026-05-20T11:15:16+07:00"
     },
     {
       "path": "skills/upsale/references/business/01-discovery.md",
@@ -5475,28 +6081,94 @@
       "lastModified": "2026-05-13T09:44:56+07:00"
     },
     {
-      "path": "skills/upsale/references/business/03-improvement.md",
-      "checksum": "f9b56ea5593c14f174fb62db372de1c1971288a87d728690914185cb90fee56d",
-      "size": 19576,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "path": "skills/upsale/references/business/03-improvement/01-spec-goal-alignment.md",
+      "checksum": "4f79599f84e12f5c14b9d263c6cf227e4d7d39e2ce2f0f207ce60214de572c71",
+      "size": 757,
+      "lastModified": "2026-05-20T11:23:18+07:00"
     },
     {
-      "path": "skills/upsale/references/business/031-deduped-improvement.md",
-      "checksum": "eedd0d6964c2799592dafcda4da25e26ad85c3ff1aca33a822d5d2dc2d9fd4a1",
-      "size": 11853,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "path": "skills/upsale/references/business/03-improvement/02-feature-coverage.md",
+      "checksum": "fc52e0c972cce8ad97b6ee2522fa7f9006ffbcb6e14efde8a0fccc016fb86c84",
+      "size": 671,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/business/03-improvement/03-ux-gaps.md",
+      "checksum": "64ad1a15416ccaed72b7d656f6a05246914ab19970deaa9e76ba0f72930f0100",
+      "size": 625,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/business/03-improvement/04-conversion-retention.md",
+      "checksum": "897f529023ee81f668aaeb9c548cd129baae4da3657e61a6601ec0577c574253",
+      "size": 933,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/business/03-improvement/05-time-to-market.md",
+      "checksum": "aaeb27607974d20e65285dc3837d281a3061cbd76bab30a8e4c819427edac0e1",
+      "size": 1177,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/business/03-improvement/06-competitive-positioning.md",
+      "checksum": "3f1d2ae3a425bc3b98f722daf5c1e12b26215af8455fb621bc8848676ebce4ae",
+      "size": 1483,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/business/03-improvement/07-compliance.md",
+      "checksum": "85f1fb8e95b3ed07452f8defd705f11ae37ccea16d0c065dc355203abd5daec4",
+      "size": 674,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/business/03-improvement/08-growth-and-distribution.md",
+      "checksum": "fbb2310e3706e855cc97b4c965e770e0a23fd34e7ed9246ede860ed52754c710",
+      "size": 2183,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/business/03-improvement/09-pricing-monetization.md",
+      "checksum": "fa680d913e285ab286871c9e3424d30f8cd94cd77a6d573f630f388b17a17df6",
+      "size": 1090,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/business/03-improvement/10-analytics-instrumentation.md",
+      "checksum": "c770634dc48e0c88a7085af58e7597e95c0b0a465466a94005f07d57df3c6597",
+      "size": 1099,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/business/03-improvement/11-customer-support-readiness.md",
+      "checksum": "6147531f90608248b57c90264ab0952336bb3471a4b49e61b10d2942666f5d5b",
+      "size": 1299,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/business/03-improvement/12-new-features.md",
+      "checksum": "777065a374d070285b69655a6f6acbeafcb2f4d5befea94012eff706f3965b49",
+      "size": 1650,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/business/03-improvement.md",
+      "checksum": "3a54ce81b032ef6e93c2714c4591ea80999a449f3a67e6df7579381b06ddb327",
+      "size": 11650,
+      "lastModified": "2026-05-20T11:23:18+07:00"
     },
     {
       "path": "skills/upsale/references/business/04-business-proposal.md",
-      "checksum": "9415f5e5deab06420526b14d23d4cfcfd1d7b62f4af74e2b47faf0362eef8cd2",
-      "size": 7075,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "9ee5c1c2896919bc6198ea5da57cb9ec4f21473118fb8bbc2f5a7dc99d069c8b",
+      "size": 6835,
+      "lastModified": "2026-05-20T14:05:12+07:00"
     },
     {
       "path": "skills/upsale/references/combine-proposals.md",
-      "checksum": "54db0aa2bca54cb87198861d57bf7f3126df3463a5fbe24e8286e621152a5beb",
-      "size": 7977,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "c700035616d6312a561060c39cc2bfedab7bdf696ec826f9cdf80c0fd76794da",
+      "size": 7693,
+      "lastModified": "2026-05-20T14:05:12+07:00"
     },
     {
       "path": "skills/upsale/references/debug-mode.md",
@@ -5506,15 +6178,15 @@
     },
     {
       "path": "skills/upsale/references/dedup.md",
-      "checksum": "fd4b919d54d06d025aef2c2ac9e1f74f09a13b1d327a5baaba61de0e99f0fddf",
-      "size": 14251,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "7a8856c71331f62015a36afc90b1f86b2e868f1a16c8cafa35ffe320d082ec96",
+      "size": 14019,
+      "lastModified": "2026-05-20T14:05:12+07:00"
     },
     {
       "path": "skills/upsale/references/edge-cases.md",
-      "checksum": "d98bab6204f8bd51ee9866fa53021cf54c7aa3b38352e40c5d000359a28f0441",
-      "size": 5681,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "aec14a762795c2633c28c19de99c564a6267b14530bc20bf38e87f55e7806ac3",
+      "size": 5352,
+      "lastModified": "2026-05-20T14:05:12+07:00"
     },
     {
       "path": "skills/upsale/references/flags.md",
@@ -5524,15 +6196,15 @@
     },
     {
       "path": "skills/upsale/references/orchestrator-protocol.md",
-      "checksum": "69697f2b4a9eda8f5bd044a6f7b523cf47b1a6146d6ff6ac78769ce49e681dd2",
-      "size": 28476,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "ca0b12c802b64255374a1fd773c76bbb033fbb800eaa243fb047820bd2b560be",
+      "size": 28179,
+      "lastModified": "2026-05-20T14:05:12+07:00"
     },
     {
       "path": "skills/upsale/references/phase-d-prep.md",
-      "checksum": "cde13d97a43fb10b9113b3c180b93f94c029caea210a95f7fc12e70df29fa6d4",
-      "size": 11372,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "2897ee851ba03055166c53bf84c1d0825b68da57b657f6e543bb96991d68e6b2",
+      "size": 10302,
+      "lastModified": "2026-05-20T14:05:12+07:00"
     },
     {
       "path": "skills/upsale/references/scout-discovery.md",
@@ -5548,57 +6220,57 @@
     },
     {
       "path": "skills/upsale/references/step-table.md",
-      "checksum": "137ac2202f225d2a9f47872c6384c90f550f70ce64cd50c7d2cc7f710141995e",
-      "size": 18847,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "12e71b202783ff45de08a0f03b7384edae03ab5bde1a22ab55f973cbac2d86b8",
+      "size": 17359,
+      "lastModified": "2026-05-20T14:05:12+07:00"
     },
     {
       "path": "skills/upsale/references/technical/01-discovery/01-repository-identity.md",
-      "checksum": "74b3ace288d13068b1fab271686ca654e4cc490f85eeb0619ab6bf20d33edd6e",
-      "size": 2214,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "8644c57c7b45146740e9b32115ccb213ef32c795fb26e29dd91776218bf7090a",
+      "size": 2377,
+      "lastModified": "2026-05-20T11:15:16+07:00"
     },
     {
       "path": "skills/upsale/references/technical/01-discovery/02-tech-stack.md",
-      "checksum": "0b2084aa617e6711f8fb20efa88b540bccfae1f7a67a51be9b410c89d9052627",
-      "size": 3199,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "294e2195ed28dd2cca75836df95f7012ba14d34b54ce3bb81618135b00695b1e",
+      "size": 3363,
+      "lastModified": "2026-05-20T11:15:16+07:00"
     },
     {
       "path": "skills/upsale/references/technical/01-discovery/03-architecture-shape.md",
-      "checksum": "5cbb7283b19a1035edfaca2a99fe1c9eb899d0e17d13ca47e8dc5873ef71e5f3",
-      "size": 2437,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "bcfd86ed09c5870800dc533a98e3b0b240ce9011cb7cd535e63ebe41c294dacc",
+      "size": 2623,
+      "lastModified": "2026-05-20T11:15:16+07:00"
     },
     {
       "path": "skills/upsale/references/technical/01-discovery/04-delivery-operations.md",
-      "checksum": "2dd1c33ed6fb9f2b23cb8e572262a9b9a35a378ff63fbc018a5cd5bd8b48f30e",
-      "size": 2601,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "9685718b761786451f737d92fa7512b73076387a480478d6d9b69bfb02d79ed4",
+      "size": 2747,
+      "lastModified": "2026-05-20T11:15:16+07:00"
     },
     {
       "path": "skills/upsale/references/technical/01-discovery/05-scale-complexity.md",
-      "checksum": "1cf75613d8ca6f4e77e43c254af92bc8673b894746d713da379af043f3845bca",
-      "size": 2040,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "e9e7d183f69ae452135999e4add7581c6160550e6063a8de92742998af6e4a66",
+      "size": 2231,
+      "lastModified": "2026-05-20T11:15:16+07:00"
     },
     {
       "path": "skills/upsale/references/technical/01-discovery/06-security-compliance.md",
-      "checksum": "85d524a8ee1c258549cca8f8507b4bc9efa6599e75cab09cd0af8b693fc2c36c",
-      "size": 8348,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "9ca642f66a95598639ada391f5dfa05895560fa40d8d882caf996563f2601975",
+      "size": 8523,
+      "lastModified": "2026-05-20T11:15:16+07:00"
     },
     {
       "path": "skills/upsale/references/technical/01-discovery/07-product-surface.md",
-      "checksum": "8b782e13ba919db16b396d0ddfac8ee4e9245d4f7cb5b59df111d7d795540315",
-      "size": 3270,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "9d578de66d992d07440e87d37319a6f6e07cf556f9ac6643614aae3f6d50d422",
+      "size": 3435,
+      "lastModified": "2026-05-20T11:15:16+07:00"
     },
     {
       "path": "skills/upsale/references/technical/01-discovery/08-platform-support.md",
-      "checksum": "c86736ccdf3094ad4fd3ea2c0f169edf5aa1e9f09aa110327b072bfec4bf1c47",
-      "size": 3021,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "487f7ddf04f0c0dfbb8b4660f9d9d77855261b89cde3ab8c6166af0aa842dbf0",
+      "size": 3157,
+      "lastModified": "2026-05-20T11:15:16+07:00"
     },
     {
       "path": "skills/upsale/references/technical/01-discovery.md",
@@ -5607,22 +6279,100 @@
       "lastModified": "2026-05-13T09:44:56+07:00"
     },
     {
-      "path": "skills/upsale/references/technical/02-improvement.md",
-      "checksum": "839ae650aea0fdf071eaa3b6077623b821c66e215aa87d4e5a745a55d8f628c8",
-      "size": 18743,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "path": "skills/upsale/references/technical/02-improvement/01-architecture.md",
+      "checksum": "4250b948eba315deb5c831769f1556bfc6f602f771289c0aa31d04f218010d7b",
+      "size": 634,
+      "lastModified": "2026-05-20T11:23:18+07:00"
     },
     {
-      "path": "skills/upsale/references/technical/021-deduped-improvement.md",
-      "checksum": "51ca9cc3c3593c5622cd8c2dfa7cd74dde4282692c98fd9bcc6c5bec7bc60bdd",
-      "size": 12270,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "path": "skills/upsale/references/technical/02-improvement/02-code-quality.md",
+      "checksum": "e180cb1c669f8e84b35dca8ef73c760539ceb7127d706c90d58dbf94e14642c8",
+      "size": 586,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/technical/02-improvement/03-test-coverage.md",
+      "checksum": "1180a0906554038014cf1f676ea4593291508bf3b9fda968ec46246b15d94848",
+      "size": 1031,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/technical/02-improvement/04-ci-cd.md",
+      "checksum": "aadd609ca197ffb285e7077321619121ee418063993fa3acd01752910db570e8",
+      "size": 579,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/technical/02-improvement/05-performance.md",
+      "checksum": "198efd976ac4d1ead0955b1296458615deb5b33eec866769562ba79f1c578cc3",
+      "size": 919,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/technical/02-improvement/06-security-and-dependencies.md",
+      "checksum": "57230418356fb0ecb56a44dfd14d85892310e75839b4324882e3c1d46b2b2ef4",
+      "size": 1334,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/technical/02-improvement/07-observability.md",
+      "checksum": "3a76dbdab185b0de7017192e7486a1cafb0f2d61ffa2a1a6aa220585a6d699a8",
+      "size": 1035,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/technical/02-improvement/08-docs-and-dx.md",
+      "checksum": "2241c3b5e38c88be95a805241f1cb22d83aa1614d971647898d0098106e86e7d",
+      "size": 1047,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/technical/02-improvement/09-error-handling.md",
+      "checksum": "e99545515339b41e23fce072bac482aa3067f42463cc2702091c129d799ad41f",
+      "size": 656,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/technical/02-improvement/10-scalability.md",
+      "checksum": "5550451c233e5dadab214d00a9c7f1a1f544ef07606249faf670b93eb4579d76",
+      "size": 642,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/technical/02-improvement/11-accessibility.md",
+      "checksum": "c27557b431150d8a5263cc8f1644f2bfa7b37d87b7e58e41502ca0587689a84f",
+      "size": 1187,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/technical/02-improvement/12-new-features.md",
+      "checksum": "9fceb51662fb6a80e9fa932aedb311dbc486144c730ca5c55b11cac33e1cc254",
+      "size": 1616,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/technical/02-improvement/13-ecosystem-parity.md",
+      "checksum": "8392ee9801956ca65c1930f7d244ee81f3eb66d056f89c04cfcb49eac7a4ecd4",
+      "size": 1481,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/technical/02-improvement/14-platform-parity.md",
+      "checksum": "14e4d43264bd0b49d7aa923ea99454467eb1243d0a374fb3532c761643c7d2b5",
+      "size": 1342,
+      "lastModified": "2026-05-20T11:23:18+07:00"
+    },
+    {
+      "path": "skills/upsale/references/technical/02-improvement.md",
+      "checksum": "874436d52809764a1b945b3a5378f6bb24438c58b694667c88d9d9d0c86840a1",
+      "size": 11111,
+      "lastModified": "2026-05-20T11:23:18+07:00"
     },
     {
       "path": "skills/upsale/references/technical/03-technical-proposal.md",
-      "checksum": "2bd27e88e9cb9714172084c47b7ca2b8e68d29071212ead9a36feeabf4b550ab",
-      "size": 6890,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "556b2d23c397ff916b4aa1ae755b14916ba08f0f6cd949d3cb52d49a0908d8a9",
+      "size": 6659,
+      "lastModified": "2026-05-20T14:05:12+07:00"
     },
     {
       "path": "skills/upsale/references/use-context-classifier.md",
@@ -5632,9 +6382,81 @@
     },
     {
       "path": "skills/upsale/references/validation.md",
-      "checksum": "80fc4244343a107124b731e104b9ab6cd08e41a7845752f57479ea666346a2d0",
-      "size": 13432,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "f157bbf1669f21f7ece6399f8501d77477ee1ff27c6ae07db28331e3fb257ee3",
+      "size": 12845,
+      "lastModified": "2026-05-20T12:20:18+07:00"
+    },
+    {
+      "path": "skills/upsale/scripts/apply_verdicts.py",
+      "checksum": "01fcb918c0d1b50b163af69fe1f85126cd604682bdab2c525900642e740ac450",
+      "size": 11527,
+      "lastModified": "2026-05-20T15:23:11+07:00"
+    },
+    {
+      "path": "skills/upsale/scripts/apply_verdicts_lib.py",
+      "checksum": "6486ceb65315ee231a46a672edc0270b7bc7b3fc40b5986821c853b1c1a67deb",
+      "size": 20045,
+      "lastModified": "2026-05-20T11:36:50+07:00"
+    },
+    {
+      "path": "skills/upsale/scripts/combine_lib.py",
+      "checksum": "ca6b66c51aebd19fd477a5e03546e20db17a75c250095ae3e8ae98d72adf7954",
+      "size": 10650,
+      "lastModified": "2026-05-18T12:55:03+07:00"
+    },
+    {
+      "path": "skills/upsale/scripts/combine_proposals.py",
+      "checksum": "e023a23ea099c8c86d28782d73169d951b006ad9abd9fb956f68f54e07657945",
+      "size": 7722,
+      "lastModified": "2026-05-18T12:55:03+07:00"
+    },
+    {
+      "path": "skills/upsale/scripts/detect_sdd.py",
+      "checksum": "85862b520f63728474a1289b790b06d4bb58d2edcda0efe9d86abdfa03a1b44c",
+      "size": 3949,
+      "lastModified": "2026-05-20T11:27:01+07:00"
+    },
+    {
+      "path": "skills/upsale/scripts/detect_sdd_lib.py",
+      "checksum": "816dd3ad88c02e749aec6fcabdb8993b9bebbe890ebf851b8828cbdc38df45c2",
+      "size": 12191,
+      "lastModified": "2026-05-20T12:20:18+07:00"
+    },
+    {
+      "path": "skills/upsale/scripts/phase_d_prep.py",
+      "checksum": "4a5bb9bf2057fda8210a485c1f0e43d4cb9f69e54e27e08b1e7e0d0e511a9b82",
+      "size": 10691,
+      "lastModified": "2026-05-20T14:05:12+07:00"
+    },
+    {
+      "path": "skills/upsale/scripts/phase_d_prep_lib.py",
+      "checksum": "6afad688279d29cfa01366fc64dc1230d022004aef96ffba826cf9a9d372576d",
+      "size": 10788,
+      "lastModified": "2026-05-20T14:05:12+07:00"
+    },
+    {
+      "path": "skills/upsale/scripts/test_apply_verdicts.py",
+      "checksum": "dfff88a3fbc2bd9658b581cd720c5fe2f4c47456b9ab0fc1edaa471facbdb7e3",
+      "size": 20995,
+      "lastModified": "2026-05-20T15:23:11+07:00"
+    },
+    {
+      "path": "skills/upsale/scripts/test_combine.py",
+      "checksum": "e496b73a72566802c31f1e5a4fc38a55778dffeae9d13591a9f742680be34d54",
+      "size": 14394,
+      "lastModified": "2026-05-18T12:55:03+07:00"
+    },
+    {
+      "path": "skills/upsale/scripts/test_detect_sdd.py",
+      "checksum": "783ad4451b9d402b90559dc62326452b2188d362a68db8d6d87a28690dcb7632",
+      "size": 7300,
+      "lastModified": "2026-05-20T12:20:18+07:00"
+    },
+    {
+      "path": "skills/upsale/scripts/test_phase_d_prep.py",
+      "checksum": "b3a43251ff99ff62a30978bb2ba09962fbbf509463ae9570d7b8ff8e4a807a0d",
+      "size": 14719,
+      "lastModified": "2026-05-20T14:05:12+07:00"
     },
     {
       "path": "skills/upsale/templates/business/01-discovery/01-product-identity.md",
@@ -5799,12 +6621,6 @@
       "lastModified": "2026-05-13T09:44:56+07:00"
     },
     {
-      "path": "skills/upsale/templates/business/031-deduped-improvement.md",
-      "checksum": "707fa46a005b8256c54e2890ce7e8650264d50f37883654aa13a71613cd9e429",
-      "size": 1779,
-      "lastModified": "2026-05-13T09:44:56+07:00"
-    },
-    {
       "path": "skills/upsale/templates/business-04-business-proposal.md",
       "checksum": "208b25c32c344328be65ba5d368199649656cc5145875485c2c5f41535f129ca",
       "size": 5361,
@@ -5812,9 +6628,9 @@
     },
     {
       "path": "skills/upsale/templates/combined-initial.md",
-      "checksum": "dd761cf2351bd83e5ee894157f6831786ddb0e7d486dfbaae3f0260760e172e7",
-      "size": 2770,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "8406e2afda3d81e21ed6ca091808cb339504daf8ae007cbe093fe3fc67d98c2b",
+      "size": 2832,
+      "lastModified": "2026-05-18T12:55:03+07:00"
     },
     {
       "path": "skills/upsale/templates/phase-d-payload.json",
@@ -5967,12 +6783,6 @@
       "lastModified": "2026-05-13T09:44:56+07:00"
     },
     {
-      "path": "skills/upsale/templates/technical/021-deduped-improvement.md",
-      "checksum": "15257b5afcfc4aceb47d3d1c6a42c8dcb8359e317c4d3dd98a4559435848db65",
-      "size": 1711,
-      "lastModified": "2026-05-13T09:44:56+07:00"
-    },
-    {
       "path": "skills/upsale/templates/technical-03-technical-proposal.md",
       "checksum": "f04d2b2555bb52482f59cfab545d80cefc7c1a2ea3f34c7cfd5dc08377dc9d71",
       "size": 5503,
@@ -5986,9 +6796,9 @@
     },
     {
       "path": "skills/upsale/templates/use-context.md",
-      "checksum": "347ef1f33bf151b9e04541b686e40e5cd546334b36d753e1bed8387f0396b23e",
-      "size": 2677,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "ff41ef901c1088a0cb2178d44dcd19bf19796111a048acb2b34178415543c4dd",
+      "size": 2708,
+      "lastModified": "2026-05-18T12:55:03+07:00"
     },
     {
       "path": "skills/upsale/templates/validation-item.md",
@@ -6166,9 +6976,9 @@
     },
     {
       "path": "CLAUDE.md",
-      "checksum": "1af24f136b13a99d14ae795e3be331af492e33585d107e8538f9a89d6e82b2f2",
-      "size": 2733,
-      "lastModified": "2026-05-13T09:44:56+07:00"
+      "checksum": "38a9cb79bc17437337a969106ed2fbd8413862cb14de6c52d72b455d5b844499",
+      "size": 3198,
+      "lastModified": "2026-05-18T13:53:13+07:00"
     },
     {
       "path": "AGENTS.md",

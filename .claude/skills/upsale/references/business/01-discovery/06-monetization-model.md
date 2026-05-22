@@ -3,7 +3,7 @@
 **Track:** business · **Discovery item:** 6
 **Inputs:**
 - `plans/upsale/use-context.json` (MUST exist; gates section behaviour)
-- `plans/upsale/scout-report.md` (MUST exist; `[integration:stripe]`/`[integration:paddle]`/`[config]` bullets supply pricing/billing config paths)
+- `plans/upsale/scout-report.md` (MUST exist; `[integration:stripe]`/`[integration:paddle]`/`[config]` bullets supply pricing/billing config paths). **Do NOT Read the full file.** Use `grep -E '\[(integration:[a-z]+|config|spec)\]' plans/upsale/scout-report.md` to extract only relevant bullets.
 - Repository files + `specsRoot` (paths from scout)
 
 **Output artifact:** `plans/upsale/business/01-discovery/06-monetization-model.md`

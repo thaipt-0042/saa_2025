@@ -61,7 +61,7 @@ On completion the orchestrator calls `TaskUpdate(status=completed)` (Step 7 self
 
 ## Pipeline tasks (dep graph)
 
-Capture each `TaskCreate` return ID into a local map (e.g. `taskIds.step1`, `taskIds.step3_3_dedup[NN]`) so `addBlockedBy` arrays reference real IDs. Conditional creation: business-track tasks only when `isSDD == true` (skipped under `--technical-only`); step-1 not created under `--technical-only`; step-5c always created (writes empty-items manifest when combined has zero items); step-6.<NN>-<slug> created once per item enumerated in the step-5c manifest.
+Capture each `TaskCreate` return ID into a local map (e.g. `taskIds.step1`, `taskIds.step3_3[NN]`) so `addBlockedBy` arrays reference real IDs. Conditional creation: business-track tasks only when `isSDD == true` (skipped under `--technical-only`); step-1 not created under `--technical-only`; step-5c always created (writes empty-items manifest when combined has zero items); step-6.<NN>-<slug> created once per item enumerated in the step-5c manifest.
 
 | Subject | addBlockedBy | Declared output |
 |---------|--------------|-----------------|
@@ -73,11 +73,9 @@ Capture each `TaskCreate` return ID into a local map (e.g. `taskIds.step1`, `tas
 | `upsale: step-3.2.<NN> biz-research <slug>` (×5, wave 1) | all step-3.1.* | `plans/upsale/business/02-research/<NN>-<slug>.md` |
 | `upsale: step-3.2.06 biz-research gap-summary` (wave 2) | step-3.2.01..05 | `plans/upsale/business/02-research/06-gap-summary.md` |
 | `upsale: step-3.3.<NN> biz-improvement <slug>` (×12) | all step-3.2.* | `plans/upsale/business/03-improvement/<NN>-<slug>.md` |
-| `upsale: step-3.3-dedup.<NN> biz-aspect-dedup <slug>` (×12) | corresponding step-3.3.<NN> | `plans/upsale/business/031-deduped-improvement/<NN>-<slug>.md` |
-| `upsale: step-3.4 business-proposal` | all step-3.3-dedup.* | `plans/upsale/business/04-business-proposal.md` |
+| `upsale: step-3.4 business-proposal` | all step-3.3.* | `plans/upsale/business/04-business-proposal.md` |
 | `upsale: step-4.2.<NN> tech-improvement <slug>` (×14) | all step-4.1.* | `plans/upsale/technical/02-improvement/<NN>-<slug>.md` |
-| `upsale: step-4.2-dedup.<NN> tech-aspect-dedup <slug>` (×14) | corresponding step-4.2.<NN> | `plans/upsale/technical/021-deduped-improvement/<NN>-<slug>.md` |
-| `upsale: step-4.3 technical-proposal` | all step-4.2-dedup.* | `plans/upsale/technical/03-technical-proposal.md` |
+| `upsale: step-4.3 technical-proposal` | all step-4.2.* | `plans/upsale/technical/03-technical-proposal.md` |
 | `upsale: step-5a combine` | active-track proposal task(s) | `plans/upsale/combined-initial.md` |
 | `upsale: step-5b dedup` | step-5a | same path (rewritten) |
 | `upsale: step-5c phase-d-prep` | step-5b | `plans/upsale/validation/_payloads/_manifest.json` |
@@ -105,11 +103,21 @@ Spawn Step 1 + Step 2 concurrently with Step S's `Skill` invocation.
 
 **Gate:** if `--technical-only`, skip entirely (no spawn, artifact, log line, or TaskCreate).
 
-- subject: `upsale: step-1 sdd-detection` · actor: `researcher`
+- subject: `upsale: step-1 sdd-detection` · actor: **Bash script** (no LLM subagent)
 - Spec: `references/sdd-detection.md` · Template: `templates/sdd-detection.md`
-- Inputs: `{ repo_root, output_path: "plans/upsale/sdd-detection.json" }`
+- Invocation (POSIX — Linux/macOS):
+
+  ```bash
+  .claude/skills/.venv/bin/python3 claude/skills/upsale/scripts/detect_sdd.py \
+    --repo-root     "<repo abs path>" \
+    --output-path   plans/upsale/sdd-detection.json
+  ```
+
+  Windows equivalent — interpreter at `.claude\skills\.venv\Scripts\python.exe`; forward-slash arg paths still work via Python's `pathlib`.
+- Stdout (captured verbatim into orchestrator log buffer): exactly one `done: step-1 → <abs path>` OR `skip: step-1 (artifact exists)` line, then exactly one `Status: DONE` / `DONE_WITH_CONCERNS — <reason>` / `BLOCKED — <reason>` trailer.
+- Exit code: 0 for DONE / DONE_WITH_CONCERNS / skip. Non-zero only for BLOCKED. Treat non-zero exit as a BLOCKED return and surface stdout.
 - Output JSON: `{ "isSDD": bool, "signals": [...], "specsRoot": "..." }` — `isSDD` gates the business track.
-- BLOCKED → fallback `{"isSDD": false, "signals": [], "specsRoot": ""}` + `DONE_WITH_CONCERNS — sdd-detection fallback`.
+- BLOCKED → script self-handles fallback `{"isSDD": false, "signals": [], "specsRoot": ""}` + emits `DONE_WITH_CONCERNS — fs error: <detail>`. Manual fallback is no longer required.
 
 ### Step 2 — Use-context classification
 
@@ -149,13 +157,12 @@ Skill(skill="tkm:scan-codebase", args="<see references/scout-discovery.md → 'I
 2. Read `use-context.json` → `useContext` + `confidence`.
 3. Verify `scout-report.md` exists and is non-empty → `scoutReportPath`. If missing, abort `BLOCKED: step-S scout-report.md missing`.
 
-## Phase B — Five sub-phases (sequential gating, batched ≤10 within each)
+## Phase B — Four sub-phases (sequential gating, batched ≤10 within each)
 
 1. **B-discovery** — 9 biz + 8 tech.
 2. **B-research** — business only, two waves (5 parallel, then 1 dependent). Skipped under `--technical-only`.
 3. **B-improvement** — 12 biz + 14 tech.
-4. **B-improvement-dedup** — same item count as B-improvement.
-5. **B-track-proposal** — one subagent per active track.
+4. **B-track-proposal** — one subagent per active track.
 
 All share the dispatcher pattern: idempotency-filter surviving items, batch ≤10 concurrent globally, wait for batch K to resolve before K+1. Cached items emit `skip: <step-id> (artifact exists)` but no spawn / no TaskCreate. Single item BLOCKED → continue with the rest; downstream phase notes `(item <NN>-<slug> missing — track degraded)`. All-items BLOCKED → escalate per `references/edge-cases.md`.
 
@@ -188,13 +195,13 @@ Wave 1 = `01-market-snapshot`, `02-competitor-scan`, `03-persona-deep-dive`, `04
 
 ### B-improvement dispatch
 
-| Items | Spec (find aspect section by slug under `## Aspect <NN> — <slug>`) | Input dir | Blockers |
-|-------|--------------------------------------------------------------------|-----------|----------|
-| 3.3.01-12 (biz, 12) | `references/business/03-improvement.md` | `plans/upsale/business/02-research/` | all step-3.2.* |
-| 4.2.01-14 (tech, 14) | `references/technical/02-improvement.md` | `plans/upsale/technical/01-discovery/` | all step-4.1.* |
+| Items | Per-aspect spec | Shared contract | Input dir | Blockers |
+|-------|-----------------|-----------------|-----------|----------|
+| 3.3.01-12 (biz, 12) | `references/business/03-improvement/<NN>-<slug>.md` | `references/business/03-improvement.md` | `plans/upsale/business/02-research/` | all step-3.2.* |
+| 4.2.01-14 (tech, 14) | `references/technical/02-improvement/<NN>-<slug>.md` | `references/technical/02-improvement.md` | `plans/upsale/technical/01-discovery/` | all step-4.1.* |
 
 - Actor: `researcher`. Subject: `upsale: step-<3.3|4.2>.<NN> <track>-improvement <slug>`.
-- Spec is a single self-contained file with Shared rules + Ownership map + per-aspect sections. Read Shared rules first, then find your aspect section by slug, then consult Ownership map before emitting any item.
+- Spec is split per aspect: each subagent reads the per-aspect file (its Goal + use-context overrides + intake gate) plus the shared contract file (Shared rules + Ownership map). Read the shared contract first to apply universal rules, then the per-aspect file for aspect-specific scope, then consult the Ownership map before emitting any item.
 - Template: `templates/<track>/<step-folder>/<NN>-<slug>.md` (step-folder = `03-improvement` for biz, `02-improvement` for tech).
 - Output path: `plans/upsale/<track>/<step-folder>/<NN>-<slug>.md`.
 - Phase-specific item-execution extras:
@@ -204,38 +211,20 @@ Wave 1 = `01-market-snapshot`, `02-competitor-scan`, `03-persona-deep-dive`, `04
 
 With 12 + 14 = 26 total items, expect ≥3 batches when both tracks run from cold cache.
 
-### B-improvement-dedup dispatch
-
-| Items | Spec (shared) | Source path | Output path |
-|-------|---------------|-------------|-------------|
-| 3.3-dedup.01-12 (biz, 12) | `references/business/031-deduped-improvement.md` | `plans/upsale/business/03-improvement/<NN>-<slug>.md` | `plans/upsale/business/031-deduped-improvement/<NN>-<slug>.md` |
-| 4.2-dedup.01-14 (tech, 14) | `references/technical/021-deduped-improvement.md` | `plans/upsale/technical/02-improvement/<NN>-<slug>.md` | `plans/upsale/technical/021-deduped-improvement/<NN>-<slug>.md` |
-
-- Actor: `researcher`. Subject: `upsale: step-<3.3-dedup|4.2-dedup>.<NN> <track>-aspect-dedup <slug>`.
-- Template: same as Spec path (shared file is both procedure + structural contract).
-- Inputs: `{ source_path, output_path, aspect_slug: "<slug>", item_num: "<NN>" }`.
-- Blockers: **single** corresponding upstream improvement task (each aspect dedup is independent). Do NOT overlap the two phases' batches.
-- Phase-specific item-execution extras:
-  - **Single-aspect scope.** Read ONLY `source_path`; never read other aspect files; never modify the source. Cross-aspect merging is FORBIDDEN here (handled by Step 5b cross-track for spans-tracks; intra-track cross-aspect is intentionally preserved).
-  - **Header preservation.** H1, line-2 `**Use context:** …`, and any HTML comment lines from source — copy verbatim.
-  - **Duplicate detection rules + 10-key entry merge mechanics** per the spec (same-concern OR adjacent-same-theme; max(values), max(efforts) with bump-on-3+; union of evidence/risks; never fabricate).
-  - **Zero-merge case.** Still write the output (verbatim copy of source) so downstream Step 3.4 / 4.3 idempotency works.
-- Extra log line: zero or more `dedup-aspect: merged <slug> [<obs-1>, …] → "<merged obs>" (value=<max-tier>, k=<group-size>)`.
-
 ### B-track-proposal dispatch
 
-After B-improvement-dedup completes (all dispatched batches resolved), spawn one residual proposal subagent per active track in a **single tool-use round**.
+After B-improvement completes (all dispatched batches resolved), spawn one residual proposal subagent per active track in a **single tool-use round**.
 
 | Track | Sub-step | Spec | Template | Improvement dir | Output |
 |-------|----------|------|----------|------------------|--------|
-| business | 3.4 | `references/business/04-business-proposal.md` | `templates/business-04-business-proposal.md` | `plans/upsale/business/031-deduped-improvement/` | `plans/upsale/business/04-business-proposal.md` |
-| technical | 4.3 | `references/technical/03-technical-proposal.md` | `templates/technical-03-technical-proposal.md` | `plans/upsale/technical/021-deduped-improvement/` | `plans/upsale/technical/03-technical-proposal.md` |
+| business | 3.4 | `references/business/04-business-proposal.md` | `templates/business-04-business-proposal.md` | `plans/upsale/business/03-improvement/` | `plans/upsale/business/04-business-proposal.md` |
+| technical | 4.3 | `references/technical/03-technical-proposal.md` | `templates/technical-03-technical-proposal.md` | `plans/upsale/technical/02-improvement/` | `plans/upsale/technical/03-technical-proposal.md` |
 
 - Actor: `researcher`. Subject: `upsale: step-<3.4 business-proposal | 4.3 technical-proposal>`.
-- Blockers: all of the track's per-aspect dedup IDs (`taskIds.step3_3_dedup` / `taskIds.step4_2_dedup`, NOT the raw improvement IDs).
+- Blockers: all of the track's improvement IDs (`taskIds.step3_3` / `taskIds.step4_2`).
 - Inputs: `{ improvement_dir, output_path, use_context_marker }`.
 - Phase-specific track-execution extras:
-  - Improvement is a DIRECTORY of per-aspect deduped `.md` files. Read every `*.md` in `improvement_dir` once at the start; treat the union of entries as the candidate pool. The line-2 use-context marker on any one file is the single source of truth — do NOT re-read `use-context.json`. Do NOT read the upstream `*-improvement/` source.
+  - Improvement is a DIRECTORY of per-aspect `.md` files. Read every `*.md` in `improvement_dir` once at the start; treat the union of entries as the candidate pool. The line-2 use-context marker on any one file is the single source of truth — do NOT re-read `use-context.json`.
   - Apply the spec's selection rules: discard `clean —` / `omitted —` / `needs-more-discovery` / `(needs fresh research)` entries; use-context gating; Value filter; **per-track cap at ≤30 items** (when `total > 30`, drop the bottom `(total - 30)` by global sort: `**Value:**` desc → `**Effort hint:**` asc → source aspect `NN-` prefix asc → within-file source order; emits `cap: <track> <total>→30 (dropped <N>: …)` and escalates the trailer to `DONE_WITH_CONCERNS — <track> capped at 30`); aspect grouping. Within-aspect ordering is source document order (the final Value/Effort sort runs at Step 7 after dedup/reclassify/DROP).
   - Echo `**Use context:** <useContext>` verbatim under the proposal's H1.
 
@@ -243,20 +232,27 @@ After B-improvement-dedup completes (all dispatched batches resolved), spawn one
 
 ### Step 5a — Combine → `plans/upsale/combined-initial.md`
 
-**Track gating (orchestrator-side, before TaskCreate):** active tracks per Conventions → Active-track gating. Build `addBlockedBy` and `Inputs:` from the active track set: `blockers = [taskIds.step4_3 if technical, taskIds.step3_4 if business]`. Pass `technical_path` only when technical active; `business_path` only when business active.
+**Track gating (orchestrator-side, before TaskCreate):** active tracks per Conventions → Active-track gating. Build `addBlockedBy` and CLI args from the active track set: `blockers = [taskIds.step4_3 if technical, taskIds.step3_4 if business]`. Pass `--technical-path` only when technical active; `--business-path` only when business active.
 
-- subject: `upsale: step-5a combine` · actor: `researcher`
+- subject: `upsale: step-5a combine` · actor: **Bash script** (no LLM subagent)
 - Spec: `references/combine-proposals.md` · Template: `templates/combined-initial.md`
-- Inputs:
-  - `technical_path: "plans/upsale/technical/03-technical-proposal.md"` (OMIT under `--business-only` or non-SDD with `--business-only`)
-  - `business_path: "plans/upsale/business/04-business-proposal.md"` (OMIT under `--technical-only` or non-SDD)
-  - `use_context_json_path: "plans/upsale/use-context.json"`
-  - `output_path: "plans/upsale/combined-initial.md"`
-  - `project_name: "<repo folder name>"`
-- Extra log line: `warn:` lines (use-context divergence / marker disagreements).
+- Invocation (POSIX — Linux/macOS):
+
+  ```bash
+  .claude/skills/.venv/bin/python3 claude/skills/upsale/scripts/combine_proposals.py \
+    [--technical-path plans/upsale/technical/03-technical-proposal.md] \
+    [--business-path  plans/upsale/business/04-business-proposal.md] \
+    --use-context-json plans/upsale/use-context.json \
+    --output           plans/upsale/combined-initial.md \
+    --project-name     "<repo folder name>"
+  ```
+
+  Windows equivalent — interpreter at `.claude\skills\.venv\Scripts\python.exe`; forward-slash arg paths still work via Python's `pathlib`. Omit `--technical-path` under `--business-only` (or non-SDD with `--business-only`). Omit `--business-path` under `--technical-only` (or non-SDD).
+- Stdout (captured verbatim into orchestrator log buffer): zero or more `warn:` lines, then exactly one `done: step-5a → <abs path>` OR `skip: step-5a (artifact exists at <path>)` line, then exactly one `Status: DONE` / `DONE_WITH_CONCERNS — <reason>` / `BLOCKED — <reason>` trailer.
+- Exit code: 0 for DONE / DONE_WITH_CONCERNS / skip. Non-zero only for BLOCKED. Treat non-zero exit as a BLOCKED return and surface stdout.
 - Single-track runs: combiner omits the absent track's section AND writes `<!-- dedup: pending -->`. When both tracks active and their `**Use context:**` markers disagree, emit `warn: step-5a use-context divergence — technical=<X>, business=<Y>` → `DONE_WITH_CONCERNS`.
 
-### Step 5b — Cross-track dedup + reclassify
+### Step 5b — Dedup + reclassify
 
 Runs whenever `combined-initial.md` contains `<!-- dedup: pending -->`. Marker-based gating (the default artifact-existence check would always fire after Step 5a, since 5b rewrites the same path).
 
@@ -265,34 +261,37 @@ Runs whenever `combined-initial.md` contains `<!-- dedup: pending -->`. Marker-b
 - Input: `plans/upsale/combined-initial.md` (MUST contain `<!-- dedup: pending -->`).
 - Output: same path, overwritten atomically. Marker becomes `<!-- dedup: applied (n=<count>) -->`.
 - Extra log lines:
-  - `dedup: merged [<track-1>:<title-1>, <track-2>:<title-2>, …] → <host-track> "<merged title>" (value=<max-tier>) (cross-track, host-aspect=<host>)` per cross-track merge group (zero or more).
+  - `dedup: merged [<track-1>:<title-1>, <track-2>:<title-2>, …] → <host-track> "<merged title>" (value=<max-tier>) (host-aspect=<host>)` per merge group (zero or more).
   - `reclassify: moved "<title>" from <source> to <target>` per moved item.
-- Pass 1 (cross-track dedup) only merges items that span the Business and Technical sections — intra-track duplicates were already addressed upstream by per-aspect dedup. Pass 2 (Reclassify) moves any mis-sectioned items between tracks. Single-track runs still flip the marker to `applied (n=0)`.
+- Pass 1 (Dedup) merges duplicates anywhere in the file — intra-aspect, cross-aspect intra-track, and cross-track. Pass 2 (Reclassify) moves any mis-sectioned items between tracks. Single-track runs still flip the marker to `applied (n=…)`; only cross-track pairs are absent.
 
 ## Phase C-prep — Step 5c phase-d-prep
 
-Externalises per-item payload construction that previously ran inside the orchestrator. Dispatcher reads `combined-initial.md` + each track's deduped improvement directory + the discovery files, writes one payload JSON per item under `plans/upsale/validation/_payloads/`, writes `_manifest.json` LAST as the atomic completion marker.
+Externalises per-item payload construction that previously ran inside the orchestrator. Dispatcher reads `combined-initial.md` + each track's improvement directory + the discovery files, writes one payload JSON per item under `plans/upsale/validation/_payloads/`, writes `_manifest.json` LAST as the atomic completion marker.
 
 **Track gating (orchestrator-side, before TaskCreate):** `--technical-only` → omit `business_*` inputs. `--business-only` → omit `technical_*` inputs. Default + SDD → both. Default + non-SDD → technical only.
 
-- subject: `upsale: step-5c phase-d-prep` · actor: `researcher` · addBlockedBy: `[taskIds.step5b]`
+- subject: `upsale: step-5c phase-d-prep` · actor: **Bash script** (no LLM subagent) · addBlockedBy: `[taskIds.step5b]`
 - Spec: `references/phase-d-prep.md` · Template: `templates/phase-d-payload.json`
-- Inputs:
+- Invocation (POSIX — Linux/macOS):
 
-  | Key | Value | Conditional |
-  |-----|-------|-------------|
-  | `combined_path` | `plans/upsale/combined-initial.md` | always |
-  | `use_context_json_path` | `plans/upsale/use-context.json` | always |
-  | `business_dedup_dir` | `plans/upsale/business/031-deduped-improvement/` | OMIT when business inactive |
-  | `technical_dedup_dir` | `plans/upsale/technical/021-deduped-improvement/` | OMIT when technical inactive |
-  | `business_discovery_dir` | `plans/upsale/business/01-discovery/` | OMIT when business inactive |
-  | `technical_discovery_dir` | `plans/upsale/technical/01-discovery/` | OMIT when technical inactive |
-  | `payloads_dir` | `plans/upsale/validation/_payloads/` | always |
-  | `manifest_path` | `plans/upsale/validation/_payloads/_manifest.json` | always |
-  | `validation_dir` | `plans/upsale/validation/` | always |
+  ```bash
+  .claude/skills/.venv/bin/python3 claude/skills/upsale/scripts/phase_d_prep.py \
+    --combined-path           plans/upsale/combined-initial.md \
+    --use-context-json-path   plans/upsale/use-context.json \
+    [--business-improvement-dir     plans/upsale/business/03-improvement/] \
+    [--technical-improvement-dir    plans/upsale/technical/02-improvement/] \
+    [--business-discovery-dir plans/upsale/business/01-discovery/] \
+    [--technical-discovery-dir plans/upsale/technical/01-discovery/] \
+    --payloads-dir            plans/upsale/validation/_payloads/ \
+    --manifest-path           plans/upsale/validation/_payloads/_manifest.json \
+    --validation-dir          plans/upsale/validation/
+  ```
 
-- Extra log lines: zero or more `warn:` (stale-manifest, evidence-degraded, stack-context-missing).
-- **Inline-fallback (only on step-5c BLOCKED):** orchestrator runs the same procedure inline per `references/phase-d-prep.md` § Inline-fallback mode. Output is byte-identical (same payload JSONs + manifest written to disk). Emit `warn: phase-d-prep blocked — degraded to inline pre-extraction` and propagate `DONE_WITH_CONCERNS — phase-d-prep blocked, ran inline pre-extraction`.
+  Track gating: omit the absent track's two flags. `--technical-only` omits `--business-*`; `--business-only` omits `--technical-*`. Windows: use the `.claude\skills\.venv\Scripts\python.exe` interpreter; forward-slash arg paths still work via Python's `pathlib`.
+- Stdout (captured verbatim into orchestrator log buffer): zero or more `warn:` lines (stale-manifest, evidence-degraded, stack-context-missing), then exactly one `done: step-5c → <abs manifest_path>` or `skip: step-5c (artifact exists)` line, then exactly one `Status:` trailer.
+- Exit code: 0 for DONE / DONE_WITH_CONCERNS / skip. Non-zero only for BLOCKED. Treat non-zero exit as a BLOCKED return and surface stdout.
+- Inline-fallback is no longer applicable — the script IS the only execution path. On script BLOCKED, the orchestrator surfaces the trailer to the user (Phase D will not proceed without the manifest).
 
 ## Phase D — Validation (parallel, per item, batched ≤10)
 
@@ -329,17 +328,23 @@ If a per-item validator returns `BLOCKED`, the missing verdict triggers KEEP fal
 
 ## Phase E — Apply verdicts → `plans/upsale/upsale-proposal.md`
 
-- subject: `upsale: step-7 apply` · actor: `researcher` · addBlockedBy: `Object.values(taskIds.step6)` (every per-item validator id captured during Phase D dispatch; empty when combined had no items)
+- subject: `upsale: step-7 apply` · actor: **Bash script** (no LLM subagent) · addBlockedBy: `Object.values(taskIds.step6)` (every per-item validator id captured during Phase D dispatch; empty when combined had no items)
 - Spec: `references/apply-validations.md` · Template: `templates/upsale-proposal.md`
-- Inputs:
-  - `combined_path`: `plans/upsale/combined-initial.md`
-  - `validation_dir`: `plans/upsale/validation/`
-  - `output_path`: `plans/upsale/upsale-proposal.md`
-  - `task_id`: `<this step's TaskCreate id — for self-close>`
-  - `evidence_degraded_warns`: newline-joined `warn: item-<NN> "<title>" evidence-degraded …` lines sourced from the step-5c manifest's `evidence_degraded_warns` array (or, when step-5c ran in inline-fallback mode, collected by the orchestrator during the fallback pass — same wire format either way). Apply step 8 parses these via `^warn: item-(\d+) ".*" evidence-degraded ` to count them toward the unvalidated-items ⚠️ banner. Pass an empty string when no evidence-degraded warns fired.
-- Extra log lines: any `warn:` / `drop:` / `revise:` lines (verdict collection + per-item passes + orphan checks).
+- Invocation (POSIX — Linux/macOS):
 
-**Self-close requirement (terminal-step resilience).** After writing `upsale-proposal.md` atomically and emitting the `done:` line, the Step 7 subagent MUST call `TaskUpdate(taskId=<task_id>, status="completed", metadata={ note: "self-closed by step-7 subagent" })` BEFORE returning. Without self-close, an orchestrator that dies between subagent return and the final response trailer would leave the task `in_progress` forever even though the artifact is on disk.
+  ```bash
+  .claude/skills/.venv/bin/python3 claude/skills/upsale/scripts/apply_verdicts.py \
+    --combined-path   plans/upsale/combined-initial.md \
+    --validation-dir  plans/upsale/validation/ \
+    --output-path     plans/upsale/upsale-proposal.md \
+    --evidence-degraded-warns "<newline-joined warns from step-5c manifest>"
+  ```
+
+  Windows: use the `.claude\skills\.venv\Scripts\python.exe` interpreter; forward-slash arg paths still work via Python's `pathlib`. Pass an empty string for `--evidence-degraded-warns` when no evidence-degraded warns fired.
+- Stdout (captured verbatim into orchestrator log buffer): all `warn:` / `drop:` / `revise:` log lines (verdict collection + per-item passes + orphan checks), then exactly one `done: step-7 → <abs path>` or `skip: step-7 (artifact exists at <path>)` line, then exactly one `Status:` trailer.
+- Exit code: 0 for DONE / DONE_WITH_CONCERNS / skip. Non-zero only for BLOCKED. Treat non-zero exit as a BLOCKED return and surface stdout.
+
+**Self-close moved to orchestrator.** Since Step 7 is now a Bash script (not a Task subagent), self-close is no longer applicable to the script. After the script exits 0, the orchestrator calls `TaskUpdate(taskId=taskIds.step7, status="completed", metadata={ note: "auto-closed after script exit 0" })` from its own context. On script exit non-zero, the orchestrator surfaces stdout and emits the upstream BLOCKED trailer.
 
 **Verdict semantics** (apply spec handles full logic — summary here):
 - Missing verdict → `KEEP` + `warn:`.

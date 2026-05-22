@@ -150,7 +150,7 @@ flowchart TD
 - Respond with blueprint file path and summary
 - Ensure self-contained blueprints with necessary context
 - Include code snippets/pseudocode when clarifying
-- Fully respect the `./docs/development-rules.md` file
+- Fully respect the `./claude/rules/development-rules.md` file
 
 ## Task Management
 

@@ -1,8 +1,9 @@
-# Combine Proposals Prompt
+# Combine Proposals (Step 5a)
 
-**Phase:** C · **Step:** 5a (subagent) — concatenates the technical (and optional business) track proposals into a single pre-validation file.
-**Invoked by:** the upsale orchestrator via the `Agent` tool (one subagent, one call).
-**Output artifact:** `plans/upsale/combined-initial.md` (atomic Bash tempfile + rename).
+**Phase:** C · **Step:** 5a — concatenates the technical (and optional business) track proposals into a single pre-validation file.
+**Invoked by:** the upsale orchestrator via Bash (`scripts/combine_proposals.py`). No LLM subagent.
+**Authoritative implementation:** `scripts/combine_proposals.py` + `scripts/combine_lib.py`. Procedure below is plain-language commentary; the script bytes are normative.
+**Output artifact:** `plans/upsale/combined-initial.md` (atomic write via `tempfile` + `os.replace`).
 **Template:** `templates/combined-initial.md` (output structure MUST match exactly).
 
 ## When this runs
@@ -60,21 +61,7 @@ If `output_path` exists and is non-empty → emit `skip: step-5a (artifact exist
    - The use-context badge fragment (`Use context: **<value>**. `) is OMITTED when no valid use-context resolved.
    - `<YYYY-MM-DD>` = today's date in the local timezone.
    - ALWAYS write `<!-- dedup: pending -->` regardless of how many tracks are present. Step 5b (cross-track dedup + reclassify) always runs to flip the marker, even on single-track output where its merge passes are near no-ops.
-7. Write atomically:
-
-   ```bash
-   set -euo pipefail
-   mkdir -p plans/upsale
-   TMP=$(mktemp plans/upsale/combined-initial.md.XXXXXX)
-   trap 'rm -f "$TMP"' EXIT
-   cat > "$TMP" <<'__UPSALE_COMBINE_END__'
-   <full combined content here>
-   __UPSALE_COMBINE_END__
-   mv "$TMP" plans/upsale/combined-initial.md
-   trap - EXIT
-   ```
-
-   The `__UPSALE_COMBINE_END__` terminator is chosen to avoid heredoc collisions with proposal text (a shorter sentinel like `EOF` could appear in customer content). On any failure, the trap removes the tempfile so no half-written artifact survives.
+7. Write atomically — handled by the script via `tempfile.mkstemp` in the output directory + `os.replace` (POSIX-atomic rename). No half-written artifact survives a crash.
 
 ## Path-safety rules
 
@@ -102,7 +89,7 @@ Case-insensitive, multiline. Scan only header region (first 10 lines or until fi
 
 `plans/upsale/combined-initial.md` (atomic write). Trailing dedup marker:
 
-- Always `<!-- dedup: pending -->` — Step 5b dedup agent will flip this to `<!-- dedup: applied (n=<count>) -->` after running cross-track dedup + reclassify passes (per-aspect intra-file duplicates were already addressed upstream by per-aspect dedup in steps 3.3-dedup / 4.2-dedup).
+- Always `<!-- dedup: pending -->` — Step 5b dedup agent will flip this to `<!-- dedup: applied (n=<count>) -->` after running full-scope dedup (intra-aspect + cross-aspect intra-track + cross-track) + reclassify passes.
 
 ## Return format (back to the orchestrator)
 

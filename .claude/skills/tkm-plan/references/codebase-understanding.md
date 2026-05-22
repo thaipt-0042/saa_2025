@@ -1,7 +1,5 @@
 # Codebase Understanding Phase
 
-**When to skip:** If provided with scout reports, skip this phase.
-
 ## Core Activities
 
 ### Parallel Scout Agents
@@ -10,30 +8,22 @@
 - Wait for all scout agents to report back before analysis
 - Efficient for finding relevant code across large codebases
 
-### Essential Documentation Review
-ALWAYS read these files first:
+### Project Docs Discovery
 
-1. **`./docs/development-rules.md`** (IMPORTANT)
-   - File Name Conventions
-   - File Size Management
-   - Development rules and best practices
-   - Code quality standards
-   - Security guidelines
+> See plan `260513-1134-takumi-load-docs-context` (Phase 01 + Phase 02).
+> The Phase 02 hook surfaces a paths-only docs index to subagents at spawn time.
+> This section is for the planner phase itself — how the planner navigates `docs/`.
 
-2. **`./docs/codebase-summary.md`**
-   - Project structure and current status
-   - High-level architecture overview
-   - Component relationships
+Discovery procedure (no hardcoded filenames — adapt to whatever exists):
 
-3. **`./docs/code-standards.md`**
-   - Coding conventions and standards
-   - Language-specific patterns
-   - Naming conventions
-
-4. **`./docs/design-guidelines.md`** (if exists)
-   - Design system guidelines
-   - Branding and UI/UX conventions
-   - Component library usage
+1. **Step A — Survey:** `ls docs/` to see what's there. If `docs/` doesn't exist, skip silently and move on; do not block planning.
+2. **Step B — Rebuild-spec shape:** if `docs/specs/feature-list.md` exists, that's the canonical entry point for feature work.
+   - Read `docs/specs/feature-list.md` first → find the feature relevant to the task.
+   - Drill into `docs/specs/features/F###_*/spec.md` for that feature only.
+   - Top-level cross-cutting context lives in `docs/specs/system-overview.md`, `data-model.md`, `screen-flow.md`, etc. — read only what the task touches.
+3. **Step C — Flat-topic shape:** if `docs/*.md` files exist at the top level (no `specs/` subdir), browse by topic. Read whichever file matches the task domain.
+4. **Step D — Workflow rules:** if `claude/rules/development-rules.md` exists, read it for kit-wide workflow rules (always at `claude/rules/`, never under `docs/`).
+5. **Rule:** don't read everything. Read what's relevant to the task.
 
 ### Environment Analysis
 - Review development environment setup
@@ -55,8 +45,8 @@ ALWAYS read these files first:
 
 ## Best Practices
 
-- Start with documentation before diving into code
-- Use scouts for targeted file discovery
+- Start with docs discovery before diving into code
+- Use scouts for targeted file discovery (complementary to docs review — never a substitute)
 - Document patterns found for consistency
 - Note any inconsistencies or technical debt
 - Consider impact on existing features

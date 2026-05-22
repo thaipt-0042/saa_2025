@@ -34,7 +34,7 @@ _Generated {ISO_DATE}. Use context: **{internal|hybrid|customer-facing}**. Based
 - **Proposed solution:** {…}
 - **Effort hint:** {…}
 
-<!-- … all surviving aspect sections (H2 → H3) and items (H3 → H4) demoted by the Step 5a combine subagent … -->
+<!-- … all surviving aspect sections (H2 → H3) and items (H3 → H4) demoted by the Step 5a combine script (`scripts/combine_proposals.py`) … -->
 
 ## Business
 
@@ -72,7 +72,7 @@ _Generated {ISO_DATE}. Use context: **{internal|hybrid|customer-facing}**. Based
 - **Proposed solution:** {…}
 - **Effort hint:** {…}
 
-<!-- … all surviving aspect sections (H2 → H3) and items (H3 → H4) demoted by the Step 5a combine subagent … -->
+<!-- … all surviving aspect sections (H2 → H3) and items (H3 → H4) demoted by the Step 5a combine script (`scripts/combine_proposals.py`) … -->
 
 <!-- ============================================================
      EMPTY-SECTION FALLBACK (after Step 5b dedup)

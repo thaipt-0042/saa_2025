@@ -3,7 +3,7 @@
 **Track:** business · **Discovery item:** 4
 **Inputs:**
 - `plans/upsale/use-context.json` (MUST exist)
-- `plans/upsale/scout-report.md` (MUST exist; `[spec]`-tagged bullets are FeatureList sources)
+- `plans/upsale/scout-report.md` (MUST exist; `[spec]`-tagged bullets are FeatureList sources). **Do NOT Read the full file.** Use `grep -E '\[(spec|route)\]' plans/upsale/scout-report.md` to extract only relevant bullets.
 - Repository files + `specsRoot` (paths from scout)
 
 **Output artifact:** `plans/upsale/business/01-discovery/04-feature-inventory.md`

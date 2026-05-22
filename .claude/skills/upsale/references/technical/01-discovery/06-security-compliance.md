@@ -3,7 +3,7 @@
 **Track:** technical · **Discovery item:** 6
 **Inputs:**
 - `plans/upsale/use-context.json` (MUST exist)
-- `plans/upsale/scout-report.md` (MUST exist; `[lockfile]`/`[manifest]`/`[ci]`/`[config]` bullets enumerate every ecosystem with dependency evidence + secret-management config)
+- `plans/upsale/scout-report.md` (MUST exist; `[lockfile]`/`[manifest]`/`[ci]`/`[config]` bullets enumerate every ecosystem with dependency evidence + secret-management config). **Do NOT Read the full file.** Use `grep -E '\[(lockfile|manifest|ci|config|permission|integration:[a-z]+)\]' plans/upsale/scout-report.md` to extract only relevant bullets.
 - Repository files (paths from scout)
 
 **Output artifact:** `plans/upsale/technical/01-discovery/06-security-compliance.md`

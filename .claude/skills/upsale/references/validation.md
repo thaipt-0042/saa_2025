@@ -9,8 +9,9 @@ validates exactly ONE item and writes ONE verdict file.
 
 The orchestrator passes a small set of identifiers + paths inline; the bulk
 content (`item_markdown`, `item_evidence`, `stack_context`) lives in a
-per-item payload JSON written upstream by step-5c (or by the orchestrator's
-inline-fallback pass when step-5c BLOCKed). Schema: `templates/phase-d-payload.json`.
+per-item payload JSON written upstream by step-5c (`scripts/phase_d_prep.py`).
+Schema: `templates/phase-d-payload.json`. On step-5c BLOCKED, Phase D does not
+run — no inline fallback exists.
 
 - `track` — `"technical"` or `"business"`.
 - `use_context` — the repository's use-context value: `internal | hybrid | customer-facing`.
@@ -115,7 +116,7 @@ If REVISE: keep exact schema — `## <title>` heading followed by `**Value:**`, 
 
 ## Output format
 
-Write the verdict to `output_path` atomically via Bash + tempfile + rename. The Write tool is NOT atomic — a half-written verdict whose frontmatter parses but body is truncated would silently mis-apply on the next idempotent run. Use this recipe verbatim:
+Atomic write via Bash tempfile + rename (the `Write` tool is NOT atomic — half-written verdicts mis-apply). Recipe — use verbatim, the `__UPSALE_VERDICT_END__` terminator avoids collision with customer prose:
 
 ```bash
 set -euo pipefail
@@ -139,9 +140,7 @@ decision: <KEEP | REVISE | DROP>
 
 # Reason
 
-<1-3 sentences citing check number(s) and specific claim that failed or was corrected.
- If check 1 fired DROP, state explicitly that the holistic gate short-circuited validation
- and summarise the end-to-end reasoning (which bullet was unsupportable / incoherent).>
+<1-3 sentences citing check number(s) and specific claim that failed or was corrected. If check 1 fired DROP, state that the holistic gate short-circuited validation and summarise the end-to-end reasoning.>
 
 # Revised item
 
@@ -151,9 +150,9 @@ mv "$TMP" '<output_path>'
 trap - EXIT
 ```
 
-The `trap ... EXIT` cleans up the tempfile if `cat` or `mv` fails (interrupt, full disk, permission). The `trap - EXIT` after a successful `mv` clears it so the moved-into-place file is not deleted on shell exit. If the write is interrupted, return `Status: BLOCKED — verdict write interrupted` so the orchestrator's apply step can default the verdict to KEEP+warn.
+If the write is interrupted → `Status: BLOCKED — verdict write interrupted` (Step 7 apply will default to KEEP+warn).
 
-Frontmatter `decision`: lowercase (`keep`, `revise`, `drop`) or uppercase — both accepted by the Step 7 apply subagent. For `revise`, `# Revised item` is REQUIRED. For `keep` or `drop`, omit it. The `__UPSALE_VERDICT_END__` heredoc terminator is chosen to avoid collisions with proposal text (a shorter sentinel like `END` or `EOF` could appear in customer content and prematurely close the heredoc).
+Frontmatter `decision` accepts either case (lowercase preferred). `# Revised item` is REQUIRED for `revise`; omit for `keep` / `drop`.
 
 ## Reporting
 

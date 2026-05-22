@@ -1,5 +1,13 @@
 # System Overview
 
+<!--
+Wave 9 promotion behavior is defined OUT-OF-BAND, not in this template body:
+  - Stub literal + overwrite rule → claude/skills/_shared/docs-canonical-mapping.md § Stub Rule
+  - Wave 9 TaskCreate description → claude/skills/rebuild-spec/references/pipeline.md
+Wave 1 researcher: do NOT copy this HTML comment into the draft artifact. Begin
+the draft with the "Project" line below.
+-->
+
 **Project**: {PROJECT_NAME}
 **Generated**: {DATE}
 **Architecture Type**: {ARCHITECTURE_TYPE}

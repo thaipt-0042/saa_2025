@@ -30,3 +30,7 @@ After doc-writer completes:
    - Report which files exceed and by how much
    - doc-writer should have already split proactively
    - If still oversized, ask user: split now or accept as-is?
+
+## Note on docs/specs/ (v2.0.0+)
+
+`init` does NOT scaffold `docs/specs/`. The machine-generated spec layer is produced by `/tkm:rebuild-spec` after the codebase has measurable scope (routes, models, screens). If `docs/specs/` already exists at init time, leave it untouched. See `claude/skills/_shared/docs-canonical-mapping.md` for the layered model.

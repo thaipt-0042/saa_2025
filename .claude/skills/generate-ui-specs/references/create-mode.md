@@ -45,17 +45,26 @@ Load `common-rules.md` and `output-contract.md` first.
 1. In `momorph` mode, use the aligned canonical current-item list as the inventory backbone and preserve each item's resolved `designItemId` in that inventory when available.
 2. In `image` mode, detect visible logical components and synthesize rows with these fields:
    - `No`
+   - `parentNo`
    - `itemId`
    - `itemName`
    - `textInItem`
    - `iconNameInItem`
    - `hasChildren`
    - `childIds`
-3. For `itemName` in image mode, prefer:
+   - `startX`
+   - `startY`
+   - `endX`
+   - `endY`
+3. In `image` mode, `No` is the hierarchical `itemNo`: top-level items use `1`, `2`, `3`; children use `1.1`, `1.2`; grandchildren use `1.1.1`. Never exceed depth 3.
+4. Use `parentNo` only when containment is visually explicit. Otherwise keep the item at the current level and leave `parentNo` blank.
+5. For `itemName` in image mode, prefer:
    - visible label text,
    - otherwise a concise role such as `Primary button`, `Email input`, `Card list`, or `Sidebar navigation`.
-4. If there are more than 15 distinct items, split into batches of 15 and write `design_items_part_{batchIndex}.md` plus later `items_analysis_part_{batchIndex}.md`.
-5. Write `design_items.md` with:
+6. Record `startX`, `startY`, `endX`, and `endY` in original-image pixel space so the later bbox JSON and annotation preview can reuse the exact same bounds.
+   - Keep the coordinates ordered at creation time: `startX <= endX` and `startY <= endY`.
+7. If there are more than 15 distinct items, split into batches of 15 and write `design_items_part_{batchIndex}.md` plus later `items_analysis_part_{batchIndex}.md`.
+8. Write `design_items.md` with:
    - `# Design Context - [screen-name]`
    - screen info block
    - one item overview table covering the fields above plus `designItemId` in `momorph` mode when available.
@@ -68,6 +77,7 @@ Load `common-rules.md` and `output-contract.md` first.
 2. In `momorph` mode, use item images when available.
 3. In `image` mode, crop mentally or with tooling assistance from the full image; do not invent child structure that is not visually supported.
 4. Match any useful tone or terminology only from the current item's section in `reference_specs.md`, but do not borrow from unrelated items or add behavior not present in the current source.
+5. In `image` mode, preserve the Stage 1 `No` and bbox coordinates unless Stage 1 contains a clear numbering error.
 
 ### 2B. Required Fields Per Item
 
@@ -158,14 +168,32 @@ For each item, derive and write these fields:
    - one `### Item N: ...` block per item using the field order above.
 2. Preserve empty values as blank lines or `-` only in markdown when needed for readability. The final CSV must use blank cells.
 
-## Stage 3: Merge And Export Final CSV
+## Stage 3: Merge And Export Final Outputs
 
 1. Merge `items_analysis_part_*.md` files if batching was used. Otherwise read `items_analysis.md`.
 2. Apply the exact header, cell processing, escaping, and blank-value rules from `output-contract.md`.
-3. Use `source-token` plus the resolved screen name for the final file path.
+3. In `image` mode, keep the CSV `No` column equal to the Stage 1 hierarchical `itemNo`; do not renumber during export.
+4. In `image` mode, write `.momorph/specs/{source-token}-{screen-name}-item-bboxes.json` as a JSON array in visual order. Each entry must use this shape:
+
+   ```json
+   {
+     "itemNo": "1.1",
+     "position": {
+       "startX": 0,
+       "startY": 0,
+       "endX": 1200,
+       "endY": 56
+     }
+   }
+   ```
+
+5. In `image` mode, run `scripts/annotate-image-bboxes.py` with a Python interpreter that has Pillow available, using the original source image plus the bbox JSON, and write `.momorph/specs/{source-token}-{screen-name}-item-bboxes-annotated.png`.
+6. Use `source-token` plus the resolved screen name for the final file paths.
    - `momorph`: `.momorph/specs/{screenId}-{screen-name}.csv`
-   - `image`: `.momorph/specs/{source-token}-{screen-name}.csv`
-4. Write raw CSV only. Do not wrap the CSV in markdown fences.
+   - `image` CSV: `.momorph/specs/{source-token}-{screen-name}.csv`
+   - `image` bbox JSON: `.momorph/specs/{source-token}-{screen-name}-item-bboxes.json`
+   - `image` annotated preview: `.momorph/specs/{source-token}-{screen-name}-item-bboxes-annotated.png`
+7. Write raw CSV only. Do not wrap the CSV in markdown fences.
 
 ## Hard Stops
 
@@ -173,5 +201,6 @@ For each item, derive and write these fields:
 - More than one source in one run
 - Mixed-family request
 - Update or diff request
+- Image hierarchy clearly requires depth greater than 3
 - Screen or image too ambiguous to split safely into stable components
 - Source too weak to justify non-empty specs without fabrication

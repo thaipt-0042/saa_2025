@@ -3,7 +3,7 @@
 **Track:** business · **Discovery item:** 3
 **Inputs:**
 - `plans/upsale/use-context.json` (MUST exist)
-- `plans/upsale/scout-report.md` (MUST exist; `[spec]`/`[doc]`-tagged bullets)
+- `plans/upsale/scout-report.md` (MUST exist; `[spec]`/`[doc]`-tagged bullets). **Do NOT Read the full file.** Use `grep -E '\[(spec|doc)\]' plans/upsale/scout-report.md` to extract only relevant bullets.
 - Repository files + `specsRoot` (paths from scout)
 
 **Output artifact:** `plans/upsale/business/01-discovery/03-value-proposition.md`

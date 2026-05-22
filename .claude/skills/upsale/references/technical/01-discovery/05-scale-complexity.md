@@ -3,7 +3,7 @@
 **Track:** technical · **Discovery item:** 5
 **Inputs:**
 - `plans/upsale/use-context.json` (MUST exist)
-- `plans/upsale/scout-report.md` (MUST exist; `## Detected Language` + `## Relevant Files` bullets scope the LOC walk)
+- `plans/upsale/scout-report.md` (MUST exist; `## Detected Language` + `## Relevant Files` bullets scope the LOC walk). **Do NOT Read the full file.** Use `grep -E '^## Detected Language|\[(source|model|lockfile|manifest)\]' plans/upsale/scout-report.md` to extract the language header + LOC-relevant bullets.
 - Repository files (paths from scout) + `git` history
 
 **Output artifact:** `plans/upsale/technical/01-discovery/05-scale-complexity.md`

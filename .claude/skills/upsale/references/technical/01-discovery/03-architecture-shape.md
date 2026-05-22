@@ -3,7 +3,7 @@
 **Track:** technical · **Discovery item:** 3
 **Inputs:**
 - `plans/upsale/use-context.json` (MUST exist)
-- `plans/upsale/scout-report.md` (MUST exist; `## Relevant Files` bullets are canonical file list — do NOT re-glob; `## Notes` flags monorepo / multi-stack)
+- `plans/upsale/scout-report.md` (MUST exist; `## Relevant Files` bullets are canonical file list — do NOT re-glob; `## Notes` flags monorepo / multi-stack). **Do NOT Read the full file.** Use `grep -E '^## Notes|\[(route|model|source|config|manifest)\]' plans/upsale/scout-report.md` to extract architecture-relevant bullets + Notes section.
 - Repository files (paths from scout `## Relevant Files`)
 
 **Output artifact:** `plans/upsale/technical/01-discovery/03-architecture-shape.md`

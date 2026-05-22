@@ -1,3 +1,10 @@
+<!--
+Wave 5 also emits plans/<active-plan>/artifacts/_canonical-fcodes.json
+(canonical fcode + slug + related-code source for validators and W6 fan-out)
+AND pre-creates plans/<active-plan>/artifacts/features/{slug}/ folders with
+.pending markers. See references/canonical-fcode-schema.md.
+-->
+
 # Feature List
 
 **Project**: {PROJECT_NAME}

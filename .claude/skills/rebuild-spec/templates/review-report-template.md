@@ -1,8 +1,16 @@
 ---
 failed: 0
 warnings: 0
+missing: 0
 result: PASS
 ---
+<!--
+`failed`: count of critical issues (0 = all pass).
+`warnings`: count of warning issues.
+`missing`: fcodes flagged MISSING due to `.pending` marker present in `artifacts/features/{slug}/` (verification-checklist.md § Pending Marker Rule). Counts toward Wave 9 pre-flight gate halt conditions alongside `failed`.
+`result`: PASS iff `failed === 0 && missing === 0`.
+-->
+
 # Review Report — Rebuild-Spec Artifacts
 
 **Reviewer**: Staff Engineer (automated)
@@ -18,6 +26,7 @@ result: PASS
 | Artifacts reviewed | {N} core + {M} feature specs |
 | Critical issues | {failed} |
 | Warnings | {warnings} |
+| Missing (`.pending` markers) | {missing} |
 | Result | **{PASS\|FAIL}** |
 
 ---
@@ -50,20 +59,16 @@ If none: write "_(none)_" -->
 
 ## Passed Checks
 
-### Cross-Reference Integrity
-<!-- Checklist of cross-ref checks, e.g.:
-- [x] All US### codes referenced by exactly 1 F### — 0 orphans
-- [x] All SCR### codes appear in screen-flow.md — 0 missing
--->
+<!-- Reviewer task closure: on successful write of this file, call
+     TaskUpdate(status=completed) on your task id before returning. -->
 
-### Format Compliance
-<!-- Checklist of format checks, e.g.:
-- [x] All codes follow correct format: F###_NameSlug, US###_NameSlug, ...
-- [x] No placeholder text `{PLACEHOLDER}` in any artifact
--->
+Format: ONE LINE per passed rule per fcode. NO evidence prose. NO multi-line entries. NO grouping under headings.
+Pattern: `✓ <rule_id> @ <fcode>` OR rolled-up: `✓ <rule_id> @ F###..F### (<N>/<N>)`.
 
-### Feature Spec Quality
-<!-- Checklist of spec quality checks -->
+Example:
+✓ FeatureSpec.required_sections @ F001_Auth
+✓ FeatureSpec.required_sections @ F002_Profile
+✓ FeatureSpec.ccl_subsections @ F001_Auth..F030_Reports (30/30)
 
 ---
 

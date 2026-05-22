@@ -3,7 +3,7 @@
 **Track:** technical · **Discovery item:** 1
 **Inputs:**
 - `plans/upsale/use-context.json` (MUST exist; marker echoed verbatim into output)
-- `plans/upsale/scout-report.md` (MUST exist; `## Detected Language` + `[manifest]`-tagged bullets supply identity sources)
+- `plans/upsale/scout-report.md` (MUST exist; `## Detected Language` + `[manifest]`-tagged bullets supply identity sources). **Do NOT Read the full file.** Use `grep -E '^## Detected Language|\[manifest\]' plans/upsale/scout-report.md` to extract the language header + relevant bullets.
 - Repository files (paths sourced ONLY from scout `## Relevant Files`)
 
 **Output artifact:** `plans/upsale/technical/01-discovery/01-repository-identity.md`

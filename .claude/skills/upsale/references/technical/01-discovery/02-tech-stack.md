@@ -3,7 +3,7 @@
 **Track:** technical · **Discovery item:** 2
 **Inputs:**
 - `plans/upsale/use-context.json` (MUST exist)
-- `plans/upsale/scout-report.md` (MUST exist; `[manifest]`/`[lockfile]`/`[config]` bullets are canonical stack-evidence paths)
+- `plans/upsale/scout-report.md` (MUST exist; `[manifest]`/`[lockfile]`/`[config]` bullets are canonical stack-evidence paths). **Do NOT Read the full file.** Use `grep -E '^## Detected Language|\[(manifest|lockfile|config)\]' plans/upsale/scout-report.md` to extract only relevant bullets.
 - Repository files (paths from scout)
 
 **Output artifact:** `plans/upsale/technical/01-discovery/02-tech-stack.md`

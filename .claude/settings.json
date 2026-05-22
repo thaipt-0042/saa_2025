@@ -192,16 +192,6 @@
           }
         ]
       }
-    ],
-    "TeammateIdle": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"$PWD/.claude/hooks/teammate-idle-handler.cjs\""
-          }
-        ]
-      }
     ]
   }
 }

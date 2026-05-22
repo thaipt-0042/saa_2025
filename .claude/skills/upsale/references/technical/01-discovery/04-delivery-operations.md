@@ -3,7 +3,7 @@
 **Track:** technical · **Discovery item:** 4
 **Inputs:**
 - `plans/upsale/use-context.json` (MUST exist)
-- `plans/upsale/scout-report.md` (MUST exist; `[ci]`/`[config]`/`[integration:*]` bullets supply CI + container + observability paths)
+- `plans/upsale/scout-report.md` (MUST exist; `[ci]`/`[config]`/`[integration:*]` bullets supply CI + container + observability paths). **Do NOT Read the full file.** Use `grep -E '\[(ci|config|integration:[a-z]+)\]' plans/upsale/scout-report.md` to extract only relevant bullets.
 - Repository files (paths from scout)
 
 **Output artifact:** `plans/upsale/technical/01-discovery/04-delivery-operations.md`

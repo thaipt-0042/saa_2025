@@ -1,7 +1,9 @@
 # Apply Validations Prompt
 
-**Phase:** E · **Step:** 7 (subagent) — applies per-item KEEP/REVISE/DROP verdicts to produce the final customer-facing proposal.
-**Invoked by:** the upsale orchestrator via the `Agent` tool (one subagent, one call) after Phase D completes.
+> **Implementation note (2026-05-20):** Step 7 is implemented by `scripts/apply_verdicts.py`. This document remains the **procedural spec** consumed by the script (and by humans reading the contract). Self-close (mentioned in older revisions of orchestrator-protocol.md) is no longer applicable — the orchestrator marks step-7 completed after the script exits 0.
+
+**Phase:** E · **Step:** 7 (script) — applies per-item KEEP/REVISE/DROP verdicts to produce the final customer-facing proposal.
+**Invoked by:** the upsale orchestrator via Bash (one script call) after Phase D completes.
 **Output artifact:** `plans/upsale/upsale-proposal.md` (atomic Bash tempfile + rename).
 **Template:** `templates/upsale-proposal.md` (output structure MUST match exactly).
 
@@ -40,7 +42,7 @@ Always, once per upsale run, after every per-track validator subagent has return
    - **REVISE** with body → validate the body (see "Revised body schema" below). If it fails the schema → KEEP and emit `warn: revise-malformed for item-<NN> "<title>" — kept original`. Otherwise demote any `## <title>` headings in the body to `#### <title>` (fence-aware, 0–3 leading spaces tolerated), emit the demoted body, and log `revise: item-<NN> "<title>" — applied validator revision`.
 7. After both tracks process, check for orphan verdicts (verdict indices not consumed by any item). For each orphan emit:
    `warn: orphan verdict at item_index=<N> (slug=<slug>, decision=<decision>) — no matching item`.
-8. Count "unvalidated" items — items that shipped via KEEP fallback OR with degraded evidence. The keys are: `missing verdict`, `revise-without-body`, `revise-malformed`, `verdict slug mismatch`, AND any `evidence-degraded` warn lines emitted upstream (sourced from the step-5c manifest's `evidence_degraded_warns` array, or from the orchestrator's inline-fallback pass when step-5c BLOCKed — see `references/phase-d-prep.md` → Edge cases and `references/orchestrator-protocol.md` → `## Phase C-prep` / `### Fallback — inline pre-extraction` for items whose aspect-id had no matching improvement file). The `evidence-degraded` warns reach this step via the `evidence_degraded_warns` input the orchestrator passes inline; collect them by parsing `^warn: item-(\d+) ".*" evidence-degraded ` log lines from that input string. If `validation directory missing` fired, the count = total items consumed.
+8. Count "unvalidated" items — items that shipped via KEEP fallback OR with degraded evidence. The keys are: `missing verdict`, `revise-without-body`, `revise-malformed`, `verdict slug mismatch`, AND any `evidence-degraded` warn lines emitted upstream (sourced from the step-5c manifest's `evidence_degraded_warns` array — see `references/phase-d-prep.md` → Edge cases and `references/orchestrator-protocol.md` → `## Phase C-prep` for items whose aspect-id had no matching improvement file). The `evidence-degraded` warns reach this step via the `evidence_degraded_warns` input the orchestrator passes inline; collect them by parsing `^warn: item-(\d+) ".*" evidence-degraded ` log lines from that input string. If `validation directory missing` fired, the count = total items consumed.
 9. Assemble final output following `templates/upsale-proposal.md`:
 
    ```markdown
