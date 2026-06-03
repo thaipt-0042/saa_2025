@@ -1,4 +1,4 @@
-import DOMPurify from 'isomorphic-dompurify'
+import sanitizeHtml from 'sanitize-html'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Kudo, KudoPayload } from './kudo-types'
 import { computeStarCount } from './live-board-types'
@@ -9,7 +9,10 @@ export async function createKudo(
   payload: KudoPayload,
   supabase: SupabaseClient
 ): Promise<Kudo> {
-  const sanitizedContent = DOMPurify.sanitize(payload.content)
+  const sanitizedContent = sanitizeHtml(payload.content, {
+    allowedTags: ['p', 'br', 'strong', 'em', 'u', 's', 'ul', 'ol', 'li', 'blockquote', 'code', 'pre'],
+    allowedAttributes: {},
+  })
 
   const { data, error } = await supabase
     .from('kudos')

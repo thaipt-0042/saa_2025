@@ -1,12 +1,18 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import dynamic from 'next/dynamic'
 import { useKudoForm } from './use-kudo-form'
 import { RecipientSearchInput } from './recipient-search-input'
 import { HashtagPicker } from './hashtag-picker'
 import { ToastNotification } from './toast-notification'
-import { RichTextEditor } from './rich-text-editor'
 import { ImageUploader } from './image-uploader'
+
+// Dynamically imported to avoid TipTap/DOMPurify loading during SSR
+const RichTextEditor = dynamic(
+  () => import('./rich-text-editor').then((m) => ({ default: m.RichTextEditor })),
+  { ssr: false }
+)
 import type { HashtagItem, ImageUploadState, UserSearchResult } from '@/lib/kudos/kudo-types'
 
 interface WriteKudoModalProps {

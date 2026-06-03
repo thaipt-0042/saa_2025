@@ -17,7 +17,8 @@ export async function GET(request: NextRequest) {
   try {
     const page = await listKudos(user.id, { hashtagId, department }, cursor, 10, supabase, locale)
     return NextResponse.json(page)
-  } catch {
+  } catch (err) {
+    console.error('[GET /api/kudos]', err)
     return NextResponse.json({ error: 'Failed to fetch kudos' }, { status: 500 })
   }
 }
@@ -52,7 +53,10 @@ export async function POST(request: NextRequest) {
   try {
     const kudo = await createKudo(user.id, parsed.data, supabase)
     return NextResponse.json(kudo, { status: 201 })
-  } catch {
-    return NextResponse.json({ error: 'Failed to create kudo' }, { status: 500 })
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : JSON.stringify(err)
+    const detail = err instanceof Error && 'code' in err ? (err as Record<string, unknown>).code : undefined
+    console.error('[POST /api/kudos] message:', msg, '| code:', detail, '| full:', JSON.stringify(err))
+    return NextResponse.json({ error: 'Failed to create kudo', detail: msg }, { status: 500 })
   }
 }
