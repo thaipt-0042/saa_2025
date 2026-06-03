@@ -19,6 +19,7 @@ export function WriteKudoModal({ open, onClose, hashtags = [] }: WriteKudoModalP
   const form = useKudoForm()
   const dialogRef = useRef<HTMLDivElement>(null)
   const [recipientQuery, setRecipientQuery] = useState('')
+  const [imageStates, setImageStates] = useState<ImageUploadState[]>([])
 
   useEffect(() => {
     if (!open) return
@@ -37,6 +38,7 @@ export function WriteKudoModal({ open, onClose, hashtags = [] }: WriteKudoModalP
   function handleClose() {
     form.reset()
     setRecipientQuery('')
+    setImageStates([])
     onClose()
   }
 
@@ -93,6 +95,7 @@ export function WriteKudoModal({ open, onClose, hashtags = [] }: WriteKudoModalP
           </label>
           <RecipientSearchInput
             value={recipientQuery}
+            onChange={setRecipientQuery}
             onSelect={handleSelectRecipient}
           />
           {form.fieldErrors.recipient && (
@@ -117,27 +120,8 @@ export function WriteKudoModal({ open, onClose, hashtags = [] }: WriteKudoModalP
           )}
         </div>
 
-        {/* Image uploader */}
-        <div style={{ marginBottom: '16px' }}>
-          <label
-            style={{ display: 'block', color: '#aaa', fontSize: '13px', marginBottom: '8px' }}
-          >
-            Ảnh đính kèm
-          </label>
-          <ImageUploader
-            images={form.imageUrls.map((url) => ({
-              file: new File([], url),
-              url,
-              status: 'done' as const,
-            }))}
-            onImagesChange={(imgs: ImageUploadState[]) =>
-              form.setImageUrls(imgs.filter((i) => i.status === 'done').map((i) => i.url))
-            }
-          />
-        </div>
-
         {/* Hashtags */}
-        <div style={{ marginBottom: '20px' }}>
+        <div style={{ marginBottom: '16px' }}>
           <label
             style={{ display: 'block', color: '#aaa', fontSize: '13px', marginBottom: '8px' }}
           >
@@ -154,6 +138,22 @@ export function WriteKudoModal({ open, onClose, hashtags = [] }: WriteKudoModalP
               {form.fieldErrors.hashtags}
             </p>
           )}
+        </div>
+
+        {/* Image uploader */}
+        <div style={{ marginBottom: '20px' }}>
+          <label
+            style={{ display: 'block', color: '#aaa', fontSize: '13px', marginBottom: '8px' }}
+          >
+            Ảnh đính kèm
+          </label>
+          <ImageUploader
+            images={imageStates}
+            onImagesChange={(imgs: ImageUploadState[]) => {
+              setImageStates(imgs)
+              form.setImageUrls(imgs.filter((i) => i.status === 'done').map((i) => i.url))
+            }}
+          />
         </div>
 
         {/* Anonymous */}
