@@ -1,7 +1,26 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
-import { createKudo } from '@/lib/kudos/kudo-service'
+import { createKudo, listKudos } from '@/lib/kudos/kudo-service'
+
+export async function GET(request: NextRequest) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+  const { searchParams } = new URL(request.url)
+  const hashtagId = searchParams.get('hashtagId')
+  const department = searchParams.get('department')
+  const cursor = searchParams.get('cursor') ?? null
+  const locale = searchParams.get('locale') ?? 'vi'
+
+  try {
+    const page = await listKudos(user.id, { hashtagId, department }, cursor, 10, supabase, locale)
+    return NextResponse.json(page)
+  } catch {
+    return NextResponse.json({ error: 'Failed to fetch kudos' }, { status: 500 })
+  }
+}
 
 const kudoBodySchema = z.object({
   recipientId: z.string().uuid(),
