@@ -20,6 +20,60 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Supabase Setup
+
+### Database Policies (RLS)
+
+#### Profiles Table
+After initial migration, apply these RLS policies via **Supabase SQL Editor**:
+
+```sql
+-- Allow users to insert their own profile (OAuth signup)
+CREATE POLICY "Users insert own profile"
+  ON profiles FOR INSERT
+  WITH CHECK (auth.uid() = id);
+
+-- Allow users to read own profile
+CREATE POLICY "Users read own profile"
+  ON profiles FOR SELECT
+  USING (auth.uid() = id);
+
+-- Allow users to update own profile
+CREATE POLICY "Users update own profile"
+  ON profiles FOR UPDATE
+  USING (auth.uid() = id);
+```
+
+### Storage Policies
+
+#### Bucket: `kudo-images`
+Create a **Public** bucket named `kudo-images` and apply these policies:
+
+```sql
+-- Allow authenticated users to upload images
+CREATE POLICY "Allow authenticated users to upload"
+  ON storage.objects
+  FOR INSERT
+  TO authenticated
+  WITH CHECK (bucket_id = 'kudo-images');
+
+-- Allow public access to view images
+CREATE POLICY "Allow public access to images"
+  ON storage.objects
+  FOR SELECT
+  TO public
+  USING (bucket_id = 'kudo-images');
+```
+
+### Environment Variables
+
+Required in `.env.local`:
+- `NEXT_PUBLIC_SUPABASE_URL` - Project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Public API key (safe for browser)
+- `SUPABASE_SERVICE_ROLE_KEY` - Service role key (server-only, never expose in browser)
+- `SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID` - Google OAuth client ID
+- `SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET` - Google OAuth secret
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

@@ -17,7 +17,15 @@ export async function GET(request: NextRequest) {
   switch (result.type) {
     case 'success': {
       const serviceClient = await createServiceClient()
-      await upsertProfile(result.session.user, serviceClient)
+      const { error } = await upsertProfile(result.session.user, serviceClient)
+      if (error) {
+        console.error('❌ upsertProfile error:', JSON.stringify(error, null, 2))
+        console.error('Error message:', error.message)
+        console.error('Error code:', (error as any).code)
+        console.error('Error details:', (error as any).details)
+      } else {
+        console.log('✅ Profile created/updated for user:', result.session.user.id)
+      }
       const destination = POST_LOGIN_URL.startsWith('http')
         ? POST_LOGIN_URL
         : `${SITE_URL}${POST_LOGIN_URL}`
