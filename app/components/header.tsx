@@ -16,9 +16,11 @@ interface HeaderProps {
   currentPath?: string
   user?: User | null
   role?: 'admin' | 'user' | null
+  avatarUrl?: string | null
+  fullName?: string | null
 }
 
-export function Header({ currentLocale, currentPath, user = null, role = null }: HeaderProps) {
+export function Header({ currentLocale, currentPath, user = null, role = null, avatarUrl, fullName }: HeaderProps) {
   return (
     <header
       className="fixed top-0 left-0 right-0 z-20 flex items-center justify-between"
@@ -69,7 +71,7 @@ export function Header({ currentLocale, currentPath, user = null, role = null }:
       <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
         <LanguageSwitcher currentLocale={currentLocale} />
         {user && <NotificationBell user={user} />}
-        {user && <AccountDropdown user={user} role={role} />}
+        {user && <AccountDropdown user={user} role={role} avatarUrl={avatarUrl} fullName={fullName} />}
       </div>
     </header>
   )

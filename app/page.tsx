@@ -31,7 +31,7 @@ export default async function HomePage() {
         flexDirection: 'column',
       }}
     >
-      <Header currentLocale={locale} currentPath="/" user={user} role={role} />
+      <Header currentLocale={locale} currentPath="/" user={user} role={role} avatarUrl={profile?.avatar_url} fullName={profile?.full_name} />
 
       <main style={{ flex: 1 }}>
         <HeroSection />

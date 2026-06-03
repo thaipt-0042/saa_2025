@@ -2,10 +2,11 @@ import { redirect } from 'next/navigation'
 import { getLocale } from 'next-intl/server'
 import { createClient } from '@/lib/supabase/server'
 import { getHashtags } from '@/lib/kudos/hashtag-service'
-import { getTopKudos, listKudos } from '@/lib/kudos/kudo-service'
+import { getTopKudos, listKudos, getKudoCount } from '@/lib/kudos/kudo-service'
 import { getUserStats, getSpotlightData, getRecentGiftRecipients } from '@/lib/kudos/live-board-service'
-import { getKudoCount } from '@/lib/kudos/kudo-service'
 import { getDepartments } from '@/lib/departments/department-service'
+import { getProfile } from '@/lib/auth/profile-service'
+import { Header } from '@/app/components/header'
 import { LiveBoardClient } from './_components/live-board-client'
 
 export default async function SunKudosPage() {
@@ -18,8 +19,9 @@ export default async function SunKudosPage() {
 
   const locale = await getLocale()
 
-  const [topKudos, firstPage, hashtags, departments, stats, spotlightNodes, spotlightTotal, recentGifts] =
+  const [profile, topKudos, firstPage, hashtags, departments, stats, spotlightNodes, spotlightTotal, recentGifts] =
     await Promise.all([
+      getProfile(user.id, supabase),
       getTopKudos(user.id, { hashtagId: null, department: null }, 5, supabase, locale),
       listKudos(user.id, { hashtagId: null, department: null }, null, 10, supabase, locale),
       getHashtags(locale, supabase),
@@ -31,17 +33,29 @@ export default async function SunKudosPage() {
     ])
 
   return (
-    <LiveBoardClient
-      currentUserId={user.id}
-      initialTopKudos={topKudos}
-      initialPage={firstPage}
-      hashtags={hashtags}
-      departments={departments}
-      initialStats={stats}
-      spotlightNodes={spotlightNodes}
-      spotlightTotal={spotlightTotal}
-      recentGiftRecipients={recentGifts}
-      locale={locale}
-    />
+    <>
+      <Header
+        currentLocale={locale}
+        currentPath="/sun-kudos"
+        user={user}
+        role={profile?.role ?? 'user'}
+        avatarUrl={profile?.avatar_url}
+        fullName={profile?.full_name}
+      />
+      <div style={{ paddingTop: 80 }}>
+        <LiveBoardClient
+          currentUserId={user.id}
+          initialTopKudos={topKudos}
+          initialPage={firstPage}
+          hashtags={hashtags}
+          departments={departments}
+          initialStats={stats}
+          spotlightNodes={spotlightNodes}
+          spotlightTotal={spotlightTotal}
+          recentGiftRecipients={recentGifts}
+          locale={locale}
+        />
+      </div>
+    </>
   )
 }

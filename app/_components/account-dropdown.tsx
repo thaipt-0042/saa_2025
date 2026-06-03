@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import type { User } from '@supabase/supabase-js'
@@ -9,9 +10,11 @@ import { createClient } from '../../lib/supabase/client'
 interface AccountDropdownProps {
   user: User
   role?: 'admin' | 'user' | null
+  avatarUrl?: string | null
+  fullName?: string | null
 }
 
-export function AccountDropdown({ user: _user, role }: AccountDropdownProps) {
+export function AccountDropdown({ user: _user, role, avatarUrl, fullName }: AccountDropdownProps) {
   const [open, setOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
@@ -50,18 +53,34 @@ export function AccountDropdown({ user: _user, role }: AccountDropdownProps) {
           width: 40,
           height: 40,
           border: '1px solid var(--color-account-border)',
-          borderRadius: 4,
+          borderRadius: '50%',
           background: 'none',
           cursor: 'pointer',
           color: '#fff',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          overflow: 'hidden',
+          padding: 0,
         }}
       >
-        <svg width={24} height={24} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-          <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-        </svg>
+        {avatarUrl ? (
+          <Image
+            src={avatarUrl}
+            alt={fullName ?? 'Avatar'}
+            width={40}
+            height={40}
+            style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+          />
+        ) : fullName ? (
+          <span style={{ fontSize: 16, fontWeight: 700 }}>
+            {fullName[0].toUpperCase()}
+          </span>
+        ) : (
+          <svg width={24} height={24} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+        )}
       </button>
 
       {open && (
