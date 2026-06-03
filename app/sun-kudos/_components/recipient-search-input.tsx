@@ -6,14 +6,16 @@ import type { UserSearchResult } from '@/lib/kudos/kudo-types'
 
 interface RecipientSearchInputProps {
   value: string
+  onChange: (value: string) => void
   onSelect: (user: UserSearchResult) => void
   placeholder?: string
 }
 
-export function RecipientSearchInput({ value, onSelect, placeholder = 'Tìm đồng nghiệp...' }: RecipientSearchInputProps) {
+export function RecipientSearchInput({ value, onChange, onSelect, placeholder = 'Tìm đồng nghiệp...' }: RecipientSearchInputProps) {
   const [suggestions, setSuggestions] = useState<UserSearchResult[]>([])
   const [loading, setLoading] = useState(false)
   const [searched, setSearched] = useState(false)
+  const [isSelected, setIsSelected] = useState(false)
   const debouncedValue = useDebounce(value, 300)
   const listRef = useRef<HTMLUListElement>(null)
 
@@ -49,14 +51,17 @@ export function RecipientSearchInput({ value, onSelect, placeholder = 'Tìm đ�
     return () => { cancelled = true }
   }, [debouncedValue])
 
-  const showDropdown = debouncedValue.trim().length > 0
+  const showDropdown = debouncedValue.trim().length > 0 && !isSelected
 
   return (
     <div style={{ position: 'relative' }}>
       <input
         type="text"
         value={value}
-        readOnly
+        onChange={(e) => {
+          setIsSelected(false)
+          onChange(e.target.value)
+        }}
         placeholder={placeholder}
         aria-label="Tìm người nhận"
         aria-autocomplete="list"
@@ -104,7 +109,11 @@ export function RecipientSearchInput({ value, onSelect, placeholder = 'Tìm đ�
               key={user.id}
               role="option"
               aria-selected={false}
-              onClick={() => onSelect(user)}
+              onClick={() => {
+                setIsSelected(true)
+                setSuggestions([])
+                onSelect(user)
+              }}
               style={{
                 padding: '10px 12px',
                 cursor: 'pointer',

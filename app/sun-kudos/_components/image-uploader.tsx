@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import type { ImageUploadState } from '@/lib/kudos/kudo-types'
 
 const MAX_IMAGES = 5
-const BUCKET = 'kudo-images'
+const BUCKET = process.env.NEXT_PUBLIC_SUPABASE_BUCKET_NAME || 'kudo-images'
 
 interface ImageUploaderProps {
   images: ImageUploadState[]

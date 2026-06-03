@@ -14,7 +14,9 @@ export function FilterBar({ filters, onFilterChange, hashtags, departments }: Fi
       <select
         value={filters.hashtagId ?? ''}
         onChange={(e) => onFilterChange({ hashtagId: e.target.value || null })}
-        className="px-3 py-1.5 rounded-full border border-gray-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 data-[active]:border-orange-400"
+        className="px-3 py-1.5 rounded-full border text-sm focus:outline-none focus:ring-2 transition-colors" style={{ borderColor: 'var(--color-divider)', backgroundColor: 'rgba(11, 15, 18, 0.6)', color: 'white' }}
+        onFocus={(e) => (e.currentTarget.style.borderColor = 'var(--color-cta-primary)')}
+        onBlur={(e) => (e.currentTarget.style.borderColor = 'var(--color-divider)')}
         data-active={filters.hashtagId ? '' : undefined}
         aria-label="Lọc theo hashtag"
       >
@@ -27,7 +29,9 @@ export function FilterBar({ filters, onFilterChange, hashtags, departments }: Fi
       <select
         value={filters.department ?? ''}
         onChange={(e) => onFilterChange({ department: e.target.value || null })}
-        className="px-3 py-1.5 rounded-full border border-gray-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-orange-400"
+        className="px-3 py-1.5 rounded-full border text-sm focus:outline-none focus:ring-2 transition-colors" style={{ borderColor: 'var(--color-divider)', backgroundColor: 'rgba(11, 15, 18, 0.6)', color: 'white' }}
+        onFocus={(e) => (e.currentTarget.style.borderColor = 'var(--color-cta-primary)')}
+        onBlur={(e) => (e.currentTarget.style.borderColor = 'var(--color-divider)')}
         aria-label="Lọc theo phòng ban"
       >
         <option value="">Tất cả phòng ban</option>

@@ -135,7 +135,7 @@ export function RichTextEditor({ onContentChange, initialContent = '' }: RichTex
       </div>
 
       {/* Editor */}
-      <div style={{ padding: '10px 12px', minHeight: '120px' }}>
+      <div style={{ padding: '10px 12px', height: '140px', overflowY: 'auto' }}>
         <EditorContent editor={editor} />
       </div>
 

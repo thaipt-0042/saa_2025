@@ -135,7 +135,7 @@ export function LiveBoardClient({
   }, [])
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen" style={{ backgroundColor: 'var(--color-bg-base)' }}>
       <KudoHeroSection hashtags={hashtags} />
 
       <HighlightKudosSection

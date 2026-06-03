@@ -13,7 +13,10 @@ export function KudoActionBar({ likeCount, likedByCurrentUser, onLike, disabled 
         disabled={disabled}
         aria-pressed={likedByCurrentUser}
         aria-label={likedByCurrentUser ? 'Bỏ thích' : 'Thích'}
-        className="flex items-center gap-1 px-2 py-1 rounded-full hover:bg-red-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        style={{ color: likedByCurrentUser ? '#ef4444' : 'white' }}
+        className="flex items-center gap-1 px-2 py-1 rounded-full disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.1)')}
+        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '')}
       >
         <svg width="16" height="16" viewBox="0 0 16 16" fill={likedByCurrentUser ? '#ef4444' : 'none'} aria-hidden="true">
           <path

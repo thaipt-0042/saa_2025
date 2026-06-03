@@ -26,3 +26,14 @@ body {
   background: var(--color-bg-base);
   color: #ffffff;
 }
+
+/* TipTap editor: fill parent container height */
+.tiptap {
+  height: 100%;
+  outline: none;
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.tiptap p { margin: 0 0 4px; }
+.tiptap .mention { color: var(--color-cta-primary); }

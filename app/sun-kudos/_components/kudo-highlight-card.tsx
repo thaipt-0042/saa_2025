@@ -19,16 +19,16 @@ function UserBlock({ user }: { user: KudoPost['sender'] }) {
   const stars = computeStarCount(user.starCount)
   return (
     <div className="flex flex-col items-center gap-1 min-w-0">
-      <div className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden flex-shrink-0">
+      <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0" style={{ backgroundColor: 'var(--color-divider)' }}>
         {user.avatarUrl ? (
           <Image src={user.avatarUrl} alt={user.fullName ?? ''} width={48} height={48} className="object-cover w-full h-full" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-500 text-lg font-bold">
+          <div className="w-full h-full flex items-center justify-center text-gray-400 text-lg font-bold">
             {(user.fullName ?? '?')[0].toUpperCase()}
           </div>
         )}
       </div>
-      <p className="text-xs font-semibold text-center truncate max-w-[100px]">{user.fullName ?? '—'}</p>
+      <p className="text-xs font-semibold text-center truncate max-w-[100px] text-white">{user.fullName ?? '—'}</p>
       {user.department && <p className="text-[10px] text-gray-400 text-center truncate max-w-[100px]">{user.department}</p>}
       <StarBadges count={stars} />
     </div>
@@ -48,21 +48,21 @@ function formatDate(iso: string) {
 export function KudoHighlightCard({ kudo, isActive, onHashtagClick, onLikeToggle }: KudoHighlightCardProps) {
   return (
     <div
-      className="flex-shrink-0 w-full rounded-2xl bg-white border border-gray-100 p-5 flex flex-col gap-3 transition-all duration-300"
-      style={{ opacity: isActive ? 1 : 0.4, transform: isActive ? 'scale(1)' : 'scale(0.97)', pointerEvents: isActive ? 'auto' : 'none' }}
+      className="flex-shrink-0 w-full rounded-2xl border p-5 flex flex-col gap-3 transition-all duration-300"
+      style={{ backgroundColor: 'rgba(11, 15, 18, 0.8)', borderColor: 'var(--color-divider)', opacity: isActive ? 1 : 0.4, transform: isActive ? 'scale(1)' : 'scale(0.97)', pointerEvents: isActive ? 'auto' : 'none' }}
     >
       {/* Sender → Recipient row */}
       <div className="flex items-center gap-3">
         <UserBlock user={kudo.sender} />
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="flex-shrink-0 text-gray-300" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" className="flex-shrink-0" style={{ color: 'var(--color-divider)' }} aria-hidden="true">
           <path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
         <UserBlock user={kudo.recipient} />
-        <p className="ml-auto text-[10px] text-gray-400 whitespace-nowrap self-start">{formatDate(kudo.createdAt)}</p>
+      <p className="ml-auto text-[10px] text-gray-400 whitespace-nowrap self-start">{formatDate(kudo.createdAt)}</p>
       </div>
 
       {/* Content */}
-      <p className="text-sm text-gray-700 leading-relaxed line-clamp-3">{kudo.content}</p>
+      <p className="text-sm text-gray-200 leading-relaxed line-clamp-3">{kudo.content}</p>
 
       {/* Hashtags */}
       {kudo.hashtags.length > 0 && (
@@ -71,7 +71,7 @@ export function KudoHighlightCard({ kudo, isActive, onHashtagClick, onLikeToggle
             <button
               key={h.id}
               onClick={() => onHashtagClick(h.id)}
-              className="text-xs px-2 py-0.5 rounded-full bg-orange-50 text-orange-500 hover:bg-orange-100 transition-colors"
+              className="text-xs px-2 py-0.5 rounded-full text-yellow-300 hover:opacity-80 transition-opacity" style={{ backgroundColor: 'rgba(255, 234, 158, 0.1)' }}
             >
               #{h.name}
             </button>

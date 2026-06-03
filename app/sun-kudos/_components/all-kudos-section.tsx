@@ -43,7 +43,7 @@ export function AllKudosSection({
 
   return (
     <section className="flex-1 min-w-0 flex flex-col gap-4">
-      <h2 className="text-sm font-bold text-gray-400 uppercase tracking-wide">Tất cả Kudos</h2>
+      <h2 className="text-sm font-bold text-gray-300 uppercase tracking-wide">Tất cả Kudos</h2>
 
       {items.length === 0 && !isLoadingMore ? (
         <p className="text-sm text-gray-400 text-center py-12">Hiện tại chưa có Kudos nào.</p>

@@ -15,7 +15,7 @@ export function KudoImageGallery({ images }: KudoImageGalleryProps) {
           <img
             src={url}
             alt=""
-            className="w-16 h-16 object-cover rounded-lg border border-gray-100 hover:opacity-80 transition-opacity"
+            className="w-16 h-16 object-cover rounded-lg border transition-opacity hover:opacity-80" style={{ borderColor: 'var(--color-divider)' }}
           />
         </a>
       ))}

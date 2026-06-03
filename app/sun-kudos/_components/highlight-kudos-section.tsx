@@ -35,9 +35,9 @@ export function HighlightKudosSection({
   if (items.length === 0) return null
 
   return (
-    <section className="px-9 py-6 flex flex-col gap-4">
+    <section className="px-9 py-6 flex flex-col gap-4" style={{ backgroundColor: 'rgba(11, 15, 18, 0.5)' }}>
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <h2 className="text-sm font-bold text-gray-400 uppercase tracking-wide">Highlight Kudos</h2>
+        <h2 className="text-sm font-bold text-gray-300 uppercase tracking-wide">Highlight Kudos</h2>
         <FilterBar filters={filters} onFilterChange={onFilterChange} hashtags={hashtags} departments={departments} />
       </div>
 

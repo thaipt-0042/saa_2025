@@ -43,22 +43,26 @@ export function SpotlightBoard({ nodes, totalCount }: SpotlightBoardProps) {
   const handleMouseUp = () => setDragging(null)
 
   return (
-    <div className="rounded-2xl bg-white border border-gray-100 p-4 flex flex-col gap-3">
+    <div className="rounded-2xl border p-4 flex flex-col gap-3" style={{ backgroundColor: 'rgba(11, 15, 18, 0.6)', borderColor: 'var(--color-divider)' }}>
       {/* Header */}
       <div className="flex items-center justify-between gap-2 flex-wrap">
-        <span className="text-sm font-bold text-gray-700">{totalCount} KUDOS</span>
+        <span className="text-sm font-bold text-gray-300">{totalCount} KUDOS</span>
         <div className="flex items-center gap-2">
           <input
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Tìm kiếm..."
-            className="text-xs px-3 py-1.5 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange-400 w-36"
+            className="text-xs px-3 py-1.5 rounded-full border focus:outline-none focus:ring-2 w-36 transition-colors" style={{ borderColor: 'var(--color-divider)', backgroundColor: 'rgba(11, 15, 18, 0.8)', color: 'white' }}
+            onFocus={(e) => (e.currentTarget.style.borderColor = 'var(--color-cta-primary)')}
+            onBlur={(e) => (e.currentTarget.style.borderColor = 'var(--color-divider)')}
             aria-label="Tìm thành viên"
           />
           <button
             onClick={() => setZoomed((z) => !z)}
-            className="text-xs px-3 py-1.5 rounded-full border border-gray-200 hover:bg-gray-50 transition-colors"
+            className="text-xs px-3 py-1.5 rounded-full border transition-colors" style={{ borderColor: 'var(--color-divider)', color: 'white' }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(11, 15, 18, 0.8)')}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '')}
             aria-label={zoomed ? 'Thu nhỏ' : 'Phóng to'}
           >
             {zoomed ? '−' : '+'}
@@ -68,8 +72,7 @@ export function SpotlightBoard({ nodes, totalCount }: SpotlightBoardProps) {
 
       {/* Canvas */}
       <div
-        className="relative overflow-hidden rounded-xl bg-gray-50 cursor-grab active:cursor-grabbing select-none"
-        style={{ height: 380 }}
+        className="relative overflow-hidden rounded-xl cursor-grab active:cursor-grabbing select-none" style={{ height: 380, backgroundColor: 'rgba(11, 15, 18, 0.8)' }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -92,8 +95,8 @@ export function SpotlightBoard({ nodes, totalCount }: SpotlightBoardProps) {
               <span
                 key={node.userId}
                 title={`${node.fullName} — ${node.kudosReceived} kudos`}
-                style={{ position: 'absolute', left: `${left}%`, top: `${top}%`, fontSize, lineHeight: 1.2 }}
-                className="font-medium text-gray-600 hover:text-orange-500 transition-colors whitespace-nowrap cursor-pointer"
+                style={{ position: 'absolute', left: `${left}%`, top: `${top}%`, fontSize, lineHeight: 1.2, color: 'var(--color-cta-primary)' }}
+                className="font-medium hover:opacity-80 transition-opacity whitespace-nowrap cursor-pointer"
               >
                 {node.fullName}
               </span>

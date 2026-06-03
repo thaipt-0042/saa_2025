@@ -13,7 +13,7 @@ export function KudoHeroSection({ hashtags }: KudoHeroSectionProps) {
   const [modalOpen, setModalOpen] = useState(false)
 
   return (
-    <section className="relative px-9 py-10 flex flex-col gap-6 overflow-hidden bg-gradient-to-br from-orange-500 to-orange-600">
+    <section className="relative px-9 py-10 flex flex-col gap-6 overflow-hidden bg-linear-to-br from-orange-500 to-orange-600">
       {/* Decorative background circles */}
       <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-white/10 pointer-events-none" aria-hidden="true" />
       <div className="absolute -bottom-8 -left-8 w-40 h-40 rounded-full bg-white/5 pointer-events-none" aria-hidden="true" />
